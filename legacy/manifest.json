@@ -1,0 +1,68 @@
+{
+  "id": "./",
+  "name": "樂活在地通",
+  "short_name": "樂活在地通",
+  "description": "為長輩設計的在地生活助理：佳儒的叮嚀、緊急求助、藥袋朗讀、老友照片與湊咖、健康步數、動動腦與社區接駁車。",
+  "lang": "zh-Hant",
+  "dir": "ltr",
+  "start_url": "./",
+  "scope": "./",
+  "display": "standalone",
+  "display_override": ["standalone", "minimal-ui"],
+  "launch_handler": { "client_mode": "navigate-existing" },
+  "orientation": "any",
+  "background_color": "#FFFDF7",
+  "theme_color": "#15803D",
+  "categories": ["lifestyle", "health", "social"],
+  "prefer_related_applications": false,
+  "icons": [
+    {
+      "src": "./icons/icon-192.png",
+      "sizes": "192x192",
+      "type": "image/png",
+      "purpose": "any"
+    },
+    {
+      "src": "./icons/icon-512.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "any"
+    },
+    {
+      "src": "./icons/icon-maskable-512.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "maskable"
+    }
+  ],
+  "shortcuts": [
+    {
+      "name": "佳儒的叮嚀",
+      "short_name": "叮嚀",
+      "description": "查看今天的提醒與完成回報",
+      "url": "./index.html?view=reminders",
+      "icons": [{ "src": "./icons/icon-192.png", "sizes": "192x192", "type": "image/png" }]
+    },
+    {
+      "name": "老友照片牆",
+      "short_name": "照片",
+      "description": "看看老友的早安照片",
+      "url": "./index.html?view=photos",
+      "icons": [{ "src": "./icons/icon-192.png", "sizes": "192x192", "type": "image/png" }]
+    },
+    {
+      "name": "健康步數",
+      "short_name": "健康",
+      "description": "查看步數、運動計時與樂活金幣",
+      "url": "./index.html?view=health",
+      "icons": [{ "src": "./icons/icon-192.png", "sizes": "192x192", "type": "image/png" }]
+    },
+    {
+      "name": "社區廣播站",
+      "short_name": "廣播",
+      "description": "聽社區廣播與報名共餐",
+      "url": "./index.html?view=radio",
+      "icons": [{ "src": "./icons/icon-192.png", "sizes": "192x192", "type": "image/png" }]
+    }
+  ]
+}

@@ -1,0 +1,299 @@
+<!DOCTYPE html>
+<html lang="zh-Hant" data-font="large">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
+  <meta name="theme-color" content="#FFFDF7" />
+  <meta name="description" content="樂活在地通：為在地高齡長輩設計的互動式關懷 Web App 原型。" />
+  <meta name="application-name" content="樂活在地通" />
+  <meta name="mobile-web-app-capable" content="yes" />
+  <meta name="apple-mobile-web-app-capable" content="yes" />
+  <meta name="apple-mobile-web-app-status-bar-style" content="default" />
+  <meta name="apple-mobile-web-app-title" content="樂活在地通" />
+  <link rel="manifest" href="./manifest.json" />
+  <link rel="icon" type="image/png" sizes="192x192" href="./icons/icon-192.png" />
+  <link rel="apple-touch-icon" href="./icons/apple-touch-icon.png" />
+  <title>樂活在地通｜幸福里長輩關懷</title>
+
+  <!-- 中文字型 -->
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@400;500;700;800;900&display=swap" rel="stylesheet" />
+
+  <!-- 共用高對比無障礙樣式 -->
+  <link rel="stylesheet" href="./css/styles.css" />
+
+  <!-- Lucide Icons -->
+  <script src="https://unpkg.com/lucide@latest/dist/umd/lucide.js" defer></script>
+</head>
+<body data-mode="elder">
+  <a class="skip-link" href="#main">跳至主要內容</a>
+
+  <header class="site-header">
+    <div class="container-app header-inner">
+      <button id="brandHome" type="button" class="brand-button" aria-label="回到樂活在地通首頁">
+        <span class="brand-mark" aria-hidden="true"><i data-lucide="sun"></i></span>
+        <span class="brand-copy">
+          <span class="brand-title">樂活在地通</span>
+          <span class="brand-location"><i data-lucide="map-pin"></i>幸福里</span>
+        </span>
+      </button>
+
+      <button id="sosHelpBtn" type="button" class="sos-btn" data-sos aria-label="🚨 找佳儒求助，送出目前位置">
+        <i data-lucide="phone-call" aria-hidden="true"></i>
+        <span>🚨 找佳儒求助</span>
+      </button>
+
+      <div class="font-control" role="group" aria-label="字體大小切換">
+        <span class="control-label">字體</span>
+        <button type="button" class="control-btn" data-font-size="large" aria-pressed="true">大</button>
+        <button type="button" class="control-btn" data-font-size="xlarge" aria-pressed="false">特大</button>
+      </div>
+    </div>
+  </header>
+
+  <div id="offlineNotice" class="offline-notice" hidden role="status" aria-live="polite">
+    目前離線，先顯示上次的資料。恢復連線後會自動同步。
+  </div>
+
+  <main id="main" class="container-app main-area">
+    <section id="view-home" class="app-view" aria-labelledby="homeTitle">
+      <div id="homeContent"></div>
+    </section>
+
+    <section id="view-reminders" class="app-view" hidden aria-labelledby="remindersTitle">
+      <div class="page-heading">
+        <p class="eyebrow">功能一 · 群組提醒</p>
+        <h1 id="remindersTitle" class="page-title" tabindex="-1">佳儒的叮嚀</h1>
+        <p id="reminderIntro" class="page-lead">佳儒今天留了貼心提醒，慢慢來，一件一件完成。</p>
+      </div>
+
+      <div id="elderReminderPanel">
+        <div class="list-heading">
+          <h2 class="section-title">今天的提醒</h2>
+          <span id="elderReminderCount" class="count-pill"><i data-lucide="bell-ring"></i>0 件</span>
+        </div>
+        <p class="page-lead reminder-intro">完成後，請按綠色大按鈕回報給佳儒。</p>
+
+        <div class="medbag-card">
+          <div class="medbag-head">
+            <div class="medbag-icon" aria-hidden="true"><i data-lucide="scan-line"></i></div>
+            <div>
+              <h2 class="medbag-title">🔍 藥袋字太小？點我拍藥袋唸給你聽</h2>
+              <p class="medbag-text">對著藥袋拍一下，AI 會把服用時間、顆數、作用和副作用念給您聽。</p>
+            </div>
+          </div>
+          <button type="button" class="big-btn btn-blue" data-open-medbag>
+            📷 模擬拍藥袋辨識
+          </button>
+        </div>
+
+        <div id="elderReminderList" class="stack-list"></div>
+      </div>
+    </section>
+
+    <section id="view-photos" class="app-view" hidden aria-labelledby="photosTitle">
+      <div class="page-heading">
+        <p class="eyebrow">功能二 · 老友交流</p>
+        <h1 id="photosTitle" class="page-title" tabindex="-1">老友照片牆</h1>
+        <p class="page-lead">拍張照、加一句祝福，讓老友一大早就收到您的問候。</p>
+      </div>
+
+      <div class="photo-intro">
+        <div class="photo-intro-top">
+          <div class="photo-intro-icon" aria-hidden="true"><i data-lucide="camera"></i></div>
+          <div>
+            <h2>今天想分享什麼？</h2>
+            <p>從手機選一張照片，或先用下面的溫馨範例照片試試看。</p>
+          </div>
+        </div>
+        <button type="button" class="big-btn btn-green" data-open-photo-picker>
+          <i data-lucide="camera" aria-hidden="true"></i>拍張照分享
+        </button>
+        <p class="sample-title">或選一張溫馨照片</p>
+        <div id="samplePhotos" class="sample-grid"></div>
+      </div>
+
+      <section class="tea-section" aria-labelledby="teaTitle">
+        <div class="tea-head">
+          <div class="tea-head-icon" aria-hidden="true"><i data-lucide="coffee"></i></div>
+          <div>
+            <h2 id="teaTitle" class="tea-title">🍵 今日老友湊咖（作伙出門不孤單）</h2>
+            <p class="tea-sub">看到喜歡的行程，按一下「我也要去」就能加入老友的行列。</p>
+          </div>
+        </div>
+        <div id="teaGroupList" class="tea-grid"></div>
+      </section>
+
+      <div class="wall-heading">
+        <h2 class="section-title">老友們的早安圖</h2>
+        <span id="photoCount" class="count-pill"><i data-lucide="images"></i>0 張</span>
+      </div>
+      <div id="photoWall" class="photo-grid"></div>
+    </section>
+
+    <section id="view-health" class="app-view" hidden aria-labelledby="healthTitle">
+      <div class="page-heading">
+        <p class="eyebrow">功能三 · 健康獎勵</p>
+        <h1 id="healthTitle" class="page-title" tabindex="-1">健康步數與在地獎勵</h1>
+        <p class="page-lead">一步一步慢慢走，走到目標就能得到樂活金幣，兌換幸福里的在地好康。</p>
+      </div>
+
+      <div class="health-dashboard">
+        <div class="health-top">
+          <div>
+            <p class="eyebrow" style="margin:0 0 4px;">今日已走</p>
+            <div class="steps-line">
+              <span id="stepsValue" class="giant-number">4,200</span>
+              <span class="steps-goal">/ 5,000 步</span>
+            </div>
+            <p id="stepsMessage" class="body-text" style="margin:8px 0 0;color:var(--ink-soft);">再走一下下，就能達成今天的目標！</p>
+          </div>
+          <div class="walk-badge" aria-hidden="true">
+            <i data-lucide="footprints"></i>
+            <span>慢慢走<br />也很棒</span>
+          </div>
+        </div>
+
+        <div id="stepsProgress" class="progress-track" role="progressbar" aria-label="今日步數進度" aria-valuemin="0" aria-valuemax="5000" aria-valuenow="4200">
+          <div id="stepsBar" class="progress-fill" style="width:84%"></div>
+        </div>
+
+        <div class="health-stats">
+          <div class="health-stat">
+            <span id="stepsPercent" class="health-stat-value">84%</span>
+            <span class="health-stat-label">完成度</span>
+          </div>
+          <div class="health-stat">
+            <span class="health-stat-value"><span id="coinsValue">8</span> 枚</span>
+            <span class="health-stat-label">金幣</span>
+          </div>
+          <div class="health-stat">
+            <span class="health-stat-value">5,000</span>
+            <span class="health-stat-label">目標</span>
+          </div>
+        </div>
+
+        <div class="health-actions">
+          <button id="simulateSteps" type="button" class="big-btn btn-green">
+            <i data-lucide="footprints" aria-hidden="true"></i>模擬走路 (+500步)
+          </button>
+          <button id="timerBtn" type="button" class="big-btn btn-yellow">
+            <i data-lucide="timer" aria-hidden="true"></i>運動計時開始
+          </button>
+        </div>
+
+        <div class="timer-panel">
+          <div>
+            <div id="timerDisplay" class="timer-display" aria-live="off">00:00</div>
+            <div id="timerStatus" class="timer-status">計時器尚未開始</div>
+          </div>
+          <p class="timer-note" style="margin:0;max-width:460px;">計時中每 5 秒會自動加 20 步，方便課堂直接展示。</p>
+        </div>
+      </div>
+
+      <div id="goalBanner" class="goal-banner" hidden>
+        <i data-lucide="trophy" aria-hidden="true"></i>
+        <span>太棒了！今日 5,000 步目標達成，獲得 20 枚樂活金幣。繼續保持好體力！</span>
+      </div>
+
+      <section class="brain-card" aria-labelledby="brainTitle">
+        <div id="brainQuizContent"></div>
+      </section>
+
+      <div class="section-heading" style="margin-top:32px;">
+        <div>
+          <h2 class="section-title">在地好康兌換</h2>
+          <p class="section-desc" style="margin:4px 0 0;">用樂活金幣兌換幸福里的專屬獎勵。</p>
+        </div>
+        <span id="rewardCoinBalance" class="count-pill"><i data-lucide="coins"></i>8 枚</span>
+      </div>
+      <div id="rewardsGrid" class="reward-grid"></div>
+      <p class="prototype-note">此為課堂原型，獎勵內容與兌換憑證皆為示意。</p>
+    </section>
+
+    <section id="view-radio" class="app-view" hidden aria-labelledby="radioTitle">
+      <div class="page-heading">
+        <p class="eyebrow">功能四 · 在地廣播</p>
+        <h1 id="radioTitle" class="page-title" tabindex="-1">社區語音廣播站</h1>
+        <p class="page-lead">里長伯與社區據點的最新消息，點一下就能用聽的。</p>
+      </div>
+
+      <section class="shuttle-section" aria-labelledby="shuttleTitle">
+        <div class="shuttle-head">
+          <div class="shuttle-head-icon" aria-hidden="true"><i data-lucide="bus"></i></div>
+          <div class="shuttle-head-copy">
+            <h2 id="shuttleTitle" class="shuttle-title">🚌 幸福里醫療與買菜接駁車</h2>
+            <p class="shuttle-sub">即時到站時間，出門前先看一眼，不用在路邊乾等。</p>
+          </div>
+        </div>
+        <div id="shuttleCards" class="shuttle-grid"></div>
+      </section>
+
+      <div id="radioContent"></div>
+    </section>
+  </main>
+
+  <nav class="bottom-nav" aria-label="主要功能導覽">
+    <div class="nav-grid">
+      <button type="button" class="nav-btn" data-nav-view="home" aria-current="page">
+        <i data-lucide="house" aria-hidden="true"></i>首頁
+      </button>
+      <button type="button" class="nav-btn" data-nav-view="reminders">
+        <i data-lucide="bell-ring" aria-hidden="true"></i>提醒
+      </button>
+      <button type="button" class="nav-btn" data-nav-view="photos">
+        <i data-lucide="images" aria-hidden="true"></i>照片
+      </button>
+      <button type="button" class="nav-btn" data-nav-view="health">
+        <i data-lucide="footprints" aria-hidden="true"></i>健康
+      </button>
+      <button type="button" class="nav-btn" data-nav-view="radio">
+        <i data-lucide="radio" aria-hidden="true"></i>廣播
+      </button>
+    </div>
+  </nav>
+
+  <div id="speechBar" class="speech-bar" hidden role="status" aria-live="polite">
+    <div class="speech-copy">
+      <span class="speech-dot" aria-hidden="true"></span>
+      <span id="speechBarLabel">正在播放語音</span>
+    </div>
+    <button id="stopSpeechBtn" type="button" class="big-btn btn-yellow">
+      <i data-lucide="square" aria-hidden="true"></i>停止
+    </button>
+  </div>
+
+  <section id="installBanner" class="install-banner" hidden aria-label="安裝樂活在地通到手機" aria-live="polite">
+    <div class="install-head">
+      <div class="install-icon" aria-hidden="true"><div id="installIconBox"><i data-lucide="download"></i></div></div>
+      <div class="install-copy">
+        <h2 id="installTitle" class="install-title">安裝到手機</h2>
+        <p id="installText" class="install-text">像 App 一樣，從桌面直接打開。</p>
+      </div>
+    </div>
+    <div class="install-actions">
+      <button id="installAction" type="button" class="big-btn btn-green">安裝到手機</button>
+      <button id="installDismiss" type="button" class="big-btn btn-yellow">先不用</button>
+    </div>
+  </section>
+
+  <div id="toastHost" class="toast-host" aria-live="polite" aria-atomic="false"></div>
+  <div id="confettiHost" class="confetti-host" aria-hidden="true"></div>
+
+  <div id="modal" class="modal" hidden aria-hidden="true">
+    <div class="modal-backdrop" data-close-modal></div>
+    <div id="modalCard" class="modal-card modal-md" role="dialog" aria-modal="true" aria-labelledby="modalTitle">
+      <button id="modalClose" type="button" class="modal-close" data-close-modal aria-label="關閉視窗">
+        <i data-lucide="x" aria-hidden="true"></i>
+      </button>
+      <div id="modalContent"></div>
+    </div>
+  </div>
+
+  <input id="photoInput" type="file" accept="image/*" style="display:none" aria-label="選擇要分享的照片" />
+
+  <script src="./js/api.js" defer></script>
+  <script src="./js/elder.js" defer></script>
+</body>
+</html>

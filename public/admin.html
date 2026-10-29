@@ -1,0 +1,255 @@
+<!DOCTYPE html>
+<html lang="zh-Hant" data-font="large">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
+  <meta name="theme-color" content="#FFFDF7" />
+  <meta name="description" content="樂活在地通｜佳儒管理後台：即時 SOS、叮嚀發布、回報追蹤、共餐與接駁車名單。" />
+  <meta name="application-name" content="樂活在地通管理後台" />
+  <link rel="icon" type="image/png" sizes="192x192" href="./icons/icon-192.png" />
+  <title>佳儒管理後台｜樂活在地通</title>
+
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@400;500;700;800;900&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="./css/styles.css" />
+  <script src="https://unpkg.com/lucide@latest/dist/umd/lucide.js" defer></script>
+</head>
+<body data-mode="admin" class="admin-body">
+  <a class="skip-link" href="#main">跳至主要內容</a>
+
+  <header class="site-header">
+    <div class="container-app header-inner admin-header-inner">
+      <div class="brand-button admin-brand" aria-label="樂活在地通管理後台">
+        <span class="brand-mark" aria-hidden="true"><i data-lucide="shield-check"></i></span>
+        <span class="brand-copy">
+          <span class="brand-title">樂活在地通</span>
+          <span class="brand-location"><i data-lucide="user-round"></i>佳儒管理後台 · 幸福里</span>
+        </span>
+      </div>
+
+      <div class="admin-header-actions">
+        <a class="big-btn btn-blue admin-top-btn" href="./elder.html" target="_blank" rel="noopener">
+          <i data-lucide="external-link" aria-hidden="true"></i>開啟長輩端
+        </a>
+        <button id="resetDemoBtn" type="button" class="big-btn btn-orange admin-top-btn">
+          <i data-lucide="rotate-ccw" aria-hidden="true"></i>重置 Demo
+        </button>
+      </div>
+    </div>
+  </header>
+
+  <div id="offlineNotice" class="offline-notice" hidden role="status" aria-live="polite">
+    目前離線，顯示上次同步的資料。恢復連線後會自動更新。
+  </div>
+
+  <main id="main" class="container-app admin-main">
+    <div class="admin-page-head">
+      <div>
+        <p class="eyebrow">佳儒管理後台</p>
+        <h1 class="page-title" tabindex="-1">幸福里關懷儀表板</h1>
+        <p class="page-lead">即時接收長輩求助、發布叮嚀，查看共餐與接駁車預約名單。</p>
+      </div>
+      <div id="syncStatus" class="admin-sync" role="status" aria-live="polite">
+        <span class="sync-dot" aria-hidden="true"></span>
+        <span id="syncText">連線中…</span>
+        <span id="syncTime" class="admin-sync-time"></span>
+      </div>
+    </div>
+
+    <section class="admin-section" aria-labelledby="adminSosTitle">
+      <div class="list-heading">
+        <h2 id="adminSosTitle" class="section-title">🚨 緊急求助</h2>
+        <span id="sosCount" class="count-pill"><i data-lucide="siren"></i>0 件待處理</span>
+      </div>
+      <div id="adminSosAlert"></div>
+      <div id="sosHistory" class="admin-history"></div>
+    </section>
+
+    <section class="admin-stats" aria-label="即時統計">
+      <article class="admin-stat">
+        <span id="statSos" class="admin-stat-value">0</span>
+        <span class="admin-stat-label">待處理求助</span>
+      </article>
+      <article class="admin-stat">
+        <span id="statReminders" class="admin-stat-value">0</span>
+        <span class="admin-stat-label">提醒總數</span>
+      </article>
+      <article class="admin-stat">
+        <span id="statReports" class="admin-stat-value">0</span>
+        <span class="admin-stat-label">累計回報</span>
+      </article>
+      <article class="admin-stat">
+        <span id="statMeal" class="admin-stat-value">0</span>
+        <span class="admin-stat-label">共餐報名</span>
+      </article>
+      <article class="admin-stat">
+        <span id="statShuttles" class="admin-stat-value">0</span>
+        <span class="admin-stat-label">接駁車預約</span>
+      </article>
+    </section>
+
+    <div class="admin-two-col">
+      <section class="admin-card" aria-labelledby="publishTitle">
+        <div class="admin-card-head">
+          <div class="admin-icon" aria-hidden="true"><i data-lucide="megaphone"></i></div>
+          <div>
+            <h2 id="publishTitle" class="admin-title">發布新的叮嚀</h2>
+            <p class="body-text">填好內容後送出，長輩那一端會馬上看到。</p>
+          </div>
+        </div>
+
+        <form id="reminderForm" novalidate>
+          <div class="form-field">
+            <label for="reminderContent">提醒內容（必填）</label>
+            <textarea id="reminderContent" name="content" class="form-input" maxlength="80" placeholder="例如：下午兩點記得吃降血壓藥" required></textarea>
+          </div>
+
+          <div class="form-row">
+            <div class="form-field">
+              <label for="reminderTime">提醒時間</label>
+              <input id="reminderTime" name="time" class="form-input" type="time" value="14:00" required />
+            </div>
+            <div class="form-field">
+              <label for="reminderGroup">發送群組</label>
+              <select id="reminderGroup" name="group" class="form-input">
+                <option value="全體長輩">全體長輩</option>
+                <option value="長青A班" selected>長青A班</option>
+                <option value="長青B班">長青B班</option>
+              </select>
+            </div>
+            <div class="form-field">
+              <label for="reminderType">提醒類型</label>
+              <select id="reminderType" name="type" class="form-input">
+                <option value="pill">吃藥提醒</option>
+                <option value="clinic">健康檢查</option>
+                <option value="activity">社區活動</option>
+                <option value="other">其他提醒</option>
+              </select>
+            </div>
+          </div>
+
+          <p id="reminderFormError" class="form-error" role="alert" hidden></p>
+          <button type="submit" class="big-btn btn-orange admin-submit">
+            <i data-lucide="send" aria-hidden="true"></i>發送提醒給長輩
+          </button>
+        </form>
+        <p class="admin-help">送出後，提醒會立即出現在指定群組的長輩畫面中。</p>
+      </section>
+
+      <section class="admin-card" aria-labelledby="trackingTitle">
+        <div class="admin-card-head">
+          <div class="admin-icon green" aria-hidden="true"><i data-lucide="badge-check"></i></div>
+          <div>
+            <h2 id="trackingTitle" class="admin-title">長輩回報狀況</h2>
+            <p class="body-text">即時查看每位長輩是否已經按下「我做完了」。</p>
+          </div>
+        </div>
+        <div id="adminTrackingList" class="stack-list"></div>
+      </section>
+    </div>
+
+    <div class="admin-two-col">
+      <section class="admin-card" aria-labelledby="mealAdminTitle">
+        <div class="admin-card-head">
+          <div class="admin-icon orange" aria-hidden="true"><i data-lucide="utensils"></i></div>
+          <div>
+            <h2 id="mealAdminTitle" class="admin-title">社區共餐報名名單</h2>
+            <p class="body-text">每週五中午 11:30，幸福里社區活動中心。</p>
+          </div>
+        </div>
+        <div class="list-heading">
+          <span class="body-strong">目前已報名</span>
+          <span id="mealAdminCount" class="count-pill"><i data-lucide="users"></i>0 位</span>
+        </div>
+        <div id="mealAdminList" class="admin-member-list"></div>
+      </section>
+
+      <section class="admin-card" aria-labelledby="shuttleAdminTitle">
+        <div class="admin-card-head">
+          <div class="admin-icon blue" aria-hidden="true"><i data-lucide="bus"></i></div>
+          <div>
+            <h2 id="shuttleAdminTitle" class="admin-title">接駁車預約名單</h2>
+            <p class="body-text">明日醫療巡迴車與市場接駁車的保留座位。</p>
+          </div>
+        </div>
+        <div id="shuttleAdminLists" class="admin-shuttle-lists"></div>
+      </section>
+    </div>
+
+    <section class="admin-card admin-section" aria-labelledby="gatheringAdminTitle">
+      <div class="admin-card-head">
+        <div class="admin-icon green" aria-hidden="true"><i data-lucide="coffee"></i></div>
+        <div>
+          <h2 id="gatheringAdminTitle" class="admin-title">老友湊咖名單</h2>
+          <p class="body-text">長輩從照片牆加入的在地行程。</p>
+        </div>
+      </div>
+      <div id="gatheringAdminList" class="admin-gathering-list"></div>
+    </section>
+
+    <section class="admin-card admin-section" aria-labelledby="noticeAdminTitle">
+      <div class="admin-card-head">
+        <div class="admin-icon" aria-hidden="true"><i data-lucide="radio"></i></div>
+        <div>
+          <h2 id="noticeAdminTitle" class="admin-title">新增社區廣播</h2>
+          <p class="body-text">發布後會出現在長輩端的社區語音廣播站。</p>
+        </div>
+      </div>
+
+      <form id="noticeForm" novalidate>
+        <div class="form-field">
+          <label for="noticeTitle">廣播標題（必填）</label>
+          <input id="noticeTitle" name="title" class="form-input" maxlength="40" placeholder="例如：明天上午廟口健康檢查" required />
+        </div>
+        <div class="form-row">
+          <div class="form-field">
+            <label for="noticeCategory">廣播分類</label>
+            <select id="noticeCategory" name="category" class="form-input">
+              <option value="社區消息" selected>社區消息</option>
+              <option value="健康服務">健康服務</option>
+              <option value="社區共餐">社區共餐</option>
+              <option value="防詐提醒">防詐提醒</option>
+              <option value="交通接駁">交通接駁</option>
+            </select>
+          </div>
+          <div class="form-field">
+            <label for="noticeIcon">圖示</label>
+            <select id="noticeIcon" name="icon" class="form-input">
+              <option value="megaphone" selected>大聲公</option>
+              <option value="stethoscope">聽診器</option>
+              <option value="utensils">餐具</option>
+              <option value="shield-check">盾牌</option>
+              <option value="bus">公車</option>
+              <option value="heart-handshake">牽手關懷</option>
+            </select>
+          </div>
+        </div>
+        <div class="form-field">
+          <label for="noticeBody">廣播內容（必填）</label>
+          <textarea id="noticeBody" name="body" class="form-input" maxlength="300" placeholder="例如：明天早上九點，福安宮廟口有免費量血壓與醫師諮詢，請記得帶健保卡。" required></textarea>
+        </div>
+        <p id="noticeFormError" class="form-error" role="alert" hidden></p>
+        <button type="submit" class="big-btn btn-blue admin-submit">
+          <i data-lucide="radio" aria-hidden="true"></i>發布社區廣播
+        </button>
+      </form>
+
+      <div class="list-heading admin-notice-heading">
+        <span class="body-strong">目前廣播通知</span>
+        <span id="noticeAdminCount" class="count-pill"><i data-lucide="radio"></i>0 則</span>
+      </div>
+      <div id="noticeAdminList" class="admin-notice-list"></div>
+    </section>
+
+    <footer class="admin-footer">
+      <span>資料來源：<code>data/db.json</code> · API：<code>/api/state</code> · SSE：<code>/api/events</code></span>
+    </footer>
+  </main>
+
+  <div id="toastHost" class="toast-host" aria-live="polite" aria-atomic="false"></div>
+
+  <script src="./js/api.js" defer></script>
+  <script src="./js/admin.js" defer></script>
+</body>
+</html>
