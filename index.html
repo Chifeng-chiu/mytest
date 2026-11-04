@@ -498,7 +498,7 @@
     <section id="tab-overview" class="section active">
       <div class="hero">
         <h2>資訊科技應用當地長者 — 五位組員專案進度總覽</h2>
-        <p>本平台整合小組五位成員針對在地長者設計之小網站與 PWA 應用，支援「深色 / 淺色背景」一鍵切換，點擊任一組員即可查看功能介紹並直接於報告頁內操作預覽。</p>
+        <p>本平台整合小組五位成員針對在地長者設計之小網站、互動遊戲與 PWA 應用，支援「深色 / 淺色背景」一鍵切換，點擊任一組員即可查看功能介紹並直接於報告頁內操作預覽。</p>
       </div>
 
       <div class="grid-5">
@@ -530,13 +530,13 @@
         <!-- 組員 2 -->
         <div class="card">
           <div>
-            <span class="card-tag tag-m2">組員 2 專案｜邱祺峰</span>
+            <span class="card-tag tag-m2">組員 2 專案</span>
             <h3>樂活在地通｜長輩關懷 PWA</h3>
-            <p>拆分為「長輩端 PWA」與「佳儒後台」雙前端，搭配零依賴 Node.js 伺服器與 SSE 跨視窗即時同步。</p>
+            <p>拆分為「長輩端 PWA」與「佳儒後台」雙前端，搭配零依賴 Node.js 伺服器與 SSE 跨視窗即時同步[cite: 1]。</p>
             <ul class="feature-list">
-              <li>長輩端：大字/特大字、緊急求助 SOS、佳儒叮嚀語音朗讀</li>
-              <li>社交互動：老友照片牆、健康步數問答、里長廣播共餐/接駁車</li>
-              <li>佳儒後台：即時接收 SOS 警報、追蹤提醒進度、一鍵重設 Demo</li>
+              <li>長輩端：大字/特大字、緊急求助 SOS、佳儒叮嚀語音朗讀[cite: 1]</li>
+              <li>社交互動：老友照片牆、健康步數問答、里長廣播共餐/接駁車[cite: 1]</li>
+              <li>佳儒後台：即時接收 SOS 警報、追蹤提醒進度、一鍵重設 Demo[cite: 1]</li>
             </ul>
           </div>
           <div class="btn-group">
@@ -555,7 +555,7 @@
         <!-- 組員 3 -->
         <div class="card">
           <div>
-            <span class="card-tag tag-m3">組員 3｜馮至豪 專案</span>
+            <span class="card-tag tag-m3">組員 3 專案</span>
             <h3>溫馨小宅｜長者居家養成與任務遊戲</h3>
             <p>以遊戲化（Gamification）機制結合日常健康任務，讓長輩透過完成任務賺取經驗值與金幣來佈置專屬房間。</p>
             <ul class="feature-list">
@@ -581,20 +581,23 @@
         <div class="card">
           <div>
             <span class="card-tag tag-m4">組員 4 專案</span>
-            <h3>【組員 4 專案名稱待填】</h3>
-            <p>針對當地長者生活、健康或社交情境設計的輔助小網站（待填入組員 4 主題說明）。</p>
+            <h3>🐍 長者知識貪吃蛇</h3>
+            <p>將經典貪吃蛇結合「每 30 秒長者衛教與防詐知識問答」，寓教於樂訓練長輩反應力與健康安全知識。</p>
             <ul class="feature-list">
-              <li>目標對象：金門在地社區高齡長者</li>
-              <li>核心理念：高齡友善大字體與直覺操作設計</li>
-              <li>目前進度：前端畫面與互動邏輯建置中</li>
+              <li>三色積分果實：藍點 +10 分、紅點 +50 分、限時金點 +150 分（目標 5000 分過關）</li>
+              <li>15 題實用題庫：涵蓋 165 防詐騙、1966 長照專線、中風急救、肌少症與用藥安全</li>
+              <li>答對雙倍獎勵：每 30 秒觸發問答，答對享 10 秒得分雙倍，支援螢幕大方向鍵與滑動操作</li>
             </ul>
           </div>
           <div class="btn-group">
             <button class="btn btn-primary" onclick="switchTab('tab-m4', document.querySelectorAll('.tab-btn')[4])">
               查看組員 4 詳情
             </button>
-            <button class="btn btn-outline" onclick="openInViewer('組員 4 小網站', 'about:blank')">
+            <button class="btn btn-outline" onclick="openInViewer('組員 4：長者知識貪吃蛇', 'INLINE_M4')">
               實機畫面預覽
+            </button>
+            <button class="btn btn-outline" onclick="openM4InNewTab()">
+              開新分頁 ↗
             </button>
           </div>
         </div>
@@ -603,21 +606,24 @@
         <div class="card">
           <div>
             <span class="card-tag tag-m5">組員 5 專案</span>
-            <h3>【組員 5 專案名稱待填】</h3>
-            <p>針對當地長者生活、健康或社交情境設計的輔助小網站（待填入組員 5 主題說明）。</p>
+            <h3>💧 健康喝水管家</h3>
+            <p>專為長輩設計的日常飲水提醒與紀錄 PWA，用長輩最熟悉的「保溫杯幾瓶」取代複雜毫升數計算。</p>
             <ul class="feature-list">
-              <li>目標對象：金門在地社區高齡長者</li>
-              <li>核心理念：高齡友善大字體與直覺操作設計</li>
-              <li>目前進度：前端畫面與互動邏輯建置中</li>
+              <li>喝水提醒鬧鐘：支援每 30/45/60/90/120 分鐘定時推播音效與通知提醒</li>
+              <li>專屬保溫杯設定：可自訂常用保溫杯（如標準 500cc），每日目標喝滿 4 瓶（2000cc）</li>
+              <li>離線與桌面安裝：完整支援離線紀錄，並附有 iOS / Android 加入手機主畫面圖文教學</li>
             </ul>
           </div>
           <div class="btn-group">
             <button class="btn btn-primary" onclick="switchTab('tab-m5', document.querySelectorAll('.tab-btn')[5])">
               查看組員 5 詳情
             </button>
-            <button class="btn btn-outline" onclick="openInViewer('組員 5 小網站', 'about:blank')">
+            <button class="btn btn-outline" onclick="openInViewer('組員 5：健康喝水管家', 'https://chifeng-chiu.github.io/mytest/drink_index.html')">
               實機畫面預覽
             </button>
+            <a class="btn btn-outline" href="https://chifeng-chiu.github.io/mytest/drink_index.html" target="_blank">
+              開新分頁 ↗
+            </a>
           </div>
         </div>
       </div>
@@ -678,7 +684,7 @@
           <span class="card-tag tag-m2">組員 2 進度報告｜邱祺峰</span>
           <h2>樂活在地通｜長輩關懷 PWA（前後端分離版 & 線上展示版）</h2>
           <p style="color: var(--text-muted);">
-            將原本的單檔 <code>index.html</code> 拆成「長輩端」與「佳儒後台」兩個前端，並加上零外部依賴的 Node.js 伺服器。資料統一保存至 <code>data/db.json</code>，兩個視窗透過 SSE 即時同步；同時保留 <code>legacy/index.html</code> 部署於 GitHub Pages 供直接操作體驗。
+            將原本的單檔 <code>index.html</code> 拆成「長輩端」與「佳儒後台」兩個前端，並加上零外部依賴的 Node.js 伺服器[cite: 1]。資料統一保存至 <code>data/db.json</code>，兩個視窗透過 SSE 即時同步[cite: 1]；同時保留 <code>legacy/index.html</code> 部署於 GitHub Pages 供直接操作體驗[cite: 1, 2]。
           </p>
 
           <h3>1. 雙入口功能設計（長輩端 vs. 佳儒後台）</h3>
@@ -686,22 +692,22 @@
             <div class="info-box">
               <h4>👵 長輩端 <code>elder.html</code> (PWA)</h4>
               <ul>
-                <li><strong>大字／特大字切換</strong>：固定於頁面上方並記住選擇（內文最小 22px，按鈕至少 64px 高）</li>
-                <li><strong>緊急求助 SOS</strong>：按下立即建立求助紀錄，後台同步跳出警報</li>
-                <li><strong>佳儒的叮嚀</strong>：查看提醒、<code>speechSynthesis</code> 語音朗讀、回報完成</li>
-                <li><strong>老友照片牆</strong>：上傳照片、按讚、語音介紹、參加老友湊咖</li>
-                <li><strong>健康步數</strong>：模擬計步、金幣獎勵、每日問答、兌換獎勵</li>
-                <li><strong>社區廣播站</strong>：里長廣播、共餐報名（36人）、接駁車預約（醫院線/市場線）</li>
+                <li><strong>大字／特大字切換</strong>：固定於頁面上方並記住選擇（內文最小 22px，按鈕至少 64px 高）[cite: 1]</li>
+                <li><strong>緊急求助 SOS</strong>：按下立即建立求助紀錄，後台同步跳出警報[cite: 1]</li>
+                <li><strong>佳儒的叮嚀</strong>：查看提醒、<code>speechSynthesis</code> 語音朗讀、回報完成[cite: 1]</li>
+                <li><strong>老友照片牆</strong>：上傳照片、按讚、語音介紹、參加老友湊咖[cite: 1]</li>
+                <li><strong>健康步數</strong>：模擬計步、金幣獎勵、每日問答、兌換獎勵[cite: 1]</li>
+                <li><strong>社區廣播站</strong>：里長廣播、共餐報名（36人）、接駁車預約（醫院線/市場線）[cite: 1]</li>
               </ul>
             </div>
             <div class="info-box">
               <h4>👩‍💼 佳儒後台 <code>admin.html</code> (管理端)</h4>
               <ul>
-                <li><strong>SOS 求助監控</strong>：查看待處理警報、位置與時間，按「📞 已聯繫並解除警報」結案</li>
-                <li><strong>提醒發布與追蹤</strong>：指定班級（如長青A班林阿公）、時間、類型，追蹤長輩回報進度</li>
-                <li><strong>社區廣播發布</strong>：新增里長廣播，長輩端 1~3 秒內即時收到</li>
-                <li><strong>名單管理</strong>：集中查看共餐名單、接駁車名單、老友湊咖名單</li>
-                <li><strong>一鍵重設 Demo</strong>：右上角按鈕呼叫 <code>POST /api/reset</code> 從 <code>seed.json</code> 還原初始狀態</li>
+                <li><strong>SOS 求助監控</strong>：查看待處理警報、位置與時間，按「📞 已聯繫並解除警報」結案[cite: 1]</li>
+                <li><strong>提醒發布與追蹤</strong>：指定班級（如長青A班林阿公）、時間、類型，追蹤長輩回報進度[cite: 1]</li>
+                <li><strong>社區廣播發布</strong>：新增里長廣播，長輩端 1~3 秒內即時收到[cite: 1]</li>
+                <li><strong>名單管理</strong>：集中查看共餐名單、接駁車名單、老友湊咖名單[cite: 1]</li>
+                <li><strong>一鍵重設 Demo</strong>：右上角按鈕呼叫 <code>POST /api/reset</code> 從 <code>seed.json</code> 還原初始狀態[cite: 1]</li>
               </ul>
             </div>
           </div>
@@ -711,21 +717,21 @@
             <div class="info-box">
               <h4>⚡ 技術架構與離線佇列</h4>
               <ul>
-                <li>後端透過 <strong>Server-Sent Events (SSE)</strong> <code>GET /api/events</code> 即時推送完整狀態</li>
-                <li>若 SSE 中斷，前端自動改用每 3 秒輪詢 <code>GET /api/state</code></li>
-                <li><code>sw.js</code> 快取 App Shell；離線時先顯示 <code>localStorage</code> 上次資料，修改排入離線佇列，恢復連線後自動補送</li>
-                <li><code>db.json</code> 採「先寫暫存檔、再重新命名」原子寫入，避免檔案損毀</li>
+                <li>後端透過 <strong>Server-Sent Events (SSE)</strong> <code>GET /api/events</code> 即時推送完整狀態[cite: 1]</li>
+                <li>若 SSE 中斷，前端自動改用每 3 秒輪詢 <code>GET /api/state</code>[cite: 1]</li>
+                <li><code>sw.js</code> 快取 App Shell；離線時先顯示 <code>localStorage</code> 上次資料，修改排入離線佇列，恢復連線後自動補送[cite: 1]</li>
+                <li><code>db.json</code> 採「先寫暫存檔、再重新命名」原子寫入，避免檔案損毀[cite: 1]</li>
               </ul>
             </div>
             <div class="info-box">
               <h4>🖥️ 報告現場並排示範 6 步驟</h4>
               <ul>
-                <li>1. 執行 <code>node server.js</code> 啟動零依賴伺服器</li>
-                <li>2. 左右並排開啟 <code>elder.html</code> 與 <code>admin.html</code></li>
-                <li>3. 長輩端按「緊急求助」→ 後台立即跳出 SOS 警報</li>
-                <li>4. 後台按「📞 已聯繫並解除警報」→ 長輩端同步更新狀態</li>
-                <li>5. 後台發布新提醒或里長廣播 → 長輩端 1 秒內即時顯示</li>
-                <li>6. 按後台右上角「重設 Demo」→ 雙視窗瞬間回到初始資料</li>
+                <li>1. 執行 <code>node server.js</code> 啟動零依賴伺服器[cite: 1]</li>
+                <li>2. 左右並排開啟 <code>elder.html</code> 與 <code>admin.html</code>[cite: 1]</li>
+                <li>3. 長輩端按「緊急求助」→ 後台立即跳出 SOS 警報[cite: 1]</li>
+                <li>4. 後台按「📞 已聯繫並解除警報」→ 長輩端同步更新狀態[cite: 1]</li>
+                <li>5. 後台發布新提醒或里長廣播 → 長輩端 1 秒內即時顯示[cite: 1]</li>
+                <li>6. 按後台右上角「重設 Demo」→ 雙視窗瞬間回到初始資料[cite: 1]</li>
               </ul>
             </div>
           </div>
@@ -835,37 +841,131 @@
       </div>
     </section>
 
-    <!-- ================= 組員 4 詳情頁 ================= -->
+    <!-- ================= 組員 4 詳情頁 (長者知識貪吃蛇) ================= -->
     <section id="tab-m4" class="section">
-      <div class="doc-panel">
-        <span class="card-tag tag-m4">組員 4 進度報告</span>
-        <h2>【組員 4 專案名稱待填】</h2>
-        <p style="color: var(--text-muted); margin-bottom: 1rem;">
-          提供組員 4 的小網站網址後，即可在此處呈現完整功能說明與右側手機實機預覽畫面。
-        </p>
-        <h3>功能重點</h3>
-        <ul class="feature-list">
-          <li>功能亮點 1（待填入）</li>
-          <li>功能亮點 2（待填入）</li>
-          <li>功能亮點 3（待填入）</li>
-        </ul>
+      <div class="member-layout">
+        <div class="doc-panel">
+          <span class="card-tag tag-m4">組員 4 進度報告</span>
+          <h2>🐍 長者知識貪吃蛇（經典遊戲 × 高齡防詐與衛教問答）</h2>
+          <p style="color: var(--text-muted);">
+            將長輩熟悉的貪吃蛇玩法結合「每 30 秒彈出長者知識問答」，支援螢幕大型方向鍵、觸控滑動與鍵盤操作，讓長輩在動腦動手的同時記住重要防詐與健康常識。
+          </p>
+
+          <h3>核心玩法與高齡友善設計</h3>
+          <div class="sub-grid">
+            <div class="info-box">
+              <h4>🍎 1. 三色果實與 5000 分過關機制</h4>
+              <ul>
+                <li><strong>藍點（+10 分）</strong>：常駐基礎果實</li>
+                <li><strong>紅點（+50 分）</strong>：限時 12 秒出現的高分果實</li>
+                <li><strong>金點（+150 分）</strong>：限時 6 秒出現的稀有大獎</li>
+                <li>累積達到 <strong>5,000 分</strong> 即可觸發「恭喜過關！」畫面</li>
+              </ul>
+            </div>
+            <div class="info-box">
+              <h4>🧠 2. 每 30 秒知識問答 ＆ 答對雙倍得分</h4>
+              <ul>
+                <li>遊戲每進行 30 秒自動暫停並彈出「長者知識問答」卡片</li>
+                <li>答對後啟動 <strong>10 秒得分雙倍（x2 黃金標籤）</strong>，答錯也會貼心顯示正確解答</li>
+                <li>隨機洗牌不重複出題，確保每次遊玩都能學到新知識</li>
+              </ul>
+            </div>
+            <div class="info-box">
+              <h4>🎮 3. 多元無障礙操控方式</h4>
+              <ul>
+                <li>畫面下方內建大型十字方向按鈕（▲ ◀ ▼ ▶），適合手機與平板長輩點擊</li>
+                <li>畫布支援手指直覺滑動轉向，電腦端亦支援方向鍵、WASD 與 P 鍵暫停</li>
+              </ul>
+            </div>
+          </div>
+
+          <h3>內建 15 題高齡核心題庫一覽</h3>
+          <div class="sub-grid">
+            <div class="info-box">
+              <h4>🛡️ 防詐騙與社福專線</h4>
+              <ul>
+                <li>反詐騙諮詢專線：<strong>165</strong>（遇檢警要求轉帳安全帳戶應掛斷查證）</li>
+                <li>台灣長照服務專線：<strong>1966</strong></li>
+                <li>65 歲以上占總人口達 14% 稱為：<strong>高齡社會</strong></li>
+              </ul>
+            </div>
+            <div class="info-box">
+              <h4>🏥 急救、慢性病與用藥安全</h4>
+              <ul>
+                <li>懷疑中風應：<strong>立刻撥 119 送醫</strong></li>
+                <li>理想收縮壓小於 <strong>120 mmHg</strong>；每日食鹽少於 <strong>6 公克</strong></li>
+                <li>起床防姿勢性低血壓：<strong>先坐一下再緩慢站起</strong></li>
+                <li>服藥應遵照醫囑、流感疫苗每年接種一次、認識失智症早期警訊</li>
+              </ul>
+            </div>
+            <div class="info-box">
+              <h4>💪 居家防跌與肌少症預防</h4>
+              <ul>
+                <li>浴室防跌：<strong>加裝扶手並鋪防滑墊</strong></li>
+                <li>預防肌少症：<strong>多運動並攝取足夠蛋白質</strong>（每週至少 150 分鐘中強度運動）</li>
+                <li>預防骨質疏鬆：<strong>補充鈣質、適度曬太陽與運動</strong></li>
+              </ul>
+            </div>
+          </div>
+        </div>
+
+        <div class="phone-simulator">
+          <div class="sim-header">
+            <span>📱 組員 4 實機操作 (長者知識貪吃蛇)</span>
+            <a href="javascript:void(0)" onclick="openM4InNewTab()" style="color: #fbbf24; text-decoration: none; font-weight: 700;">
+              開新分頁 ↗
+            </a>
+          </div>
+          <iframe id="m4-sim-iframe" class="sim-iframe" title="組員4長者知識貪吃蛇"></iframe>
+        </div>
       </div>
     </section>
 
-    <!-- ================= 組員 5 詳情頁 ================= -->
+    <!-- ================= 組員 5 詳情頁 (健康喝水管家) ================= -->
     <section id="tab-m5" class="section">
-      <div class="doc-panel">
-        <span class="card-tag tag-m5">組員 5 進度報告</span>
-        <h2>【組員 5 專案名稱待填】</h2>
-        <p style="color: var(--text-muted); margin-bottom: 1rem;">
-          提供組員 5 的小網站網址後，即可在此處呈現完整功能說明與右側手機實機預覽畫面。
-        </p>
-        <h3>功能重點</h3>
-        <ul class="feature-list">
-          <li>功能亮點 1（待填入）</li>
-          <li>功能亮點 2（待填入）</li>
-          <li>功能亮點 3（待填入）</li>
-        </ul>
+      <div class="member-layout">
+        <div class="doc-panel">
+          <span class="card-tag tag-m5">組員 5 進度報告</span>
+          <h2>💧 健康喝水管家｜長輩專屬飲水提醒與保溫杯紀錄</h2>
+          <p style="color: var(--text-muted);">
+            部署網址：<a href="https://chifeng-chiu.github.io/mytest/drink_index.html" target="_blank" style="color: var(--accent);">https://chifeng-chiu.github.io/mytest/drink_index.html</a>
+          </p>
+
+          <h3>核心設計與高齡友善功能</h3>
+          <div class="sub-grid">
+            <div class="info-box">
+              <h4>⏰ 1. 智慧喝水提醒鬧鐘</h4>
+              <ul>
+                <li>可自由設定提醒頻率：<strong>每 30 分鐘、45 分鐘、1 小時（推薦）、1.5 小時或 2 小時</strong></li>
+                <li>時間到時自動發出聲音與訊息通知，並附有清楚的「如何開啟通知權限（鎖頭圖示教學）」引導彈窗</li>
+              </ul>
+            </div>
+            <div class="info-box">
+              <h4>🍶 2. 專用保溫杯直覺換算</h4>
+              <ul>
+                <li>長輩不用費心計算喝了幾毫升，系統預設以長輩最熟悉的<strong>「標準保溫杯（約 500cc）」</strong>為單位</li>
+                <li>畫面大字顯示「今天已經喝了 X 瓶囉！目標是喝滿 4 瓶（約 2000 cc）」，達標時顯示「🎉 太棒了！您已經達成今天的喝水目標囉！」視覺進度條鼓勵</li>
+              </ul>
+            </div>
+            <div class="info-box">
+              <h4>📲 3. 離線可用 ＆ 加入手機桌面教學</h4>
+              <ul>
+                <li>支援無網路環境下正常運作（「目前離線中，所有功能與記錄皆可正常使用」）</li>
+                <li>內建「把喝水管家放在桌面！」貼心教學彈窗，提供 <strong>iPhone (Safari 分享→加入主畫面)</strong> 與 <strong>Android (Chrome 選單→安裝應用程式)</strong> 步驟說明</li>
+              </ul>
+            </div>
+          </div>
+        </div>
+
+        <div class="phone-simulator">
+          <div class="sim-header">
+            <span>📱 組員 5 實機操作 (健康喝水管家)</span>
+            <a href="https://chifeng-chiu.github.io/mytest/drink_index.html" target="_blank" style="color: #fbbf24; text-decoration: none; font-weight: 700;">
+              開新分頁 ↗
+            </a>
+          </div>
+          <iframe class="sim-iframe" src="https://chifeng-chiu.github.io/mytest/drink_index.html" title="組員5健康喝水管家"></iframe>
+        </div>
       </div>
     </section>
 
@@ -879,8 +979,8 @@
           <button class="btn btn-outline" onclick="openInViewer('組員 1：長者關懷小幫手', 'https://doandlearn-naro.github.io/Program-one/')">組員 1</button>
           <button class="btn btn-outline" onclick="openInViewer('組員 2：樂活在地通 (GitHub Pages)', 'https://chifeng-chiu.github.io/mytest/legacy/index.html')">組員 2</button>
           <button class="btn btn-outline" onclick="openInViewer('組員 3：溫馨小宅', 'https://doandlearn-naro.github.io/Mytry/home/')">組員 3</button>
-          <button class="btn btn-outline" onclick="openInViewer('組員 4 小網站', 'about:blank')">組員 4</button>
-          <button class="btn btn-outline" onclick="openInViewer('組員 5 小網站', 'about:blank')">組員 5</button>
+          <button class="btn btn-outline" onclick="openInViewer('組員 4：長者知識貪吃蛇', 'INLINE_M4')">組員 4</button>
+          <button class="btn btn-outline" onclick="openInViewer('組員 5：健康喝水管家', 'https://chifeng-chiu.github.io/mytest/drink_index.html')">組員 5</button>
           <button class="btn btn-outline" onclick="resizeViewer('430px')">📱 手機寬度</button>
           <button class="btn btn-outline" onclick="resizeViewer('100%')">💻 電腦全寬</button>
           <a id="viewer-link" class="btn btn-primary" href="https://doandlearn-naro.github.io/Program-one/" target="_blank">開新分頁 ↗</a>
@@ -896,7 +996,189 @@
     </section>
   </main>
 
+  <!-- 組員 4「長者知識貪吃蛇」完整原始碼儲存區塊 -->
+  <template id="m4-snake-template"><!doctype html>
+<html lang="zh-Hant">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>長者知識貪吃蛇</title>
+<style>
+:root{box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px);
+--bg:#f5f5f2;--fg:#1d1d1b;--card:#fff;--cell:#fbfbf8;--mut:#6b6b66;--btn:#2f6fed;--btnfg:#fff;--ov:rgba(245,245,242,.92);--bd:#d9d9d3}
+html{scroll-padding-top:env(safe-area-inset-top,0px)}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){--bg:#16171a;--fg:#ececea;--card:#25262b;--cell:#1d1e22;--mut:#9a9a95;--btn:#5b8cff;--btnfg:#0b0b0d;--ov:rgba(22,23,26,.92);--bd:#3a3b41}}
+:root[data-theme="dark"]{--bg:#16171a;--fg:#ececea;--card:#25262b;--cell:#1d1e22;--mut:#9a9a95;--btn:#5b8cff;--btnfg:#0b0b0d;--ov:rgba(22,23,26,.92);--bd:#3a3b41}
+body{margin:0;background:var(--bg);color:var(--fg);font-family:system-ui,-apple-system,"Noto Sans TC","Microsoft JhengHei",sans-serif}
+.wrap{max-width:620px;margin:0 auto;padding:12px}
+h1{font-size:20px;margin:4px 0 8px}
+.hud{display:flex;flex-wrap:wrap;gap:8px 16px;font-size:15px;margin-bottom:8px;align-items:center}
+.hud b{font-variant-numeric:tabular-nums}
+.x2{background:#ffb400;color:#222;border-radius:999px;padding:2px 10px;font-weight:700;display:none}
+.board{position:relative;width:100%}
+canvas{display:block;width:100%;height:auto;border:2px solid var(--bd);border-radius:8px;touch-action:none}
+.ov{position:absolute;inset:0;background:var(--ov);display:none;align-items:center;justify-content:center;padding:12px;border-radius:8px}
+.card{background:var(--card);border:1px solid var(--bd);border-radius:12px;padding:16px;width:100%;max-width:440px;box-sizing:border-box}
+.card h2{margin:0 0 8px;font-size:18px}
+.card p{margin:0 0 10px;line-height:1.5;font-size:15px}
+button{font:inherit;cursor:pointer}
+.opt,.go{display:block;width:100%;margin:8px 0 0;padding:12px;border-radius:10px;border:1px solid var(--bd);background:var(--card);color:var(--fg);font-size:16px;text-align:left}
+.go{background:var(--btn);color:var(--btnfg);border-color:var(--btn);text-align:center;font-weight:700}
+.pad{display:grid;grid-template-columns:repeat(3,64px);grid-template-rows:repeat(2,52px);gap:6px;justify-content:center;margin:12px 0}
+.pad button{border-radius:10px;border:1px solid var(--bd);background:var(--card);color:var(--fg);font-size:20px}
+.pad .u{grid-column:2}.pad .l{grid-row:2;grid-column:1}.pad .d{grid-row:2;grid-column:2}.pad .r{grid-row:2;grid-column:3}
+.tip{font-size:13px;color:var(--mut);text-align:center}
+.dot{display:inline-block;width:10px;height:10px;border-radius:50%;margin:0 2px 0 8px}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <h1>長者知識貪吃蛇</h1>
+  <div class="hud">
+    <span>分數 <b id="sc">0</b> / 5000</span>
+    <span>下次問答 <b id="nq">30</b> 秒</span>
+    <span class="x2" id="x2">雙倍 10 秒</span>
+  </div>
+  <div class="board">
+    <canvas id="cv"></canvas>
+    <div class="ov" id="ov"><div class="card" id="card"></div></div>
+  </div>
+  <div class="pad">
+    <button class="u" data-d="u" aria-label="上">▲</button>
+    <button class="l" data-d="l" aria-label="左">◀</button>
+    <button class="d" data-d="d" aria-label="下">▼</button>
+    <button class="r" data-d="r" aria-label="右">▶</button>
+  </div>
+  <div class="tip">方向鍵 / WASD / 滑動 / 按鈕控制，P 暫停<br>
+    <span class="dot" style="background:#2f6fed"></span>10 分
+    <span class="dot" style="background:#e5322d"></span>50 分
+    <span class="dot" style="background:#f5b800"></span>150 分</div>
+</div>
+<script>
+const N=30,C=20,STEP=120,TARGET=5000,QI=30,DD=10;
+const PTS={b:10,r:50,g:150},COL={b:'#2f6fed',r:'#e5322d',g:'#f5b800'};
+const cv=document.getElementById('cv'),g=cv.getContext('2d');
+cv.width=cv.height=N*C;
+const $=id=>document.getElementById(id);
+const bank=[
+['台灣的反詐騙諮詢專線是幾號？',['110','165','119'],1],
+['台灣的長照服務專線是幾號？',['1966','1999','1922'],0],
+['懷疑家人中風時，應該立刻怎麼做？',['先睡一覺觀察','自行服用阿斯匹靈','立刻撥119送醫'],2],
+['65歲以上人口占總人口達14%，稱為？',['高齡化社會','高齡社會','超高齡社會'],1],
+['為預防長者在浴室跌倒，最適合的做法是？',['地面保持濕滑好清潔','加裝扶手並鋪防滑墊','關燈節省電費'],1],
+['一般成人理想血壓的收縮壓應小於多少 mmHg？',['120','140','160'],0],
+['長者服藥時，下列哪個觀念正確？',['症狀好了就自行停藥','覺得沒效就自行加倍','遵照醫師藥師指示，不自行增減'],2],
+['預防肌少症，最好的方式是？',['多運動並攝取足夠蛋白質','整天臥床休息','完全不吃肉類與蛋豆'],0],
+['一般建議成人每週至少應有多少分鐘中等強度運動？',['30 分鐘','150 分鐘','600 分鐘'],1],
+['建議每日食鹽（鹽）攝取量約少於多少？',['6 公克','15 公克','25 公克'],0],
+['長者起床時，為避免姿勢性低血壓頭暈，應該？',['猛然起身','起身後立刻快走','先坐一下再緩慢站起'],2],
+['接到自稱「檢警人員」要求你轉帳到「安全帳戶」的電話，應該？',['照指示轉帳','掛斷並撥165查證','提供提款卡密碼'],1],
+['流感疫苗建議多久接種一次？',['每年一次','十年一次','終身一次即可'],0],
+['以下何者屬於失智症的早期警訊？',['偶爾忘記鑰匙放哪裡但能回想起來','記憶力減退影響日常生活','天氣冷會想多穿衣服'],1],
+['為預防骨質疏鬆，長者可以怎麼做？',['補充鈣質、適度曬太陽與運動','完全避免走動','大量喝含糖飲料'],0]
+];
+let S,queue=[];
+function reset(){S={snake:[{x:15,y:15},{x:14,y:15},{x:13,y:15}],dir:{x:1,y:0},nd:{x:1,y:0},score:0,foods:[],t:0,nq:QI,de:-1,state:'idle'};}
+const shuffle=a=>{for(let i=a.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[a[i],a[j]]=[a[j],a[i]];}return a;};
+function show(html){$('card').innerHTML=html;$('ov').style.display='flex';}
+function hide(){$('ov').style.display='none';}
+function start(){reset();S.state='run';hide();}
+function showStart(){reset();show('<h2>準備好了嗎？</h2><p>吃藍點 +10、紅點 +50、金點 +150。每 30 秒會出現一題長者知識問答，答對後 10 秒內得分雙倍。達到 5000 分就過關！</p><button class="go" id="b0">開始遊戲</button>');$('b0').onclick=start;}
+function end(win){S.state='over';show('<h2>'+(win?'恭喜過關！':'遊戲結束')+'</h2><p>最終分數：'+S.score+'</p><button class="go" id="b0">再玩一次</button>');$('b0').onclick=start;}
+function free(){for(let k=0;k<500;k++){const p={x:Math.floor(Math.random()*N),y:Math.floor(Math.random()*N)};
+ if(!S.snake.some(s=>s.x===p.x&&s.y===p.y)&&!S.foods.some(f=>f.x===p.x&&f.y===p.y))return p;}return null;}
+function add(type){const p=free();if(p)S.foods.push({x:p.x,y:p.y,type,t:S.t});}
+function spawn(){
+ S.foods=S.foods.filter(f=>!(f.type==='r'&&S.t-f.t>12)&&!(f.type==='g'&&S.t-f.t>6));
+ const has=t=>S.foods.some(f=>f.type===t);
+ if(!has('b'))add('b');
+ if(!has('r')&&Math.random()<0.02)add('r');
+ if(!has('g')&&Math.random()<0.008)add('g');
+}
+function quiz(){
+ S.state='quiz';
+ if(!queue.length)queue=shuffle([...bank.keys()]);
+ const q=bank[queue.shift()];
+ const opts=shuffle(q[1].map((t,i)=>({t,ok:i===q[2]})));
+ show('<h2>長者知識問答</h2><p>'+q[0]+'</p>'+opts.map((o,i)=>'<button class="opt" data-i="'+i+'">'+o.t+'</button>').join(''));
+ document.querySelectorAll('.opt').forEach(b=>b.onclick=()=>{
+  const o=opts[+b.dataset.i];
+  if(o.ok)S.de=S.t+DD;
+  show('<h2>'+(o.ok?'答對了！':'答錯了')+'</h2><p>'+(o.ok?'接下來 '+DD+' 秒內得分雙倍！':'正確答案：'+q[1][q[2]])+'</p><button class="go" id="b0">繼續遊戲</button>');
+  $('b0').onclick=()=>{S.nq=S.t+QI;S.state='run';hide();};
+ });
+}
+function step(){
+ if(S.state!=='run')return;
+ S.t+=STEP/1000;
+ S.dir=S.nd;
+ const h={x:S.snake[0].x+S.dir.x,y:S.snake[0].y+S.dir.y};
+ if(h.x<0||h.y<0||h.x>=N||h.y>=N)return end(false);
+ const i=S.foods.findIndex(f=>f.x===h.x&&f.y===h.y);
+ let grow=false;
+ if(i>=0){let p=PTS[S.foods[i].type];if(S.t<S.de)p*=2;S.score+=p;S.foods.splice(i,1);grow=true;}
+ const body=grow?S.snake:S.snake.slice(0,-1);
+ if(body.some(s=>s.x===h.x&&s.y===h.y))return end(false);
+ S.snake=[h,...body];
+ if(S.score>=TARGET)return end(true);
+ spawn();
+ if(S.t>=S.nq)quiz();
+}
+function draw(){
+ g.fillStyle=getComputedStyle(document.documentElement).getPropertyValue('--cell');
+ g.fillRect(0,0,N*C,N*C);
+ S.foods.forEach(f=>{g.fillStyle=COL[f.type];g.beginPath();g.arc(f.x*C+C/2,f.y*C+C/2,C/2-2,0,7);g.fill();});
+ S.snake.forEach((s,i)=>{g.fillStyle=i?'#4cae4c':'#1f7a1f';g.beginPath();g.roundRect(s.x*C+1,s.y*C+1,C-2,C-2,5);g.fill();});
+ $('sc').textContent=S.score;
+ $('nq').textContent=Math.max(0,Math.ceil(S.nq-S.t));
+ const dbl=S.t<S.de;$('x2').style.display=dbl?'inline-block':'none';
+ if(dbl)$('x2').textContent='雙倍 '+Math.ceil(S.de-S.t)+' 秒';
+}
+function turn(d){
+ const m={u:{x:0,y:-1},d:{x:0,y:1},l:{x:-1,y:0},r:{x:1,y:0}}[d];
+ if(S.state==='run'&&!(m.x===-S.dir.x&&m.y===-S.dir.y))S.nd=m;
+}
+function pause(){
+ if(S.state==='run'){S.state='pause';show('<h2>暫停中</h2><button class="go" id="b0">繼續</button>');$('b0').onclick=()=>{S.state='run';hide();};}
+ else if(S.state==='pause'){S.state='run';hide();}
+}
+addEventListener('keydown',e=>{
+ const k={ArrowUp:'u',w:'u',W:'u',ArrowDown:'d',s:'d',S:'d',ArrowLeft:'l',a:'l',A:'l',ArrowRight:'r',d:'r',D:'r'}[e.key];
+ if(k){e.preventDefault();turn(k);}
+ else if(e.key==='p'||e.key==='P')pause();
+});
+document.querySelectorAll('.pad button').forEach(b=>b.addEventListener('pointerdown',e=>{e.preventDefault();turn(b.dataset.d);}));
+let tx=0,ty=0;
+cv.addEventListener('touchstart',e=>{tx=e.touches[0].clientX;ty=e.touches[0].clientY;},{passive:true});
+cv.addEventListener('touchend',e=>{
+ const t=e.changedTouches[0],dx=t.clientX-tx,dy=t.clientY-ty;
+ if(Math.max(Math.abs(dx),Math.abs(dy))<20)return;
+ turn(Math.abs(dx)>Math.abs(dy)?(dx>0?'r':'l'):(dy>0?'d':'u'));
+},{passive:true});
+showStart();draw();
+setInterval(()=>{step();draw();},STEP);
+<\/script>
+</body>
+</html></template>
+
   <script>
+    const m4HtmlContent = document.getElementById('m4-snake-template').innerHTML;
+
+    // 初始化組員 4 詳情頁右側的內嵌模擬器
+    window.addEventListener('DOMContentLoaded', () => {
+      const m4Sim = document.getElementById('m4-sim-iframe');
+      if (m4Sim) {
+        m4Sim.srcdoc = m4HtmlContent;
+      }
+    });
+
+    // 在新分頁獨立開啟組員 4 的貪吃蛇遊戲
+    function openM4InNewTab() {
+      const blob = new Blob([m4HtmlContent], { type: 'text/html;charset=utf-8' });
+      const blobUrl = URL.createObjectURL(blob);
+      window.open(blobUrl, '_blank');
+    }
+
     // 分頁切換
     function switchTab(tabId, btnEl) {
       document.querySelectorAll('.section').forEach(sec => sec.classList.remove('active'));
@@ -910,9 +1192,27 @@
       const tabBtns = document.querySelectorAll('.tab-btn');
       switchTab('tab-viewer', tabBtns[6]);
       document.getElementById('viewer-title').textContent = '目前展示：' + title;
-      document.getElementById('viewer-url').textContent = url;
-      document.getElementById('viewer-link').href = url;
-      document.getElementById('viewer-iframe').src = url;
+      const iframe = document.getElementById('viewer-iframe');
+      const extLink = document.getElementById('viewer-link');
+
+      if (url === 'INLINE_M4') {
+        document.getElementById('viewer-url').textContent = '內嵌直接執行：長者知識貪吃蛇 (HTML5 Canvas)';
+        iframe.removeAttribute('src');
+        iframe.srcdoc = m4HtmlContent;
+        extLink.href = 'javascript:void(0)';
+        extLink.removeAttribute('target');
+        extLink.onclick = (e) => {
+          e.preventDefault();
+          openM4InNewTab();
+        };
+      } else {
+        document.getElementById('viewer-url').textContent = url;
+        iframe.removeAttribute('srcdoc');
+        iframe.src = url;
+        extLink.onclick = null;
+        extLink.href = url;
+        extLink.target = '_blank';
+      }
     }
 
     // 調整預覽框寬度
