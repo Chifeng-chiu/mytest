@@ -1,0 +1,703 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>資訊科技應用當地長者 — 團隊進度報告平台</title>
+  <style>
+    :root {
+      --bg-dark: #0f172a;
+      --card-bg: #1e293b;
+      --card-inner: #0f172a;
+      --accent: #f59e0b;
+      --accent-hover: #d97706;
+      --blue: #38bdf8;
+      --emerald: #34d399;
+      --purple: #c084fc;
+      --text-main: #f8fafc;
+      --text-muted: #94a3b8;
+      --border: #334155;
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+      font-family: "Microsoft JhengHei", "PingFang TC", sans-serif;
+    }
+
+    body {
+      background-color: var(--bg-dark);
+      color: var(--text-main);
+      line-height: 1.6;
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+    }
+
+    /* 頂部報告導覽列 */
+    header {
+      background: rgba(15, 23, 42, 0.95);
+      border-bottom: 1px solid var(--border);
+      padding: 1rem 2rem;
+      position: sticky;
+      top: 0;
+      z-index: 100;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      flex-wrap: wrap;
+      gap: 1rem;
+      backdrop-filter: blur(8px);
+    }
+
+    .brand {
+      display: flex;
+      align-items: center;
+      gap: 0.75rem;
+    }
+
+    .badge-course {
+      background: var(--accent);
+      color: #000;
+      font-weight: 700;
+      padding: 0.25rem 0.65rem;
+      border-radius: 6px;
+      font-size: 0.85rem;
+    }
+
+    .brand h1 {
+      font-size: 1.3rem;
+      font-weight: 700;
+    }
+
+    .nav-tabs {
+      display: flex;
+      gap: 0.5rem;
+      flex-wrap: wrap;
+    }
+
+    .tab-btn {
+      background: var(--card-bg);
+      color: var(--text-muted);
+      border: 1px solid var(--border);
+      padding: 0.55rem 1rem;
+      border-radius: 8px;
+      cursor: pointer;
+      font-size: 0.92rem;
+      font-weight: 600;
+      transition: all 0.2s;
+    }
+
+    .tab-btn:hover,
+    .tab-btn.active {
+      background: var(--accent);
+      color: #000;
+      border-color: var(--accent);
+    }
+
+    /* 主內容區塊 */
+    main {
+      flex: 1;
+      max-width: 1380px;
+      width: 100%;
+      margin: 0 auto;
+      padding: 2rem;
+    }
+
+    .section {
+      display: none;
+      animation: fadeIn 0.25s ease;
+    }
+
+    .section.active {
+      display: block;
+    }
+
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(6px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    /* 總覽標題區 */
+    .hero {
+      background: linear-gradient(135deg, #1e293b 0%, #0f172a 100%);
+      border: 1px solid var(--border);
+      border-radius: 16px;
+      padding: 2rem 2.5rem;
+      margin-bottom: 2rem;
+    }
+
+    .hero h2 {
+      font-size: 1.8rem;
+      margin-bottom: 0.5rem;
+      color: var(--accent);
+    }
+
+    .hero p {
+      font-size: 1.05rem;
+      color: var(--text-muted);
+    }
+
+    /* 三位組員平起平坐網格 */
+    .grid-3 {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 1.5rem;
+    }
+
+    @media (max-width: 1024px) {
+      .grid-3 {
+        grid-template-columns: 1fr;
+      }
+    }
+
+    .card {
+      background: var(--card-bg);
+      border: 1px solid var(--border);
+      border-radius: 14px;
+      padding: 1.6rem;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      transition: transform 0.2s, border-color 0.2s;
+    }
+
+    .card:hover {
+      transform: translateY(-4px);
+      border-color: var(--accent);
+    }
+
+    .card-tag {
+      display: inline-block;
+      font-size: 0.82rem;
+      font-weight: 700;
+      padding: 0.25rem 0.7rem;
+      border-radius: 999px;
+      margin-bottom: 0.85rem;
+      width: fit-content;
+    }
+
+    .tag-m1 { background: rgba(56, 189, 248, 0.18); color: var(--blue); }
+    .tag-m2 { background: rgba(52, 211, 153, 0.18); color: var(--emerald); }
+    .tag-m3 { background: rgba(192, 132, 252, 0.18); color: var(--purple); }
+
+    .card h3 {
+      font-size: 1.35rem;
+      margin-bottom: 0.6rem;
+    }
+
+    .card p {
+      color: var(--text-muted);
+      font-size: 0.95rem;
+      margin-bottom: 1.1rem;
+    }
+
+    .feature-list {
+      list-style: none;
+      margin-bottom: 1.4rem;
+    }
+
+    .feature-list li {
+      font-size: 0.92rem;
+      margin-bottom: 0.45rem;
+      padding-left: 1.3rem;
+      position: relative;
+    }
+
+    .feature-list li::before {
+      content: "•";
+      position: absolute;
+      left: 0.2rem;
+      color: var(--accent);
+      font-weight: bold;
+    }
+
+    .btn-group {
+      display: flex;
+      gap: 0.6rem;
+      flex-wrap: wrap;
+    }
+
+    .btn {
+      padding: 0.55rem 1rem;
+      border-radius: 8px;
+      font-weight: 600;
+      font-size: 0.9rem;
+      cursor: pointer;
+      border: none;
+      text-decoration: none;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 0.35rem;
+      transition: all 0.15s;
+    }
+
+    .btn-primary {
+      background: var(--accent);
+      color: #000;
+    }
+
+    .btn-primary:hover {
+      background: var(--accent-hover);
+    }
+
+    .btn-outline {
+      background: transparent;
+      color: var(--text-main);
+      border: 1px solid var(--border);
+    }
+
+    .btn-outline:hover {
+      border-color: var(--text-main);
+      background: rgba(255, 255, 255, 0.05);
+    }
+
+    /* 組員專屬報告版面（左說明 + 右預覽） */
+    .member-layout {
+      display: grid;
+      grid-template-columns: 1fr 430px;
+      gap: 1.75rem;
+      align-items: start;
+    }
+
+    @media (max-width: 1080px) {
+      .member-layout {
+        grid-template-columns: 1fr;
+      }
+    }
+
+    .doc-panel {
+      background: var(--card-bg);
+      border: 1px solid var(--border);
+      border-radius: 14px;
+      padding: 1.75rem;
+    }
+
+    .doc-panel h2 {
+      font-size: 1.55rem;
+      color: var(--accent);
+      margin-bottom: 0.5rem;
+    }
+
+    .doc-panel h3 {
+      font-size: 1.2rem;
+      color: var(--emerald);
+      margin: 1.5rem 0 0.75rem;
+      padding-bottom: 0.4rem;
+      border-bottom: 1px solid var(--border);
+    }
+
+    .sub-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(230px, 1fr));
+      gap: 1rem;
+      margin-top: 0.75rem;
+    }
+
+    .info-box {
+      background: var(--card-inner);
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      padding: 1rem;
+    }
+
+    .info-box h4 {
+      color: var(--blue);
+      margin-bottom: 0.4rem;
+      font-size: 1rem;
+    }
+
+    .info-box ul {
+      padding-left: 1.1rem;
+      font-size: 0.9rem;
+      color: var(--text-muted);
+    }
+
+    .info-box li {
+      margin-bottom: 0.25rem;
+    }
+
+    pre.code-block {
+      background: #090d16;
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      padding: 1rem;
+      overflow-x: auto;
+      font-family: Consolas, Monaco, monospace;
+      font-size: 0.85rem;
+      color: #e2e8f0;
+      line-height: 1.5;
+    }
+
+    /* API 表格樣式 */
+    .table-wrap {
+      overflow-x: auto;
+      margin-top: 0.5rem;
+    }
+
+    table.api-table {
+      width: 100%;
+      border-collapse: collapse;
+      font-size: 0.88rem;
+      background: var(--card-inner);
+      border-radius: 8px;
+      overflow: hidden;
+    }
+
+    table.api-table th,
+    table.api-table td {
+      border: 1px solid var(--border);
+      padding: 0.55rem 0.75rem;
+      text-align: left;
+    }
+
+    table.api-table th {
+      background: rgba(51, 65, 85, 0.5);
+      color: var(--accent);
+    }
+
+    /* 右側固定手機模擬器 */
+    .phone-simulator {
+      position: sticky;
+      top: 5.5rem;
+      background: #000;
+      border: 6px solid #334155;
+      border-radius: 28px;
+      overflow: hidden;
+      height: 760px;
+      display: flex;
+      flex-direction: column;
+      box-shadow: 0 20px 40px rgba(0, 0, 0, 0.5);
+    }
+
+    .sim-header {
+      background: #1e293b;
+      padding: 0.6rem 1rem;
+      font-size: 0.82rem;
+      color: var(--text-muted);
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      border-bottom: 1px solid var(--border);
+    }
+
+    .sim-iframe {
+      width: 100%;
+      flex: 1;
+      border: none;
+      background: #fff;
+    }
+
+    /* 全螢幕互動展示台 */
+    .viewer-container {
+      background: #000;
+      border: 4px solid var(--border);
+      border-radius: 16px;
+      overflow: hidden;
+      height: 740px;
+      display: flex;
+      flex-direction: column;
+      margin: 0 auto;
+      transition: max-width 0.3s ease;
+    }
+  </style>
+</head>
+<body>
+
+  <header>
+    <div class="brand">
+      <span class="badge-course">通識課進度報告</span>
+      <h1>資訊科技應用當地長者 — 小組作品整合平台</h1>
+    </div>
+    <nav class="nav-tabs">
+      <button class="tab-btn active" onclick="switchTab('tab-overview', this)">📋 小組總覽 (1 / 2 / 3)</button>
+      <button class="tab-btn" onclick="switchTab('tab-m1', this)">👤 組員 1</button>
+      <button class="tab-btn" onclick="switchTab('tab-m2', this)">👤 組員 2 (樂活在地通)</button>
+      <button class="tab-btn" onclick="switchTab('tab-m3', this)">👤 組員 3</button>
+      <button class="tab-btn" onclick="switchTab('tab-viewer', this)">🖥️ 網頁實機切換台</button>
+    </nav>
+  </header>
+
+  <main>
+    <!-- ================= 總覽頁：組員 1、2、3 並排 ================= -->
+    <section id="tab-overview" class="section active">
+      <div class="hero">
+        <h2>資訊科技應用當地長者 — 目前開發進度報告</h2>
+        <p>本網頁整合本組三位成員針對在地長者設計之小網站與應用系統，點擊各組員卡片即可查看詳細功能介紹或直接在畫面中操作預覽。</p>
+      </div>
+
+      <div class="grid-3">
+        <!-- 組員 1 -->
+        <div class="card">
+          <div>
+            <span class="card-tag tag-m1">組員 1</span>
+            <h3>【組員 1 專案名稱待填】</h3>
+            <p>針對當地長者日常需求設計的互動小網站（可填入組員 1 的主題說明）。</p>
+            <ul class="feature-list">
+              <li>目標對象：金門在地社區高齡長者</li>
+              <li>核心理念：簡化操作流程、提供直覺回饋</li>
+              <li>目前進度：前端畫面與互動邏輯建置中</li>
+            </ul>
+          </div>
+          <div class="btn-group">
+            <button class="btn btn-primary" onclick="switchTab('tab-m1', document.querySelectorAll('.tab-btn')[1])">
+              查看組員 1 報告詳情
+            </button>
+            <button class="btn btn-outline" onclick="openInViewer('組員 1 小網站', 'about:blank')">
+              實機畫面預覽
+            </button>
+          </div>
+        </div>
+
+        <!-- 組員 2 (你的作品) -->
+        <div class="card">
+          <div>
+            <span class="card-tag tag-m2">組員 2｜邱祺峰</span>
+            <h3>樂活在地通｜長輩關懷 PWA</h3>
+            <p>拆分為「長輩端 PWA」與「佳儒後台」雙前端，搭配零外部依賴 Node.js 伺服器與 SSE 跨視窗即時同步。</p>
+            <ul class="feature-list">
+              <li>長輩端：大字/特大字、緊急求助 SOS、佳儒叮嚀語音朗讀</li>
+              <li>社交互動：老友照片牆、健康步數問答、里長廣播共餐/接駁車</li>
+              <li>佳儒後台：即時接收 SOS 警報、追蹤提醒進度、一鍵重設 Demo</li>
+              <li>支援 GitHub Pages 單檔展示版與本地端前後端分離同步版</li>
+            </ul>
+          </div>
+          <div class="btn-group">
+            <button class="btn btn-primary" onclick="switchTab('tab-m2', document.querySelectorAll('.tab-btn')[2])">
+              查看 README 與完整介紹
+            </button>
+            <button class="btn btn-outline" onclick="openInViewer('組員 2：樂活在地通 (GitHub Pages)', 'https://chifeng-chiu.github.io/mytest/legacy/index.html')">
+              實機畫面預覽
+            </button>
+            <a class="btn btn-outline" href="https://chifeng-chiu.github.io/mytest/legacy/index.html" target="_blank">
+              開新分頁 ↗
+            </a>
+          </div>
+        </div>
+
+        <!-- 組員 3 -->
+        <div class="card">
+          <div>
+            <span class="card-tag tag-m3">組員 3</span>
+            <h3>【組員 3 專案名稱待填】</h3>
+            <p>針對當地長者生活或社交情境設計的輔助小網站（可填入組員 3 的主題說明）。</p>
+            <ul class="feature-list">
+              <li>目標對象：金門在地社區高齡長者</li>
+              <li>核心理念：高齡友善字體與清楚的資訊呈現</li>
+              <li>目前進度：前端畫面與互動邏輯建置中</li>
+            </ul>
+          </div>
+          <div class="btn-group">
+            <button class="btn btn-primary" onclick="switchTab('tab-m3', document.querySelectorAll('.tab-btn')[3])">
+              查看組員 3 報告詳情
+            </button>
+            <button class="btn btn-outline" onclick="openInViewer('組員 3 小網站', 'about:blank')">
+              實機畫面預覽
+            </button>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ================= 組員 1 詳情頁 ================= -->
+    <section id="tab-m1" class="section">
+      <div class="doc-panel">
+        <span class="card-tag tag-m1">組員 1 進度報告</span>
+        <h2>【組員 1 專案名稱】</h2>
+        <p style="color: var(--text-muted); margin-bottom: 1rem;">
+          把組員 1 的小網站網址與功能介紹貼進來，即可在這裡直接展示說明與內嵌網頁。
+        </p>
+        <h3>功能重點</h3>
+        <ul class="feature-list">
+          <li>功能亮點 1（待填入）</li>
+          <li>功能亮點 2（待填入）</li>
+          <li>功能亮點 3（待填入）</li>
+        </ul>
+      </div>
+    </section>
+
+    <!-- ================= 組員 2 詳情頁 (你的作品 + README-PWA.md 完整整合) ================= -->
+    <section id="tab-m2" class="section">
+      <div class="member-layout">
+        <!-- 左側：README-PWA.md 完整報告重點 -->
+        <div class="doc-panel">
+          <span class="card-tag tag-m2">組員 2 進度報告｜邱祺峰</span>
+          <h2>樂活在地通｜長輩關懷 PWA（前後端分離版 & 線上展示版）</h2>
+          <p style="color: var(--text-muted);">
+            將原本的單檔 <code>index.html</code> 拆成「長輩端」與「佳儒後台」兩個前端，並加上零外部依賴的 Node.js 伺服器。資料統一保存至 <code>data/db.json</code>，兩個視窗透過 SSE 即時同步；同時保留 <code>legacy/index.html</code> 部署於 GitHub Pages 供直接操作體驗。
+          </p>
+
+          <h3>1. 雙入口功能設計（長輩端 vs. 佳儒後台）</h3>
+          <div class="sub-grid">
+            <div class="info-box">
+              <h4>👵 長輩端 <code>elder.html</code> (PWA)</h4>
+              <ul>
+                <li><strong>大字／特大字切換</strong>：固定於頁面上方並記住選擇（內文最小 22px，按鈕至少 64px 高）</li>
+                <li><strong>緊急求助 SOS</strong>：按下立即建立求助紀錄，後台同步跳出警報</li>
+                <li><strong>佳儒的叮嚀</strong>：查看提醒、<code>speechSynthesis</code> 語音朗讀、回報完成</li>
+                <li><strong>老友照片牆</strong>：上傳照片、按讚、語音介紹、參加老友湊咖</li>
+                <li><strong>健康步數</strong>：模擬計步、金幣獎勵、每日問答、兌換獎勵</li>
+                <li><strong>社區廣播站</strong>：里長廣播、共餐報名（36人）、接駁車預約（醫院線/市場線）</li>
+              </ul>
+            </div>
+            <div class="info-box">
+              <h4>👩‍💼 佳儒後台 <code>admin.html</code> (管理端)</h4>
+              <ul>
+                <li><strong>SOS 求助監控</strong>：查看待處理警報、位置與時間，按「📞 已聯繫並解除警報」結案</li>
+                <li><strong>提醒發布與追蹤</strong>：指定班級（如長青A班林阿公）、時間、類型，追蹤長輩回報進度</li>
+                <li><strong>社區廣播發布</strong>：新增里長廣播，長輩端 1~3 秒內即時收到</li>
+                <li><strong>名單管理</strong>：集中查看共餐名單、接駁車名單、老友湊咖名單</li>
+                <li><strong>一鍵重設 Demo</strong>：右上角按鈕呼叫 <code>POST /api/reset</code> 從 <code>seed.json</code> 還原初始狀態</li>
+              </ul>
+            </div>
+          </div>
+
+          <h3>2. 跨視窗即時同步與並排示範流程</h3>
+          <div class="sub-grid">
+            <div class="info-box">
+              <h4>⚡ 技術架構與離線佇列</h4>
+              <ul>
+                <li>後端透過 <strong>Server-Sent Events (SSE)</strong> <code>GET /api/events</code> 即時推送完整狀態</li>
+                <li>若 SSE 中斷，前端自動改用每 3 秒輪詢 <code>GET /api/state</code></li>
+                <li><code>sw.js</code> 快取 App Shell；離線時先顯示 <code>localStorage</code> 上次資料，修改排入離線佇列，恢復連線後自動補送</li>
+                <li><code>db.json</code> 採「先寫暫存檔、再重新命名」原子寫入，避免檔案損毀</li>
+              </ul>
+            </div>
+            <div class="info-box">
+              <h4>🖥️ 報告現場並排示範 6 步驟</h4>
+              <ul>
+                <li>1. 執行 <code>node server.js</code> 啟動零依賴伺服器</li>
+                <li>2. 左右並排開啟 <code>elder.html</code> 與 <code>admin.html</code></li>
+                <li>3. 長輩端按「緊急求助」→ 後台立即跳出 SOS 警報</li>
+                <li>4. 後台按「📞 已聯繫並解除警報」→ 長輩端同步更新狀態</li>
+                <li>5. 後台發布新提醒或里長廣播 → 長輩端 1 秒內即時顯示</li>
+                <li>6. 按後台右上角「重設 Demo」→ 雙視窗瞬間回到初始資料</li>
+              </ul>
+            </div>
+          </div>
+
+          <h3>3. 專案目錄結構</h3>
+          <pre class="code-block">長者APP/
+├─ server.js                 # 零依賴 Node.js 伺服器：靜態檔案、REST API、SSE
+├─ README-PWA.md
+├─ data/
+│  ├─ seed.json              # 示範資料母本；按「重設 Demo」時會從這裡還原
+│  └─ db.json                # 目前運作中的資料；伺服器啟動後自動建立／載入
+├─ public/
+│  ├─ elder.html             # 長輩端（PWA）
+│  ├─ admin.html             # 佳儒後台
+│  ├─ manifest.json          # 長輩端 PWA manifest
+│  ├─ sw.js                  # Service Worker（App Shell 快取）
+│  ├─ css/styles.css         # 共用視覺樣式（暖米色背景、高對比色塊）
+│  ├─ js/                    # api.js (快取/離線佇列/SSE)、elder.js、admin.js
+│  └─ icons/                 # PWA 圖示
+└─ legacy/                   # 原始單檔版本備份（目前已部署於 GitHub Pages 線上展示）</pre>
+
+          <h3>4. 後端 REST API 一覽表</h3>
+          <div class="table-wrap">
+            <table class="api-table">
+              <thead>
+                <tr>
+                  <th>方法</th>
+                  <th>路徑</th>
+                  <th>用途</th>
+                  <th>主要請求內容</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr><td>GET</td><td><code>/api/state</code></td><td>取得目前完整狀態</td><td>無</td></tr>
+                <tr><td>GET</td><td><code>/api/events</code></td><td>SSE 即時狀態推送</td><td>無</td></tr>
+                <tr><td>POST</td><td><code>/api/reset</code></td><td>重設為示範資料</td><td>無</td></tr>
+                <tr><td>POST</td><td><code>/api/reminders</code></td><td>發布提醒</td><td><code>content</code>, <code>time</code>, <code>group</code>, <code>type</code>, <code>note</code></td></tr>
+                <tr><td>POST</td><td><code>/api/reminders/:id/complete</code></td><td>回報提醒完成</td><td><code>elderName</code></td></tr>
+                <tr><td>POST</td><td><code>/api/sos</code></td><td>建立 SOS 求助</td><td><code>elderName</code>, <code>location</code></td></tr>
+                <tr><td>POST</td><td><code>/api/sos/resolve</code></td><td>解除 SOS</td><td><code>id</code>（可省略）</td></tr>
+                <tr><td>POST</td><td><code>/api/photos</code></td><td>新增照片 / 按讚 / 語音</td><td><code>/like</code>、<code>/voice</code> (<code>voiceText</code>)</td></tr>
+                <tr><td>POST</td><td><code>/api/health/*</code></td><td>新增步數、兌換獎勵、每日問答</td><td><code>/steps</code>, <code>/redeem</code>, <code>/quiz</code></td></tr>
+                <tr><td>POST</td><td><code>/api/community/*</code></td><td>共餐報名、老友湊咖、接駁車預約</td><td><code>/meal</code>, <code>/gathering</code>, <code>/shuttle</code></td></tr>
+                <tr><td>POST</td><td><code>/api/notices</code></td><td>發布社區廣播</td><td><code>title</code>, <code>body</code>, <code>category</code>, <code>icon</code></td></tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+
+        <!-- 右側：直接內嵌你的 GitHub Pages 實機畫面 -->
+        <div class="phone-simulator">
+          <div class="sim-header">
+            <span>📱 組員 2 線上實機操作 (GitHub Pages)</span>
+            <a href="https://chifeng-chiu.github.io/mytest/legacy/index.html" target="_blank" style="color: var(--accent); text-decoration: none; font-weight: 700;">
+              全螢幕開啟 ↗
+            </a>
+          </div>
+          <iframe class="sim-iframe" src="https://chifeng-chiu.github.io/mytest/legacy/index.html" title="樂活在地通實機展示"></iframe>
+        </div>
+      </div>
+    </section>
+
+    <!-- ================= 組員 3 詳情頁 ================= -->
+    <section id="tab-m3" class="section">
+      <div class="doc-panel">
+        <span class="card-tag tag-m3">組員 3 進度報告</span>
+        <h2>【組員 3 專案名稱】</h2>
+        <p style="color: var(--text-muted); margin-bottom: 1rem;">
+          把組員 3 的小網站網址與功能介紹貼進來，即可在這裡直接展示說明與內嵌網頁。
+        </p>
+        <h3>功能重點</h3>
+        <ul class="feature-list">
+          <li>功能亮點 1（待填入）</li>
+          <li>功能亮點 2（待填入）</li>
+          <li>功能亮點 3（待填入）</li>
+        </ul>
+      </div>
+    </section>
+
+    <!-- ================= 網頁實機切換台 ================= -->
+    <section id="tab-viewer" class="section">
+      <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1rem; flex-wrap: wrap; gap: 1rem;">
+        <div>
+          <h2 id="viewer-title" style="color: var(--accent);">目前展示：組員 2 — 樂活在地通 (GitHub Pages)</h2>
+        </div>
+        <div class="btn-group">
+          <button class="btn btn-outline" onclick="openInViewer('組員 1 小網站', 'about:blank')">切換：組員 1</button>
+          <button class="btn btn-primary" onclick="openInViewer('組員 2：樂活在地通 (GitHub Pages)', 'https://chifeng-chiu.github.io/mytest/legacy/index.html')">切換：組員 2</button>
+          <button class="btn btn-outline" onclick="openInViewer('組員 3 小網站', 'about:blank')">切換：組員 3</button>
+          <button class="btn btn-outline" onclick="resizeViewer('430px')">📱 手機寬度</button>
+          <button class="btn btn-outline" onclick="resizeViewer('100%')">💻 電腦全寬</button>
+          <a id="viewer-link" class="btn btn-primary" href="https://chifeng-chiu.github.io/mytest/legacy/index.html" target="_blank">開新分頁 ↗</a>
+        </div>
+      </div>
+
+      <div id="viewer-box" class="viewer-container" style="max-width: 100%;">
+        <div class="sim-header">
+          <span id="viewer-url">https://chifeng-chiu.github.io/mytest/legacy/index.html</span>
+        </div>
+        <iframe id="viewer-iframe" class="sim-iframe" src="https://chifeng-chiu.github.io/mytest/legacy/index.html"></iframe>
+      </div>
+    </section>
+  </main>
+
+  <script>
+    function switchTab(tabId, btnEl) {
+      document.querySelectorAll('.section').forEach(sec => sec.classList.remove('active'));
+      document.querySelectorAll('.tab-btn').forEach(btn => btn.classList.remove('active'));
+      document.getElementById(tabId).classList.add('active');
+      if (btnEl) btnEl.classList.add('active');
+    }
+
+    function openInViewer(title, url) {
+      const tabBtns = document.querySelectorAll('.tab-btn');
+      switchTab('tab-viewer', tabBtns[4]);
+      document.getElementById('viewer-title').textContent = '目前展示：' + title;
+      document.getElementById('viewer-url').textContent = url;
+      document.getElementById('viewer-link').href = url;
+      document.getElementById('viewer-iframe').src = url;
+    }
+
+    function resizeViewer(maxWidth) {
+      document.getElementById('viewer-box').style.maxWidth = maxWidth;
+    }
+  </script>
+</body>
+</html>
