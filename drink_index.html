@@ -1,0 +1,832 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+    <meta charset="UTF-8">
+    <!-- 防縮放與適應手機 safe-area -->
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
+    <title>大字體尊榮喝水健康管家 PWA</title>
+
+    <!-- PWA / iOS 主畫面相關 Meta -->
+    <meta name="theme-color" content="#1D4ED8">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <meta name="apple-mobile-web-app-title" content="喝水管家">
+
+    <!-- Tailwind CSS CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- FontAwesome 圖示 CDN -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <!-- Google Fonts Noto Sans TC -->
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@400;700;900&display=swap" rel="stylesheet">
+
+    <!-- Inline Web Manifest 動態生成腳本 -->
+    <script>
+        (function() {
+            // 自動生成 Inline PWA Icon (192x192 & 512x512 SVG Data URL)
+            const iconSvg = `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" fill="#1D4ED8"><rect width="512" height="512" rx="100" fill="#2563EB"/><path d="M256 80c-50 70-120 160-120 230 0 70 50 120 120 120s120-50 120-120c0-70-70-160-120-230z" fill="#38BDF8"/><path d="M210 320c0-30 20-60 40-80 5 15 15 35 15 50 0 20-15 30-35 30z" fill="#FFFFFF" opacity="0.6"/></svg>`;
+            const iconUrl = 'data:image/svg+xml;charset=utf-8,' + encodeURIComponent(iconSvg);
+
+            // 動態新增 app icon 到 head
+            const linkIcon = document.createElement('link');
+            linkIcon.rel = 'apple-touch-icon';
+            linkIcon.href = iconUrl;
+            document.head.appendChild(linkIcon);
+
+            const manifestObj = {
+                name: "大字體尊榮喝水健康管家",
+                short_name: "喝水管家",
+                description: "專為年長者設計的大字體、保溫杯直覺式喝水提醒管家",
+                start_url: "./",
+                display: "standalone",
+                background_color: "#F0F4F8",
+                theme_color: "#1D4ED8",
+                icons: [
+                    { src: iconUrl, sizes: "192x192", type: "image/svg+xml", purpose: "any maskable" },
+                    { src: iconUrl, sizes: "512x512", type: "image/svg+xml", purpose: "any maskable" }
+                ]
+            };
+
+            const manifestStr = JSON.stringify(manifestObj);
+            const blob = new Blob([manifestStr], {type: 'application/json'});
+            const manifestUrl = URL.createObjectURL(blob);
+            const linkManifest = document.createElement('link');
+            linkManifest.rel = 'manifest';
+            linkManifest.href = manifestUrl;
+            document.head.appendChild(linkManifest);
+        })();
+    </script>
+
+    <style>
+        body {
+            font-family: 'Noto Sans TC', sans-serif;
+            background-color: #F0F4F8;
+            color: #1A202C;
+            touch-action: manipulation;
+            padding-top: env(safe-area-inset-top);
+            padding-bottom: env(safe-area-inset-bottom);
+            -webkit-user-select: none;
+            user-select: none;
+        }
+
+        /* 保溫杯與水波動畫 */
+        .thermos-container {
+            position: relative;
+            width: 170px;
+            height: 250px;
+            border: 8px solid #1E40AF;
+            border-radius: 28px;
+            background: #FFFFFF;
+            overflow: hidden;
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.15);
+        }
+
+        .thermos-cap {
+            width: 100px;
+            height: 24px;
+            background: #1E40AF;
+            border-radius: 12px 12px 0 0;
+            margin: 0 auto -4px auto;
+        }
+
+        .water-fill {
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 100%;
+            background: linear-gradient(180deg, #3B82F6 0%, #1D4ED8 100%);
+            transition: height 0.8s ease-in-out;
+        }
+
+        .wave {
+            position: absolute;
+            top: -15px;
+            left: 0;
+            width: 200%;
+            height: 20px;
+            background: rgba(147, 197, 253, 0.6);
+            border-radius: 50%;
+            animation: wave-anim 3s infinite linear;
+        }
+
+        @keyframes wave-anim {
+            0% { transform: translateX(0) scaleY(1); }
+            50% { transform: translateX(-25%) scaleY(0.8); }
+            100% { transform: translateX(-50%) scaleY(1); }
+        }
+
+        /* 立體大按鈕效果 */
+        .btn-large {
+            box-shadow: 0 6px 0px rgba(0,0,0,0.2);
+            transition: all 0.1s ease;
+        }
+
+        .btn-large:active {
+            transform: translateY(4px);
+            box-shadow: 0 2px 0px rgba(0,0,0,0.2);
+        }
+
+        .modal {
+            display: none;
+        }
+
+        .modal.active {
+            display: flex;
+        }
+    </style>
+</head>
+<body class="min-h-screen flex flex-col justify-between p-3 sm:p-6 max-w-2xl mx-auto">
+
+    <!-- 離線與網路狀態提示條 -->
+    <div id="offline-bar" class="hidden bg-amber-500 text-black font-black text-center py-2 px-4 rounded-xl mb-3 border-2 border-amber-700 shadow flex items-center justify-center gap-2 text-lg">
+        <i class="fa-solid fa-wifi-slash text-2xl"></i>
+        <span>目前離線中 (所有功能與記錄皆可正常使用)</span>
+    </div>
+
+    <!-- PWA 安裝快捷提示藍條 (當瀏覽器觸發 beforeinstallprompt 或 iOS 手動提示時) -->
+    <div id="pwa-install-banner" class="hidden bg-gradient-to-r from-emerald-600 to-teal-700 text-white p-4 rounded-2xl mb-3 shadow-lg border-4 border-emerald-900 flex flex-col sm:flex-row items-center justify-between gap-3">
+        <div class="flex items-center gap-3">
+            <i class="fa-solid fa-mobile-screen-button text-4xl text-yellow-300"></i>
+            <div>
+                <h3 class="text-2xl font-black">把喝水管家放在桌面！</h3>
+                <p class="text-lg font-bold text-emerald-100">像手邊的 App 一樣，點一下就能開啟</p>
+            </div>
+        </div>
+        <button onclick="installPWA()" class="btn-large w-full sm:w-auto bg-yellow-400 hover:bg-yellow-500 text-black font-black text-xl py-3 px-6 rounded-xl border-2 border-yellow-700 flex items-center justify-center gap-2 whitespace-nowrap">
+            <i class="fa-solid fa-download text-2xl"></i>
+            <span>放到手機桌面</span>
+        </button>
+    </div>
+
+    <!-- 頂部標題與時間 -->
+    <header class="bg-blue-700 text-white p-4 rounded-2xl shadow-lg text-center mb-3 border-4 border-blue-900">
+        <h1 class="text-3xl sm:text-4xl font-black tracking-wide flex items-center justify-center gap-3">
+            <i class="fa-solid fa-bottle-water text-yellow-300"></i>
+            健康喝水管家
+        </h1>
+        <p id="current-date" class="text-xl sm:text-2xl mt-1 text-blue-100 font-bold">載入中...</p>
+    </header>
+
+    <!-- 主要內容區 -->
+    <main class="flex-1 flex flex-col gap-4">
+
+        <!-- 網頁通知與提醒設定區 -->
+        <section class="bg-amber-100 border-4 border-amber-400 p-4 rounded-2xl shadow">
+            <div class="flex flex-col sm:flex-row items-center justify-between gap-3">
+                <div class="flex items-center gap-3">
+                    <i class="fa-solid fa-bell text-3xl text-amber-700"></i>
+                    <div>
+                        <h2 class="text-2xl font-black text-gray-900">喝水提醒鬧鐘</h2>
+                        <p id="notification-status-text" class="text-xl font-bold text-gray-800">狀態：尚未開啟</p>
+                    </div>
+                </div>
+                <button id="toggle-notification-btn" onclick="requestNotificationPermission()" class="btn-large w-full sm:w-auto bg-amber-500 hover:bg-amber-600 text-black font-black text-xl py-3 px-6 rounded-xl border-2 border-amber-700 flex items-center justify-center gap-2">
+                    <i class="fa-solid fa-power-off text-2xl"></i>
+                    <span>開啟喝水提醒</span>
+                </button>
+            </div>
+
+            <!-- 提醒間隔選擇 -->
+            <div id="interval-setting-box" class="mt-3 pt-3 border-t-2 border-amber-300 flex flex-col sm:flex-row items-center justify-between gap-2">
+                <label for="reminder-interval" class="text-xl font-black text-gray-800">多久提醒一次喝水？</label>
+                <select id="reminder-interval" onchange="changeInterval()" class="text-xl font-black p-2 bg-white border-2 border-gray-400 rounded-xl w-full sm:w-auto">
+                    <option value="30">每 30 分鐘</option>
+                    <option value="45">每 45 分鐘</option>
+                    <option value="60" selected>每 1 小時 (推薦)</option>
+                    <option value="90">每 1.5 小時</option>
+                    <option value="120">每 2 小時</option>
+                </select>
+            </div>
+        </section>
+
+        <!-- 設定專用杯容量卡片 -->
+        <section class="bg-blue-50 border-4 border-blue-300 p-3 rounded-2xl flex items-center justify-between shadow-sm">
+            <div class="flex items-center gap-3">
+                <div class="w-12 h-12 bg-blue-600 text-white rounded-full flex items-center justify-center text-2xl font-black">
+                    <i class="fa-solid fa-whiskey-glass"></i>
+                </div>
+                <div>
+                    <span class="text-lg font-bold text-gray-600">您的專用保溫杯：</span>
+                    <div id="bottle-info-text" class="text-2xl font-black text-blue-900">標準保溫杯 (約500cc)</div>
+                </div>
+            </div>
+            <button onclick="openCupModal()" class="btn-large bg-white hover:bg-gray-100 text-blue-800 font-black text-lg py-2 px-4 rounded-xl border-2 border-blue-400 flex items-center gap-1">
+                <i class="fa-solid fa-gear"></i> 更換杯子
+            </button>
+        </section>
+
+        <!-- 水量視覺化與直覺進度標語 -->
+        <section class="bg-white border-4 border-blue-400 p-4 rounded-2xl shadow-md flex flex-col items-center justify-center">
+            
+            <!-- 瓶數進度標語 -->
+            <div class="text-center mb-2">
+                <div id="bottle-progress-text" class="text-3xl sm:text-4xl font-black text-blue-800">
+                    今天已經喝了 <span class="text-amber-600 text-4xl sm:text-5xl">0</span> 瓶囉！
+                </div>
+                <p id="bottle-target-text" class="text-xl font-bold text-gray-700 mt-1">
+                    目標是喝滿 4 瓶（約 2000 cc）
+                </p>
+            </div>
+
+            <!-- 保溫杯水位動畫 -->
+            <div class="flex flex-col items-center my-2">
+                <div class="thermos-cap"></div>
+                <div class="thermos-container">
+                    <div id="water-fill" class="water-fill" style="height: 0%;">
+                        <div class="wave"></div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 達成目標歡慶標語 -->
+            <div id="goal-message" class="hidden mt-2 bg-green-100 text-green-800 font-black text-2xl p-3 rounded-xl border-2 border-green-500 text-center animate-bounce w-full">
+                🎉 太棒了！您已經達成今天的喝水目標囉！
+            </div>
+        </section>
+
+        <!-- 快速喝水按鈕區（直覺生活單位） -->
+        <section class="bg-white border-4 border-gray-300 p-4 rounded-2xl shadow-md">
+            <h2 class="text-2xl font-black text-gray-900 mb-3 text-center">喝了水，按一下幫您記錄：</h2>
+            <div class="grid grid-cols-3 gap-3">
+                <button onclick="addWaterByFraction(1.0, '喝了一整瓶')" class="btn-large bg-blue-600 hover:bg-blue-700 active:bg-blue-800 text-white py-4 rounded-2xl flex flex-col items-center justify-center border-4 border-blue-900">
+                    <i class="fa-solid fa-bottle-water text-3xl mb-1 text-yellow-300"></i>
+                    <span class="text-2xl sm:text-3xl font-black">喝了 1 瓶</span>
+                    <span class="text-base font-bold text-blue-100">(裝滿喝完)</span>
+                </button>
+
+                <button onclick="addWaterByFraction(0.5, '喝了半瓶')" class="btn-large bg-sky-500 hover:bg-sky-600 active:bg-sky-700 text-white py-4 rounded-2xl flex flex-col items-center justify-center border-4 border-sky-800">
+                    <i class="fa-solid fa-glass-water-droplet text-3xl mb-1 text-yellow-300"></i>
+                    <span class="text-2xl sm:text-3xl font-black">喝了 半瓶</span>
+                    <span class="text-base font-bold text-sky-100">(喝了一半)</span>
+                </button>
+
+                <button onclick="addWaterSips(70, '喝了幾大口')" class="btn-large bg-teal-600 hover:bg-teal-700 active:bg-teal-800 text-white py-4 rounded-2xl flex flex-col items-center justify-center border-4 border-teal-900">
+                    <i class="fa-solid fa-mug-hot text-3xl mb-1 text-yellow-300"></i>
+                    <span class="text-2xl sm:text-3xl font-black">喝幾大口</span>
+                    <span class="text-base font-bold text-teal-100">(潤潤喉嚨)</span>
+                </button>
+            </div>
+
+            <!-- 輔助復原按鈕 -->
+            <div class="mt-4">
+                <button onclick="undoLastWater()" class="btn-large w-full bg-gray-200 hover:bg-gray-300 active:bg-gray-400 text-gray-800 font-black text-xl py-3 rounded-xl border-2 border-gray-400 flex items-center justify-center gap-2">
+                    <i class="fa-solid fa-rotate-left"></i>
+                    <span>按錯了，扣回上一口</span>
+                </button>
+            </div>
+        </section>
+
+    </main>
+
+    <!-- 頁尾說明與 App 安裝選單 -->
+    <footer class="mt-4 text-center flex flex-col gap-2">
+        <button onclick="openHelpModal()" class="text-blue-800 underline text-xl font-black p-2 hover:text-blue-900">
+            <i class="fa-solid fa-circle-question"></i> 遇到問題？看設定說明與提醒教學
+        </button>
+        <button onclick="openInstallTutorialModal()" class="text-gray-700 underline text-lg font-bold p-1 hover:text-gray-900">
+            <i class="fa-solid fa-mobile-retro"></i> 如何放入手機桌面？（iOS / Android 教學）
+        </button>
+    </footer>
+
+    <!-- ===== MODALS (對話框) ===== -->
+
+    <!-- 1. 設定專用保溫杯對話框 -->
+    <div id="cup-modal" class="modal fixed inset-0 bg-black bg-opacity-60 items-center justify-center p-4 z-50">
+        <div class="bg-white rounded-3xl p-5 max-w-lg w-full border-4 border-blue-600 shadow-2xl overflow-y-auto max-h-[90vh]">
+            <h3 class="text-3xl font-black text-gray-900 mb-2 text-center">設定您的專用杯</h3>
+            <p class="text-xl text-gray-700 text-center font-bold mb-4">請點選您平常喝水用的保溫杯或杯子：</p>
+
+            <div class="space-y-3">
+                <button onclick="selectCupPreset('小馬克杯 / 小玻璃杯', 300)" class="btn-large w-full p-4 bg-blue-50 hover:bg-blue-100 border-4 border-blue-300 rounded-2xl text-left flex items-center justify-between">
+                    <div>
+                        <div class="text-2xl font-black text-blue-900">🍵 小馬克杯 / 小玻璃杯</div>
+                        <div class="text-lg text-gray-600 font-bold">容量約 300 cc</div>
+                    </div>
+                    <i class="fa-solid fa-circle-check text-3xl text-blue-600"></i>
+                </button>
+
+                <button onclick="selectCupPreset('標準保溫杯', 500)" class="btn-large w-full p-4 bg-blue-50 hover:bg-blue-100 border-4 border-blue-400 rounded-2xl text-left flex items-center justify-between">
+                    <div>
+                        <div class="text-2xl font-black text-blue-900">🥤 標準保溫杯 (最常見)</div>
+                        <div class="text-lg text-gray-600 font-bold">容量約 500 cc</div>
+                    </div>
+                    <i class="fa-solid fa-circle-check text-3xl text-blue-600"></i>
+                </button>
+
+                <button onclick="selectCupPreset('大運動水壺', 750)" class="btn-large w-full p-4 bg-blue-50 hover:bg-blue-100 border-4 border-blue-300 rounded-2xl text-left flex items-center justify-between">
+                    <div>
+                        <div class="text-2xl font-black text-blue-900">🍼 大運動水壺</div>
+                        <div class="text-lg text-gray-600 font-bold">容量約 750 cc</div>
+                    </div>
+                    <i class="fa-solid fa-circle-check text-3xl text-blue-600"></i>
+                </button>
+            </div>
+
+            <!-- 自訂容量可選 -->
+            <div class="mt-4 pt-3 border-t-2 border-gray-300">
+                <label class="text-xl font-black text-gray-800 block mb-2">或自訂單瓶容量 (cc)：</label>
+                <div class="flex items-center gap-2">
+                    <input type="number" id="custom-cup-input" step="50" class="text-2xl font-black text-center border-4 border-blue-400 rounded-xl p-2 w-full" value="500">
+                    <button onclick="saveCustomCup()" class="btn-large bg-blue-600 text-white font-black text-xl py-3 px-6 rounded-xl border-2 border-blue-900 whitespace-nowrap">確定</button>
+                </div>
+            </div>
+
+            <button onclick="closeCupModal()" class="btn-large w-full mt-5 bg-gray-300 text-gray-800 font-black text-2xl py-3 rounded-xl border-2 border-gray-500">
+                取消
+            </button>
+        </div>
+    </div>
+
+    <!-- 2. 通知幫助 Modal -->
+    <div id="help-modal" class="modal fixed inset-0 bg-black bg-opacity-60 items-center justify-center p-4 z-50">
+        <div class="bg-white rounded-3xl p-6 max-w-lg w-full border-4 border-amber-500 shadow-2xl overflow-y-auto max-h-[90vh]">
+            <h3 class="text-3xl font-black text-gray-900 mb-4 text-center flex items-center justify-center gap-2">
+                <i class="fa-solid fa-bell text-amber-600"></i>
+                如何開啟提醒鬧鐘？
+            </h3>
+            
+            <div class="text-xl leading-relaxed text-gray-800 space-y-4">
+                <p class="font-bold text-blue-900 bg-blue-50 p-3 rounded-xl border border-blue-200">
+                    💡 開啟提醒後，當時間到了，手機或電腦會自動發出聲音與訊息提示，提醒您補充水分！
+                </p>
+                <ol class="list-decimal list-inside space-y-3 font-bold">
+                    <li>點選畫面上方黃色的<span class="text-amber-700 font-black">【開啟喝水提醒】</span>。</li>
+                    <li>畫面上方跳出詢問時，請點選<span class="text-green-600 font-black">【允許】</span>。</li>
+                    <li>若不小心封鎖，請點網址列左邊的<span class="font-black text-gray-700">「鎖頭 🔒」</span>，將「通知」改為<span class="text-green-600 font-black">「允許」</span>即可。</li>
+                </ol>
+            </div>
+
+            <button onclick="closeHelpModal()" class="btn-large w-full mt-6 bg-blue-600 text-white font-black text-2xl py-3 rounded-xl border-2 border-blue-900">
+                我知道了
+            </button>
+        </div>
+    </div>
+
+    <!-- 3. PWA 安裝手機桌面教學 Modal (iPhone iOS & Android) -->
+    <div id="install-modal" class="modal fixed inset-0 bg-black bg-opacity-60 items-center justify-center p-4 z-50">
+        <div class="bg-white rounded-3xl p-6 max-w-lg w-full border-4 border-emerald-600 shadow-2xl overflow-y-auto max-h-[90vh]">
+            <h3 class="text-3xl font-black text-gray-900 mb-3 text-center flex items-center justify-center gap-2">
+                <i class="fa-solid fa-mobile-button text-emerald-600"></i>
+                放入手機桌面步驟
+            </h3>
+            
+            <!-- iOS Safari 教學 -->
+            <div class="bg-emerald-50 p-4 rounded-2xl border-2 border-emerald-300 mb-4">
+                <h4 class="text-2xl font-black text-emerald-900 mb-2 border-b border-emerald-200 pb-1">
+                    🍎 蘋果 iPhone / iPad (Safari 瀏覽器)：
+                </h4>
+                <ol class="list-decimal list-inside text-lg font-bold text-gray-800 space-y-2">
+                    <li>點選螢幕下方（或上方）的<span class="text-blue-700 font-black">「分享」圖示 <i class="fa-solid fa-share-from-square"></i></span>。</li>
+                    <li>往下滑動選單，找到並點選<span class="text-blue-700 font-black">「加入主畫面 <i class="fa-regular fa-square-plus"></i>」</span>。</li>
+                    <li>點選右上角的「新增」，手機桌面上就會出現喝水管家圖示！</li>
+                </ol>
+            </div>
+
+            <!-- Android Chrome 教學 -->
+            <div class="bg-teal-50 p-4 rounded-2xl border-2 border-teal-300 mb-4">
+                <h4 class="text-2xl font-black text-teal-900 mb-2 border-b border-teal-200 pb-1">
+                    🤖 安卓 Android 手機 (Chrome 瀏覽器)：
+                </h4>
+                <ol class="list-decimal list-inside text-lg font-bold text-gray-800 space-y-2">
+                    <li>點選瀏覽器右上角的<span class="text-gray-900 font-black">「三個點點選單 <i class="fa-solid fa-ellipsis-vertical"></i>」</span>。</li>
+                    <li>點選<span class="text-teal-800 font-black">「新增至主畫面」</span>或<span class="text-teal-800 font-black">「安裝應用程式」</span>。</li>
+                    <li>確認新增，即可在桌面直接點開使用！</li>
+                </ol>
+            </div>
+
+            <button onclick="closeInstallModal()" class="btn-large w-full bg-emerald-600 text-white font-black text-2xl py-3 rounded-xl border-2 border-emerald-900">
+                關閉教學
+            </button>
+        </div>
+    </div>
+
+    <!-- ===== JS 邏輯區 ===== -->
+    <script>
+        // === 全局狀態 ===
+        let currentWater = 0; // 今日已喝總容量 (cc)
+        let cupCapacity = 500; // 單瓶/單杯容量 (cc)
+        let cupName = '標準保溫杯';
+        let targetDailyWater = 2000; // 每日建議總目標 (cc)
+        let waterHistory = []; // 用於復原
+
+        let reminderTimer = null;
+        let intervalMinutes = 60;
+        let isNotificationEnabled = false;
+
+        let deferredPrompt = null; // PWA Install Event
+
+        // === Web Audio API 音效 ===
+        const audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+
+        function playWaterSound() {
+            if (audioCtx.state === 'suspended') audioCtx.resume();
+            const osc = audioCtx.createOscillator();
+            const gain = audioCtx.createGain();
+            
+            osc.type = 'sine';
+            osc.frequency.setValueAtTime(350, audioCtx.currentTime);
+            osc.frequency.exponentialRampToValueAtTime(750, audioCtx.currentTime + 0.18);
+            
+            gain.gain.setValueAtTime(0.35, audioCtx.currentTime);
+            gain.gain.exponentialRampToValueAtTime(0.01, audioCtx.currentTime + 0.18);
+            
+            osc.connect(gain);
+            gain.connect(audioCtx.destination);
+            
+            osc.start();
+            osc.stop(audioCtx.currentTime + 0.18);
+        }
+
+        function playChimeSound() {
+            if (audioCtx.state === 'suspended') audioCtx.resume();
+            const now = audioCtx.currentTime;
+            const osc = audioCtx.createOscillator();
+            const gain = audioCtx.createGain();
+
+            osc.type = 'triangle';
+            osc.frequency.setValueAtTime(523.25, now); // C5
+            osc.frequency.setValueAtTime(659.25, now + 0.15); // E5
+            osc.frequency.setValueAtTime(783.99, now + 0.3); // G5
+
+            gain.gain.setValueAtTime(0.4, now);
+            gain.gain.exponentialRampToValueAtTime(0.01, now + 0.6);
+
+            osc.connect(gain);
+            gain.connect(audioCtx.destination);
+
+            osc.start(now);
+            osc.stop(now + 0.6);
+        }
+
+        // === 長者友善 Web Speech API 語音朗讀關懷 ===
+        function speakText(text) {
+            if ('speechSynthesis' in window) {
+                window.speechSynthesis.cancel(); // 停止先前的語音
+                const utterance = new SpeechSynthesisUtterance(text);
+                utterance.lang = 'zh-TW';
+                utterance.rate = 0.9; // 稍微放慢速度適合長者
+                utterance.pitch = 1.0;
+                window.speechSynthesis.speak(utterance);
+            }
+        }
+
+        // === 初始化與生命週期 ===
+        window.onload = function() {
+            updateDateDisplay();
+            loadLocalStorage();
+            updateUI();
+            checkNotificationStatus();
+            initNetworkDetector();
+            registerServiceWorker();
+            checkPWAState();
+        };
+
+        function updateDateDisplay() {
+            const now = new Date();
+            const options = { year: 'numeric', month: 'long', day: 'numeric', weekday: 'long' };
+            document.getElementById('current-date').innerText = now.toLocaleDateString('zh-TW', options);
+        }
+
+        function loadLocalStorage() {
+            const todayKey = new Date().toISOString().slice(0, 10);
+            const savedDate = localStorage.getItem('water_tracker_date');
+            
+            if (savedDate !== todayKey) {
+                localStorage.setItem('water_tracker_date', todayKey);
+                localStorage.setItem('water_current', 0);
+            } else {
+                currentWater = parseInt(localStorage.getItem('water_current')) || 0;
+            }
+
+            cupCapacity = parseInt(localStorage.getItem('water_cup_capacity')) || 500;
+            cupName = localStorage.getItem('water_cup_name') || '標準保溫杯';
+            targetDailyWater = parseInt(localStorage.getItem('water_daily_target')) || 2000;
+        }
+
+        function saveLocalStorage() {
+            localStorage.setItem('water_current', currentWater);
+            localStorage.setItem('water_cup_capacity', cupCapacity);
+            localStorage.setItem('water_cup_name', cupName);
+            localStorage.setItem('water_daily_target', targetDailyWater);
+        }
+
+        // === 網路離線/連線偵測 ===
+        function initNetworkDetector() {
+            const offlineBar = document.getElementById('offline-bar');
+            
+            function updateOnlineStatus() {
+                if (navigator.onLine) {
+                    offlineBar.classList.add('hidden');
+                } else {
+                    offlineBar.classList.remove('hidden');
+                }
+            }
+
+            window.addEventListener('online', updateOnlineStatus);
+            window.addEventListener('offline', updateOnlineStatus);
+            updateOnlineStatus();
+        }
+
+        // === PWA 安裝引導邏輯 ===
+        window.addEventListener('beforeinstallprompt', (e) => {
+            e.preventDefault();
+            deferredPrompt = e;
+            document.getElementById('pwa-install-banner').classList.remove('hidden');
+        });
+
+        function installPWA() {
+            if (deferredPrompt) {
+                deferredPrompt.prompt();
+                deferredPrompt.userChoice.then((choiceResult) => {
+                    if (choiceResult.outcome === 'accepted') {
+                        document.getElementById('pwa-install-banner').classList.add('hidden');
+                    }
+                    deferredPrompt = null;
+                });
+            } else {
+                openInstallTutorialModal();
+            }
+        }
+
+        function checkPWAState() {
+            // 若為 standalone 獨立模式開啟，可隱藏 install banner
+            if (window.matchMedia('(display-mode: standalone)').matches || window.navigator.standalone === true) {
+                document.getElementById('pwa-install-banner').classList.add('hidden');
+            } else {
+                // 如果是 iOS 裝置且未安裝，預設顯示 Banner 引導
+                const isIOS = /iPad|iPhone|iPod/.test(navigator.userAgent) && !window.MSStream;
+                if (isIOS) {
+                    document.getElementById('pwa-install-banner').classList.remove('hidden');
+                }
+            }
+        }
+
+        // === 喝水計數邏輯 ===
+        function addWaterByFraction(fraction, labelText) {
+            const amount = Math.round(cupCapacity * fraction);
+            addWaterAmount(amount, labelText);
+        }
+
+        function addWaterSips(amount, labelText) {
+            addWaterAmount(amount, labelText);
+        }
+
+        function addWaterAmount(amount, labelText) {
+            playWaterSound();
+            waterHistory.push(amount);
+            currentWater += amount;
+            saveLocalStorage();
+            updateUI();
+
+            // 語音朗讀關懷
+            const currentBottlesStr = getFormattedBottles(currentWater);
+            let speechMsg = `好棒！記錄${labelText}。`;
+            if (currentWater >= targetDailyWater) {
+                speechMsg += `恭喜您！今天已經喝了 ${currentBottlesStr} 瓶，成功達成目標囉！`;
+            } else {
+                speechMsg += `今天累積喝了 ${currentBottlesStr} 瓶。`;
+            }
+            speakText(speechMsg);
+        }
+
+        function undoLastWater() {
+            if (waterHistory.length > 0) {
+                const last = waterHistory.pop();
+                currentWater = Math.max(0, currentWater - last);
+                saveLocalStorage();
+                updateUI();
+                speakText("已幫您扣回上一口記錄。");
+            }
+        }
+
+        function getFormattedBottles(waterCc) {
+            const drankBottles = (waterCc / cupCapacity).toFixed(1);
+            return drankBottles.endsWith('.0') ? parseInt(drankBottles) : drankBottles;
+        }
+
+        // === 畫面上文字與水位更新 ===
+        function updateUI() {
+            document.getElementById('bottle-info-text').innerText = `${cupName} (約 ${cupCapacity} cc)`;
+
+            const formattedBottles = getFormattedBottles(currentWater);
+            const targetBottles = Math.ceil(targetDailyWater / cupCapacity);
+
+            document.getElementById('bottle-progress-text').innerHTML = 
+                `今天已經喝了 <span class="text-amber-600 text-4xl sm:text-5xl font-black">${formattedBottles}</span> 瓶囉！`;
+
+            document.getElementById('bottle-target-text').innerText = 
+                `目標是喝滿 ${targetBottles} 瓶（約 ${targetDailyWater} cc）`;
+
+            const percent = Math.min(100, Math.round((currentWater / targetDailyWater) * 100));
+            document.getElementById('water-fill').style.height = `${percent}%`;
+
+            const goalMsg = document.getElementById('goal-message');
+            if (currentWater >= targetDailyWater) {
+                goalMsg.classList.remove('hidden');
+            } else {
+                goalMsg.classList.add('hidden');
+            }
+        }
+
+        // === Modal 選單操作 ===
+        function openCupModal() { document.getElementById('cup-modal').classList.add('active'); }
+        function closeCupModal() { document.getElementById('cup-modal').classList.remove('active'); }
+
+        function selectCupPreset(name, capacity) {
+            cupName = name;
+            cupCapacity = capacity;
+            saveLocalStorage();
+            updateUI();
+            closeCupModal();
+            speakText(`已切換專用杯為${cupName}`);
+        }
+
+        function saveCustomCup() {
+            const val = parseInt(document.getElementById('custom-cup-input').value);
+            if (val && val > 0) {
+                cupName = '專用隨行杯';
+                cupCapacity = val;
+                saveLocalStorage();
+                updateUI();
+                closeCupModal();
+                speakText(`已設定保溫杯容量為${val}毫升`);
+            }
+        }
+
+        function openHelpModal() { document.getElementById('help-modal').classList.add('active'); }
+        function closeHelpModal() { document.getElementById('help-modal').classList.remove('active'); }
+
+        function openInstallTutorialModal() { document.getElementById('install-modal').classList.add('active'); }
+        function closeInstallModal() { document.getElementById('install-modal').classList.remove('active'); }
+
+        // === 網頁通知鬧鐘邏輯 ===
+        function checkNotificationStatus() {
+            if (!("Notification" in window)) {
+                document.getElementById('notification-status-text').innerText = "狀態：瀏覽器不支援通知";
+                return;
+            }
+
+            if (Notification.permission === "granted") {
+                setNotificationUIActive(true);
+            } else if (Notification.permission === "denied") {
+                document.getElementById('notification-status-text').innerText = "狀態：通知已被封鎖";
+                setNotificationUIActive(false);
+            } else {
+                document.getElementById('notification-status-text').innerText = "狀態：未開啟提醒";
+                setNotificationUIActive(false);
+            }
+        }
+
+        function requestNotificationPermission() {
+            if (!("Notification" in window)) {
+                alert("很抱歉，您的裝置不支援網頁通知功能。");
+                return;
+            }
+
+            if (Notification.permission === "granted") {
+                stopReminderTimer();
+                setNotificationUIActive(false);
+                document.getElementById('notification-status-text').innerText = "狀態：已關閉提醒";
+                speakText("喝水提醒已關閉");
+            } else {
+                Notification.requestPermission().then(permission => {
+                    if (permission === "granted") {
+                        setNotificationUIActive(true);
+                        triggerNotification("喝水提醒已開啟！", "我們會定時提醒您喝水，保持身體健康！");
+                        startReminderTimer();
+                        speakText("喝水提醒鬧鐘已成功開啟！");
+                    } else {
+                        setNotificationUIActive(false);
+                        openHelpModal();
+                    }
+                });
+            }
+        }
+
+        function setNotificationUIActive(active) {
+            isNotificationEnabled = active;
+            const btn = document.getElementById('toggle-notification-btn');
+            const statusText = document.getElementById('notification-status-text');
+
+            if (active) {
+                btn.classList.remove('bg-amber-500', 'hover:bg-amber-600');
+                btn.classList.add('bg-green-600', 'hover:bg-green-700', 'text-white');
+                btn.innerHTML = `<i class="fa-solid fa-check-circle text-2xl"></i><span>提醒開啟中</span>`;
+                statusText.innerText = `狀態：提醒運作中 (每 ${intervalMinutes} 分鐘)`;
+                startReminderTimer();
+            } else {
+                btn.classList.remove('bg-green-600', 'hover:bg-green-700', 'text-white');
+                btn.classList.add('bg-amber-500', 'hover:bg-amber-600', 'text-black');
+                btn.innerHTML = `<i class="fa-solid fa-power-off text-2xl"></i><span>開啟喝水提醒</span>`;
+            }
+        }
+
+        function changeInterval() {
+            intervalMinutes = parseInt(document.getElementById('reminder-interval').value);
+            if (isNotificationEnabled) {
+                document.getElementById('notification-status-text').innerText = `狀態：提醒運作中 (每 ${intervalMinutes} 分鐘)`;
+                startReminderTimer();
+            }
+        }
+
+        function startReminderTimer() {
+            stopReminderTimer();
+            const ms = intervalMinutes * 60 * 1000;
+            reminderTimer = setInterval(() => {
+                sendHydrationReminder();
+            }, ms);
+        }
+
+        function stopReminderTimer() {
+            if (reminderTimer) {
+                clearInterval(reminderTimer);
+                reminderTimer = null;
+            }
+        }
+
+        function sendHydrationReminder() {
+            playChimeSound();
+            speakText("該喝水囉！喝口水潤潤喉吧！");
+            triggerNotification(
+                "💧 該喝水囉！喝口水潤潤喉吧！",
+                "動一動、喝口水，保持身體健康！喝完記得按一下記錄喔！"
+            );
+        }
+
+        function triggerNotification(title, body) {
+            if ("Notification" in window && Notification.permission === "granted") {
+                new Notification(title, {
+                    body: body,
+                    icon: 'data:image/svg+xml;charset=utf-8,' + encodeURIComponent(`<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" fill="#1D4ED8"><rect width="512" height="512" rx="100" fill="#2563EB"/><path d="M256 80c-50 70-120 160-120 230 0 70 50 120 120 120s120-50 120-120c0-70-70-160-120-230z" fill="#38BDF8"/></svg>`)
+                });
+            }
+        }
+
+        // === Inline Service Worker 離線快取註冊 ===
+        function registerServiceWorker() {
+            if ('serviceWorker' in navigator) {
+                const swCode = `
+                    const CACHE_NAME = 'water-pwa-v1';
+                    const urlsToCache = ['./'];
+
+                    self.addEventListener('install', (event) => {
+                        event.waitUntil(
+                            caches.open(CACHE_NAME).then((cache) => {
+                                return cache.addAll(urlsToCache);
+                            })
+                        );
+                        self.skipWaiting();
+                    });
+
+                    self.addEventListener('activate', (event) => {
+                        event.waitUntil(
+                            caches.keys().then((cacheNames) => {
+                                return Promise.all(
+                                    cacheNames.map((cacheName) => {
+                                        if (cacheName !== CACHE_NAME) {
+                                            return caches.delete(cacheName);
+                                        }
+                                    })
+                                );
+                            })
+                        );
+                        self.clients.claim();
+                    });
+
+                    self.addEventListener('fetch', (event) => {
+                        event.respondWith(
+                            caches.match(event.request).then((response) => {
+                                if (response) {
+                                    return response;
+                                }
+                                return fetch(event.request).then((networkResponse) => {
+                                    if (!networkResponse || networkResponse.status !== 200 || networkResponse.type !== 'basic') {
+                                        return networkResponse;
+                                    }
+                                    const responseToCache = networkResponse.clone();
+                                    caches.open(CACHE_NAME).then((cache) => {
+                                        cache.put(event.request, responseToCache);
+                                    });
+                                    return networkResponse;
+                                }).catch(() => {
+                                    return caches.match('./');
+                                });
+                            })
+                        );
+                    });
+                `;
+
+                const blob = new Blob([swCode], { type: 'application/javascript' });
+                const swUrl = URL.createObjectURL(blob);
+
+                navigator.serviceWorker.register(swUrl)
+                    .then((reg) => {
+                        console.log('PWA Service Worker 註冊成功！', reg);
+                    })
+                    .catch((err) => {
+                        console.log('Service Worker 註冊失敗或已被限制: ', err);
+                    });
+            }
+        }
+    </script>
+</body>
+</html>
