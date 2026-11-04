@@ -21,6 +21,7 @@
       --accent-text: #000000;
       --shadow: 0 12px 30px rgba(0, 0, 0, 0.35);
       --hero-grad: linear-gradient(135deg, #1e293b 0%, #0f172a 100%);
+      --pill-bg: rgba(15, 23, 42, 0.75);
     }
 
     /* 淺色模式變數 */
@@ -38,6 +39,7 @@
       --accent-text: #ffffff;
       --shadow: 0 10px 25px rgba(15, 23, 42, 0.08);
       --hero-grad: linear-gradient(135deg, #fef3c7 0%, #ffffff 100%);
+      --pill-bg: rgba(255, 255, 255, 0.85);
     }
 
     * {
@@ -183,6 +185,54 @@
     .hero p {
       font-size: 1rem;
       color: var(--text-muted);
+    }
+
+    /* 團隊成員名牌徽章區 */
+    .team-roster {
+      margin-top: 1.25rem;
+      padding-top: 1.1rem;
+      border-top: 1px dashed var(--border);
+      display: flex;
+      align-items: center;
+      flex-wrap: wrap;
+      gap: 0.65rem;
+    }
+
+    .roster-label {
+      font-size: 0.9rem;
+      font-weight: 700;
+      color: var(--accent);
+      margin-right: 0.25rem;
+      display: flex;
+      align-items: center;
+      gap: 0.35rem;
+    }
+
+    .member-pill {
+      background: var(--pill-bg);
+      border: 1px solid var(--border);
+      color: var(--text-main);
+      padding: 0.32rem 0.85rem;
+      border-radius: 999px;
+      font-size: 0.88rem;
+      font-weight: 600;
+      display: inline-flex;
+      align-items: center;
+      gap: 0.4rem;
+      transition: transform 0.15s, border-color 0.15s;
+    }
+
+    .member-pill:hover {
+      transform: translateY(-2px);
+      border-color: var(--accent);
+    }
+
+    .member-dot {
+      width: 8px;
+      height: 8px;
+      border-radius: 50%;
+      background: var(--accent);
+      display: inline-block;
     }
 
     .grid-5 {
@@ -457,6 +507,17 @@
       transition: max-width 0.3s ease;
       box-shadow: var(--shadow);
     }
+
+    /* 頁尾團隊名單區 */
+    footer.site-footer {
+      border-top: 1px solid var(--border);
+      background: var(--card-bg);
+      padding: 1.25rem 1.75rem;
+      text-align: center;
+      font-size: 0.88rem;
+      color: var(--text-muted);
+      margin-top: 2rem;
+    }
   </style>
 </head>
 <body>
@@ -488,8 +549,20 @@
     <!-- ================= 總覽頁：組員 1 ~ 5 專案卡片 ================= -->
     <section id="tab-overview" class="section active">
       <div class="hero">
-        <h2>資訊科技應用當地長者 — 五位組員專案進度總覽</h2>
-        <p>本平台整合小組五位成員針對在地長者設計之小網站、互動遊戲與 PWA 應用，支援「深色 / 淺色背景」一鍵切換，點擊任一組員即可查看功能介紹並直接於報告頁內操作預覽。</p>
+        <h2>資訊科技應用當地長者 — 小組專案進度總覽</h2>
+        <p>本平台整合本組針對金門在地長者設計之五項小網站、互動遊戲與 PWA 應用，支援「深色 / 淺色背景」一鍵切換，點擊任一專案即可查看功能介紹並直接於報告頁內操作預覽。</p>
+
+        <!-- 團隊 7 位成員隱私遮罩名牌列 -->
+        <div class="team-roster">
+          <span class="roster-label">👥 小組團隊成員（7人）：</span>
+          <span class="member-pill"><span class="member-dot"></span>邱〇峰</span>
+          <span class="member-pill"><span class="member-dot"></span>何〇哲</span>
+          <span class="member-pill"><span class="member-dot"></span>擺〇豪</span>
+          <span class="member-pill"><span class="member-dot"></span>李〇鎗</span>
+          <span class="member-pill"><span class="member-dot"></span>洪〇鈞</span>
+          <span class="member-pill"><span class="member-dot"></span>洪〇恩</span>
+          <span class="member-pill"><span class="member-dot"></span>陳〇宇</span>
+        </div>
       </div>
 
       <div class="grid-5">
@@ -515,7 +588,7 @@
         <!-- 組員 2 -->
         <div class="card">
           <div>
-            <span class="card-tag tag-m2">組員 2 專案｜邱祺峰</span>
+            <span class="card-tag tag-m2">組員 2 專案｜邱〇峰 (Feng)</span>
             <h3>樂活在地通｜長輩關懷 PWA</h3>
             <p>拆分為「長輩端 PWA」與「佳儒後台」雙前端，搭配零依賴 Node.js 伺服器與 SSE 跨視窗即時同步[cite: 1]。</p>
             <ul class="feature-list">
@@ -640,7 +713,7 @@
     <section id="tab-m2" class="section">
       <div class="member-layout">
         <div class="doc-panel">
-          <span class="card-tag tag-m2">組員 2 進度報告｜邱祺峰</span>
+          <span class="card-tag tag-m2">組員 2 進度報告｜邱〇峰</span>
           <h2>樂活在地通｜長輩關懷 PWA（前後端分離版 & 線上展示版）</h2>
           <p style="color: var(--text-muted);">
             將原本的單檔 <code>index.html</code> 拆成「長輩端」與「佳儒後台」兩個前端，並加上零外部依賴的 Node.js 伺服器[cite: 1]。資料統一保存至 <code>data/db.json</code>，兩個視窗透過 SSE 即時同步[cite: 1]；同時保留 <code>legacy/index.html</code> 部署於 GitHub Pages 供直接操作體驗[cite: 1, 2]。
@@ -874,12 +947,12 @@
       </div>
     </section>
 
-    <!-- ================= 組員 5 詳情頁  ================= -->
+    <!-- ================= 組員 5 詳情頁 (原創程式碼內嵌版) ================= -->
     <section id="tab-m5" class="section">
       <div class="member-layout">
         <div class="doc-panel">
           <span class="card-tag tag-m5">組員 5 進度報告</span>
-          <h2>💧 大字體尊榮喝水健康管家 PWA</h2>
+          <h2>💧 大字體尊榮喝水健康管家 PWA（原創單檔完整內嵌版）</h2>
           <p style="color: var(--text-muted);">
             專為高齡長輩量身打造的直覺式飲水健康管家，不讓長輩被複雜的毫升數字困擾，改用日常習慣的「保溫杯幾瓶、半瓶、幾大口」來記錄，並整合動態水波視覺、國語語音朗讀回饋與完整單檔 PWA 架構[cite: 3]。
           </p>
@@ -948,11 +1021,11 @@
     </section>
   </main>
 
-  <script>
-    // 以 Base64 安全封裝組員 4 與組員 5 的完整原創程式碼，徹底避免任何 HTML 標籤解析衝突
-    const m4Base64 = "PCFET0NUWVBFIGh0bWw+CjxodG1sIGxhbmc9InpoLUhhbnQiPgo8aGVhZD4KPG1ldGEgY2hhcnNldD0idXRmLTgiPgo8bWV0YSBuYW1lPSJ2aWV3cG9ydCIgY29udGVudD0id2lkdGg9ZGV2aWNlLXdpZHRoLCBpbmRleC1zY2FsZT0xLCB2aWV3cG9ydC1maXQ9Y292ZXIiPgo8dGl0bGU+6ZW36K6F55+l6K2Y6LKg5ZCD6JuUPC90aXRsZT4KPHN0eWxlPgpyb290e2JveC1zaXppbmc6Ym9yZGVyLWJveDtwYWRkaW5nLXRvcDplbnYoc2FmZS1hcmVhLWluc2V0LXRvcCwwcHgpO3BhZGRpbmctYm90dG9tOmVudihzYWZlLWFyZWEtaW5zZXQtYm90dG9tLDBweCk7Ci0tYmc6I2Y1ZjVmMjstLWZnOiMxZDFkMWI7LS1jYXJkOiNmZmY7LS1jZWxsOiNmYmZiZjg7LS1tdXQ6IzZiNmI2NjstLWJ0bjojMmY2ZmVkOy0tYnRuZmc6I2ZmZjstLW92OnJnYmEoMjQ1LDI0NSwyNDIsLjkyKTstLWJkOiNkOWQ5ZDN9Cmh0bWx7c2Nyb2xsLXBhZGRpbmctdG9wOmVudihzYWZlLWFyZWEtaW5zZXQtdG9wLDBweCl9CkBtZWRpYSAocHJlZmVycy1jb2xvci1zY2hlbWU6ZGFyayl7OnJvb3Q6bm90KFtkYXRhLXRoZW1lPSJsaWdodCJdKXstLWJnOiMxNjE3MWE7LS1mZzojZWNlY2VhOy0tY2FyZDojMjUyNjJiOy0tY2VsbDojMWQxZTIyOy0tbXV0OiM5YTlhOTU7LS1idG46IzViOGNmZjstLWJ0bmZnOiMwYjBiMGQ7LS1vdjpyZ2JhKDIyLDIzLDI2LC45Mik7LS1iZDojM2EzYjQxfX0KOnJvb3RbZGF0YS10aGVtZT0iZGFyayJdez0tYmc6IzE2MTcxYTstLWZnOiNlY2VjZWE7LS1jYXJkOiMyNTI2MmI7LS1jZWxsOiMxZDFlMjI7LS1tdXQ6IzlhOWE5NTstLWJ0bjojNWI4Y2ZmOy0tYnRuZmc6IzBiMGIwZDstLW92OnJnYmEoMjIsMjMsMjYsLjkyKTstLWJkOiMzYTNiNDF9CmJvZHl7bWFyZ2luOjA7YmFja2dyb3VuZDp2YXIoLS1iZyk7Y29sb3I6dmFyKC0tZmcpO2ZvbnQtZmFtaWx5OnN5c3RlbS11aSwtYXBwbGUtc3lzdGVtLCJOb3RvIFNhbnMgVEMiLCJNaWNyb3NvZnQgSmhlbmdIZWkiLHNhbnMtc2VyaWZ9Ci53cmFwe21heC13aWR0aDo2MjBweDttYXJnaW46MCBhdXRvO3BhZGRpbmc6MTJweH0KaDF7Zm9udC1zaXplOjIwcHg7bWFyZ2luOjRweCAwIDhweH0KLmh1ZHtkaXNwbGF5OmZsZXg7ZmxleC13cmFwOndyYXA7Z2FwOjhweCAxNnB4O2ZvbnQtc2l6ZToxNXB4O21hcmdpbi1ib3R0b206OHB4O2FsaWduLWl0ZW1zOmNlbnRlcn0KLmh1ZCBi7Zm9udC12YXJpYW50LW51bWVyaWM6dGFidWxhci1udW1zfQoueDJ7YmFja2dyb3VuZDojZmZiNDAwO2NvbG9yOiMyMjI7Ym9yZGVyLXJhZGl1czo5OTlweDtwYWRkaW5nOjJweCAxMHB4O2ZvbnQtd2VpZ2h0OjcwMDtkaXNwbGF5Om5vbmV9Ci5ib2FyZHtwb3NpdGlvbjpyZWxhdGl2ZTt3aWR0aDoxMDAlfQpjYW52YXN7ZGlzcGxheTpibG9jazt3aWR0aDoxMDAlO2hlaWdodDphdXRvO2JvcmRlcjoycHggc29saWQadmFyKC0tYmQpO2JvcmRlci1yYWRpdXM6OHB4O3RvdWNoLWFjdGlvbjpub25lfQoub3Z7cG9zaXRpb246YWJzb2x1dGU7aW5zZXQ6MDtiYWNrZ3JvdW5kOnZhciigtLW92KTtkaXNwbGF5Om5vbmU7YWxpZ24taXRlbXM6Y2VudGVyO2p1c3RpZnktY2VudGVyOmNlbnRlcjtwYWRkaW5nOjEycHg7Ym9yZGVyLXJhZGl1czo4cHh9Ci5jYXJke2JhY2tncm91bmQ6dmFyKC0tY2FyZCk7Ym9yZGVyOjFweCBzb2xpZCB2YXIoLS1iZCk7Ym9yZGVyLXJhZGl1czoxMnB4O3BhZGRpbmc6MTZweDt3aWR0aDoxMDAlO21heC13aWR0aDo0NDBweDtib3gtc2l6aW5nOmJvcmRlci1ib3h9Ci5jYXJkIGgye21hcmdpbjowIDAgOHB4O2ZvbnQtc2l6ZToxOHB4fQouY2FyZCBwe21hcmdpbjowIDAgMTBweDtsaW5lLWhlaWdodDoxLjU7Zm9udC1zaXplOjE1cHh9CmJ1dHRvbntmb250OmluaGVyaXQ7Y3Vyc29yOnBvaW50ZXJ9Ci5vcHQsLmdve2Rpc3BsYXk6YmxvY2s7d2lkdGg6MTAwJTttYXJnaW46OHB4IDAgMDtwYWRkaW5nOjEycHg7Ym9yZGVyLXJhZGl1czoxMHB4O2JvcmRlcjoxcHggc29saWQadmFyKC0tYmQpO2JhY2tncm91bmQ6dmFyKC0tY2FyZCk7Y29sb3I6dmFyKC0tZmcpO2ZvbnQtc2l6ZToxNnB4O3RleHQtYWxpZ246bGVmdH0KLmdve2JhY2tncm91bmQ6dmFyKC0tYnRuKTtjb2xvcjp2YXIoLS1idG5mZyk7Ym9yZGVyLWNvbG9yOnZhciigtLWJ0bik7dGV4dC1hbGlnbjpjZW50ZXI7Zm9udC13ZWlnaHQ6NzAwfQoucGFke2Rpc3BsYXk6Z3JpZDtnbmlkLXRlbXBsYXRlLWNvbHVtbnM6cmVwZWF0KDMsNjRweCk7Z3JpZC10ZW1wbGF0ZS1yb3dzOnJlcGVhdCgyLDUycHgpO2dhcDo2cHg7anVzdGlmeS1jb250ZW50OmNlbnRlcjttYXJnaW46MTJweCAwfQoucGFkIGJ1dHRvbntiYm9yZGVyLXJhZGl1czoxMHB4O2JvcmRlcjoxcHggc29saWQadmFyKC0tYmQpO2JhY2tncm91bmQ6dmFyKC0tY2FyZCk7Y29sb3I6dmFyKC0tZmcpO2ZvbnQtc2l6ZToyMHB4fQoucGFkIC51e2dyaWQtY29sdW1uOjJ9LnBhZCAubHtnbmlkLXJvdzoyO2dyaWQtY29sdW1uOjF9LnBhZCAuZHtncmlkLXJvdzoyO2dyaWQtY29sdW1uOjJ9LnBhZCAucntncmlkLXJvdzoyO2dyaWQtY29sdW1uOjN9Ci50aXB7Zm9udC1zaXplOjEzcHg7Y29sb3I6dmFyKC0tbXV0KTt0ZXh0LWFsaWduOmNlbnRlcn0KLmRvdHtkaXNwbGF5OmlubGluZS1ibG9jazt3aWR0aDoxMHB4O2hlaWdodDoxMHB4O2JvcmRlci1yYWRpdXM6NTAlO21hcmdpbjowIDJweCAwIDhweH0KPC9zdHlsZT4KPC9oZWFkPgo8Ym9keT4KPGRpdiBjbGFzcz0id3JhcCI+CiAgPGgxPuWVheadpeefpeitmOiZveWQg+iblDwvaDE+CiAgPGRpdiBjbGFzcz0iaHVkIj4KICAgIDxzcGFuPuWIhuWVuCA8YiBpZD0ic2MiPjA8L2I+IC8gNTAwMDwvc3Bhbj4KICAgIDxzcGFuPuS4i+asoeWVjOetlCA8YiBpZD0ibnEiPjMwPC9iPiDnp5g8L3NwYW4+CiAgICA8c3BhbiBjbGFzcz0ieDIiIGlkPSJ4MiI+6ZuZ5YCNIDEwIOenmDwvc3Bhbj4KICA8L2Rpdj4KICA8ZGl2IGNsYXNzPSJib2FyZCI+CiAgICA8Y2FudmFzIGlkPSJjdiI+PC9jYW52YXM+CiAgICA8ZGl2IGNsYXNzPSJvdiIgaWQ9Im92Ij48ZGl2IGNsYXNzPSJjYXJkIiBpZD0iY2FyZCI+PC9kaXY+PC9kaXY+CiAgPC9kaXY+CiAgPGRpdiBjbGFzcz0icGFkIj4KICAgIDxidXR0b24gY2xhc3M9InUiIGRhdGEtZD0idSIgYXJpYS1sYWJlbD0i5LiKIj7ilrI8L2J1dHRvbj4KICAgIDxidXR0b24gY2xhc3M9ImwiIGRhdGEtZD0ibCIgYXJpYS1sYWJlbD0i5bemIj7igpA8L2J1dHRvbj4KICAgIDxidXR0b24gY2xhc3M9ImQiIGRhdGEtZD0iZCIgYXJpYS1sYWJlbD0i5LiLIj7ilrw8L2J1dHRvbj4KICAgIDxidXR0b24gY2xhc3M9InIiIGRhdGEtZD0iciIgYXJpYS1sYWJlbD0i5Y+RIj7igpY8L2J1dHRvbj4KICA8L2Rpdj4KICA8ZGl2IGNsYXNzPSJ0aXAiPuWPr+WQkemdlSAvIFdBU0QgLyDmubHli5UgLyDlsI/lJbovrf制，UCDmmqvlgZw8YnI+CiAgICA8c3BhbiBjbGFzcz0iZG90IiBzdHlsZT0iYmFja2dyb3VuZDojMmY2ZmVkIj48L3NwYW4+MTAg5YiGCiAgICA8c3BhbiBjbGFzcz0iZG90IiBzdHlsZT0iYmFja2dyb3VuZDojZTUzMjJkIj48L3NwYW4+NTAg5YiGCiAgICA8c3BhbiBjbGFzcz0iZG90IiBzdHlsZT0iYmFja2dyb3VuZDojZjViODAwIj48L3NwYW4+MTUwIOWIhjC9ZGl2Pgo8L2Rpdj4KPHNjcmlwdD4KY29uc3QgTj0zMCxDPTIwLFNURVA9MTIwLFRBUkdFVD01MDAwLFFJPTMwLEREPTEwOwpjb25zdCBQVFM9e2I6MTAs cjo1MCxnOjE1MH0sQ09MPXtiOiMyZjZmZWQnLHI6JyNlNTMyMmQnLGc6JyNmNWI4MDAnfTsKY29uc3QgY3Y9ZG9jdW1lbnQuZ2V0RWxlbWVudEJ5SWQoJ2N2JyksZz1jdi5nZXRDb250ZXh0KCcyZCcpOwpjdi53aWR0aD1jdi5oZWlnaHQ9TipDOwpjb25zdCAkPWlkPT5kb2N1bWVudC5nZXRFbGVtZW50QnlJZChpZCk7CmNvbnN0IGJhbms9WwpbJ+WPsOeBo+eahOWPjeiomOimtumBlOiqnOawlumbu+aYr+W5vueZn++8nycsWyIxMTAiLCIxNjUiLCIxMTkiXSwxXSwKWyflj7DngaPnoJTplbfnhp3mnI3li5npgqjnmb7lvb/nhp3vvJ8nLFsiMTk2NiIsIjE5OTkiLCIxOTIyIl0sMF0sClsn5oeP55aR5a625Lq65Lit6aKo5pmC77yM5oeJ6Kmy56uL5Yi75oCO6Z+z5YGa77y/JyxbIuWFiOecoeS4gOiniOWkguWvnSIsIuiHquadj+acjeWUseWGn+aWr+WMuOmbuSIsIueri+WIu+aajeExMTnpgZnpvZkiXSwyXSwKWyY2NeqWgeS4iueS6uuWPpeWGtOe4veS6uuWPpumBlDE0Je+8jOensOOAg++8nycsWyLpq5jpvaLljJbnlL7mnIwiLCI6auY6b2i56S+5pyMIiwi6LaF6auY6b2i56S+5pyMIl0sMV0sClsn54K66aCQ6Ziy6ZW36K6F5Zyo5rW05a6k6LeM5YCS77yM5pyA6YGT5ZCI55qE5YGa5rOV5piv77y/JyxbIuWcsOmbuOS/neWHnOa/leW7keWls+a4heaulSIsIuWKoOijneamuaJiuS4m+mLkemYsOa7keWhnCIsIuadnOeHhembuOecgembh+iLSJdLDFdLApbJ+S4gOiIrOaIkOS6uOeQhuW5sOinkOWWj+eahOaUtue4ruinkOaJiuWwj+aWuOWkmuWwjyBtbUhn77y/JyxbIjEyMCIsIjE0MCIsIjE2MCJdLDBdLApbJ+WVheadpeacjeiXpe+8jOS4i+WIl+WTquWAi+ingOW/lOato+ehg++8nycsWyLnl4Xni4DlpK3kuoblsIHoibzlgZrojq8iLCI6K665b6X5rKh5pWI5bCB6Ieq6KGM5Yqg5YCNIiwi6YG154Wn6Yar5bir6Jel5bir5oyH56S677yM5LiN6Ieq6KGM5a6e5ribIl0sMl0sClsn6aCQ6Ziy6IKM5bCP55eH77yM5pyA5aW955qE5pa55byP5piv77y/JyxbIuWbm+mBi+WLleS4m+aUneWPlui2s+WknOiJu+eZveWIqyIsIuWKm+WkqeWlu+W6iuS8keWBrSIsIuWujOWFqOS4jeWQg+iCsuamnuS4i+iJu+ixuCJdLDBdLApbJ+S4gOiIrOW7uuitsOaIkOS6uOavj+mCs+iHs+WwkeWHieacieWkm+WwkOWJhemAlOS4reWPr+W8tOW6puWBpeWLle+8nycsWyIzMCDlvo7pmaniLCIxNTAg5b6O6ZmpIiwiNjAwIOW+jumZqSJdLDFdLApbJ+W7uuK議5q+P5pel6aOf6bm977yI6bm977yJ5pSd5Y+W6YeP57SE5bCP5pS85aSa5bCP77y/JyxbIjYg5YWs5YWLIlwiLCIxNSDlhazlhYsiLCIyNSDlhazlhYsiXSwwXSwKWyflrZ3ogIXotbfmjornmb7vvIzngrrpgJ/lhY3lpL/lraLmgKfkvYDo血5aSp6aCt5pWZ77yM5oeJ6Kmy77y/JyxbIueMbmOeEt+i1t+i6qyIsIui1t+i6qOW+jznq5vliLvmso3otbAiLCI5YWI5Z2Q5LiA5LiL5YaN57my5oWi56uZ6LWwIl0sMl0sClsn5o6l5Yiw6Ieq56ix44CM5qqi6K2m5Lq65ZOh44CN6KaB5rGC5L2g6L2J5bCh5Yiw44CM5a6J5YWo5bCh5oi244CN55qE6Zu76Kmx77yM5oeJ6Kmy77y/JyxbIueFp+aMh+ekuuL2J5bChIiwi5o6b5pa35LKm5pWlMTY15p+l6K2JIiwi5o+Q5L6b5o+Q5qy+5Y2h5a+G56K8Il0sMV0sClsn5rWB5oSf55ar6IuX5buu6K2w5aSa5LmF5o6l56iu5LiA5qyh77y/JyxbIuavj+W5tOS4gOasoiIsIuWNgeW5tOS4gOasoiIsIue1guW/heS4gOasuuWPr+S7pyJdLDBdLApbJ+S7peS4i+S9leiAheWFrOatgOWkseamuuS7t+eahOa5pyf6K2m6KiK77y/JyxbIuWBtiOeOluW/mOiomOWNmu匙5pS+5ZOq6KOh5L2G6IO95Zue5oOz6LW35L6GIiwi6K2Y5oa25Yqb5rih6YCA5b2x6Z+/5pel5bi455Sf5rS7Iiwi5aSp5rCj5Ya35pyD5oOz5aSa56ul6KGj5pyNIl0sMV0sClsn54K66aCQ6Ziy6aqo6LOq55aP6ayG77yM6ZW36K6F5Y+v5Lul5oCO6Z+z5YGa77y/JyxbIuihoseWFhemKluizquOAgeiBqeW6puab曬5aSq6Zm96IiH6YGL5YuVIiwi5a6M5YWo6YG/5YWN6LWw5YuVIiwi5aSn6YeP5Z2I5ZCr57OW6aOy5paZIl0sMF0KXTs=";
+  <footer class="site-footer">
+    <p>通識課程「資訊科技應用當地長者」小組進度報告整合平台 ｜ 團隊成員：邱〇峰 (Feng)、何〇哲、擺〇豪、李〇鎗、洪〇鈞、洪〇恩、陳〇宇</p>
+  </footer>
 
-    // 組員 4 與 組員 5 原始碼直接建立 (使用陣列確保無標籤干擾)
+  <script>
     const m4RawHtml = `<!doctype html>
 <html lang="zh-Hant">
 <head>
