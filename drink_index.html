@@ -1,32 +1,1212 @@
 <!DOCTYPE html>
+<html lang="zh-TW" data-theme="dark">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>資訊科技應用當地長者 — 團隊進度報告平台</title>
+  <style>
+    /* 深色模式變數 (預設) */
+    :root,
+    [data-theme="dark"] {
+      --bg-main: #0f172a;
+      --bg-header: rgba(15, 23, 42, 0.92);
+      --card-bg: #1e293b;
+      --card-inner: #0f172a;
+      --code-bg: #090d16;
+      --text-main: #f8fafc;
+      --text-muted: #94a3b8;
+      --border: #334155;
+      --accent: #f59e0b;
+      --accent-hover: #d97706;
+      --accent-text: #000000;
+      --shadow: 0 12px 30px rgba(0, 0, 0, 0.35);
+      --hero-grad: linear-gradient(135deg, #1e293b 0%, #0f172a 100%);
+      --pill-bg: rgba(15, 23, 42, 0.75);
+    }
+
+    /* 淺色模式變數 */
+    [data-theme="light"] {
+      --bg-main: #f8fafc;
+      --bg-header: rgba(255, 255, 255, 0.92);
+      --card-bg: #ffffff;
+      --card-inner: #f1f5f9;
+      --code-bg: #1e293b;
+      --text-main: #0f172a;
+      --text-muted: #475569;
+      --border: #cbd5e1;
+      --accent: #d97706;
+      --accent-hover: #b45309;
+      --accent-text: #ffffff;
+      --shadow: 0 10px 25px rgba(15, 23, 42, 0.08);
+      --hero-grad: linear-gradient(135deg, #fef3c7 0%, #ffffff 100%);
+      --pill-bg: rgba(255, 255, 255, 0.85);
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+      font-family: "Microsoft JhengHei", "PingFang TC", sans-serif;
+    }
+
+    body {
+      background-color: var(--bg-main);
+      color: var(--text-main);
+      line-height: 1.6;
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      transition: background-color 0.25s ease, color 0.25s ease;
+    }
+
+    header {
+      background: var(--bg-header);
+      border-bottom: 1px solid var(--border);
+      padding: 0.9rem 1.75rem;
+      position: sticky;
+      top: 0;
+      z-index: 100;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      flex-wrap: wrap;
+      gap: 1rem;
+      backdrop-filter: blur(10px);
+    }
+
+    .brand {
+      display: flex;
+      align-items: center;
+      gap: 0.75rem;
+    }
+
+    .badge-course {
+      background: var(--accent);
+      color: var(--accent-text);
+      font-weight: 700;
+      padding: 0.25rem 0.65rem;
+      border-radius: 6px;
+      font-size: 0.82rem;
+    }
+
+    .brand h1 {
+      font-size: 1.25rem;
+      font-weight: 700;
+    }
+
+    .header-controls {
+      display: flex;
+      align-items: center;
+      gap: 0.6rem;
+      flex-wrap: wrap;
+    }
+
+    .nav-tabs {
+      display: flex;
+      gap: 0.4rem;
+      flex-wrap: wrap;
+    }
+
+    .tab-btn {
+      background: var(--card-bg);
+      color: var(--text-muted);
+      border: 1px solid var(--border);
+      padding: 0.48rem 0.85rem;
+      border-radius: 8px;
+      cursor: pointer;
+      font-size: 0.88rem;
+      font-weight: 600;
+      transition: all 0.2s;
+    }
+
+    .tab-btn:hover,
+    .tab-btn.active {
+      background: var(--accent);
+      color: var(--accent-text);
+      border-color: var(--accent);
+    }
+
+    .theme-toggle {
+      background: var(--card-inner);
+      color: var(--text-main);
+      border: 1px solid var(--border);
+      padding: 0.48rem 0.9rem;
+      border-radius: 999px;
+      cursor: pointer;
+      font-size: 0.88rem;
+      font-weight: 700;
+      display: inline-flex;
+      align-items: center;
+      gap: 0.4rem;
+      transition: all 0.2s;
+    }
+
+    .theme-toggle:hover {
+      border-color: var(--accent);
+    }
+
+    main {
+      flex: 1;
+      max-width: 1400px;
+      width: 100%;
+      margin: 0 auto;
+      padding: 1.75rem;
+    }
+
+    .section {
+      display: none;
+      animation: fadeIn 0.25s ease;
+    }
+
+    .section.active {
+      display: block;
+    }
+
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(6px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    .hero {
+      background: var(--hero-grad);
+      border: 1px solid var(--border);
+      border-radius: 16px;
+      padding: 1.75rem 2.25rem;
+      margin-bottom: 1.75rem;
+      box-shadow: var(--shadow);
+    }
+
+    .hero h2 {
+      font-size: 1.7rem;
+      margin-bottom: 0.45rem;
+      color: var(--accent);
+    }
+
+    .hero p {
+      font-size: 1rem;
+      color: var(--text-muted);
+    }
+
+    /* 團隊成員名牌徽章區 */
+    .team-roster {
+      margin-top: 1.25rem;
+      padding-top: 1.1rem;
+      border-top: 1px dashed var(--border);
+      display: flex;
+      align-items: center;
+      flex-wrap: wrap;
+      gap: 0.65rem;
+    }
+
+    .roster-label {
+      font-size: 0.9rem;
+      font-weight: 700;
+      color: var(--accent);
+      margin-right: 0.25rem;
+      display: flex;
+      align-items: center;
+      gap: 0.35rem;
+    }
+
+    .member-pill {
+      background: var(--pill-bg);
+      border: 1px solid var(--border);
+      color: var(--text-main);
+      padding: 0.32rem 0.85rem;
+      border-radius: 999px;
+      font-size: 0.88rem;
+      font-weight: 600;
+      display: inline-flex;
+      align-items: center;
+      gap: 0.4rem;
+      transition: transform 0.15s, border-color 0.15s;
+    }
+
+    .member-pill:hover {
+      transform: translateY(-2px);
+      border-color: var(--accent);
+    }
+
+    .member-dot {
+      width: 8px;
+      height: 8px;
+      border-radius: 50%;
+      background: var(--accent);
+      display: inline-block;
+    }
+
+    .grid-5 {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(360px, 1fr));
+      gap: 1.4rem;
+    }
+
+    @media (max-width: 768px) {
+      .grid-5 {
+        grid-template-columns: 1fr;
+      }
+    }
+
+    .card {
+      background: var(--card-bg);
+      border: 1px solid var(--border);
+      border-radius: 14px;
+      padding: 1.5rem;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      box-shadow: var(--shadow);
+      transition: transform 0.2s, border-color 0.2s;
+    }
+
+    .card:hover {
+      transform: translateY(-4px);
+      border-color: var(--accent);
+    }
+
+    .card-tag {
+      display: inline-block;
+      font-size: 0.8rem;
+      font-weight: 700;
+      padding: 0.22rem 0.65rem;
+      border-radius: 999px;
+      margin-bottom: 0.75rem;
+      width: fit-content;
+    }
+
+    .tag-m1 { background: rgba(14, 165, 233, 0.16); color: #0284c7; }
+    [data-theme="dark"] .tag-m1 { color: #38bdf8; }
+
+    .tag-m2 { background: rgba(16, 185, 129, 0.16); color: #059669; }
+    [data-theme="dark"] .tag-m2 { color: #34d399; }
+
+    .tag-m3 { background: rgba(168, 85, 247, 0.16); color: #9333ea; }
+    [data-theme="dark"] .tag-m3 { color: #c084fc; }
+
+    .tag-m4 { background: rgba(244, 63, 94, 0.16); color: #e11d48; }
+    [data-theme="dark"] .tag-m4 { color: #fb7185; }
+
+    .tag-m5 { background: rgba(234, 179, 8, 0.16); color: #ca8a04; }
+    [data-theme="dark"] .tag-m5 { color: #facc15; }
+
+    .card h3 {
+      font-size: 1.3rem;
+      margin-bottom: 0.5rem;
+    }
+
+    .card p {
+      color: var(--text-muted);
+      font-size: 0.94rem;
+      margin-bottom: 1rem;
+    }
+
+    .feature-list {
+      list-style: none;
+      margin-bottom: 1.25rem;
+    }
+
+    .feature-list li {
+      font-size: 0.9rem;
+      margin-bottom: 0.4rem;
+      padding-left: 1.25rem;
+      position: relative;
+    }
+
+    .feature-list li::before {
+      content: "•";
+      position: absolute;
+      left: 0.2rem;
+      color: var(--accent);
+      font-weight: bold;
+    }
+
+    .btn-group {
+      display: flex;
+      gap: 0.5rem;
+      flex-wrap: wrap;
+    }
+
+    .btn {
+      padding: 0.5rem 0.95rem;
+      border-radius: 8px;
+      font-weight: 600;
+      font-size: 0.88rem;
+      cursor: pointer;
+      border: none;
+      text-decoration: none;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 0.35rem;
+      transition: all 0.15s;
+    }
+
+    .btn-primary {
+      background: var(--accent);
+      color: var(--accent-text);
+    }
+
+    .btn-primary:hover {
+      background: var(--accent-hover);
+    }
+
+    .btn-outline {
+      background: transparent;
+      color: var(--text-main);
+      border: 1px solid var(--border);
+    }
+
+    .btn-outline:hover {
+      border-color: var(--accent);
+      background: rgba(148, 163, 184, 0.1);
+    }
+
+    .member-layout {
+      display: grid;
+      grid-template-columns: 1fr 430px;
+      gap: 1.75rem;
+      align-items: start;
+    }
+
+    @media (max-width: 1080px) {
+      .member-layout {
+        grid-template-columns: 1fr;
+      }
+    }
+
+    .doc-panel {
+      background: var(--card-bg);
+      border: 1px solid var(--border);
+      border-radius: 14px;
+      padding: 1.75rem;
+      box-shadow: var(--shadow);
+    }
+
+    .doc-panel h2 {
+      font-size: 1.5rem;
+      color: var(--accent);
+      margin-bottom: 0.5rem;
+    }
+
+    .doc-panel h3 {
+      font-size: 1.15rem;
+      color: var(--accent);
+      margin: 1.5rem 0 0.75rem;
+      padding-bottom: 0.4rem;
+      border-bottom: 1px solid var(--border);
+    }
+
+    .sub-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(230px, 1fr));
+      gap: 1rem;
+      margin-top: 0.75rem;
+    }
+
+    .info-box {
+      background: var(--card-inner);
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      padding: 1rem;
+    }
+
+    .info-box h4 {
+      color: var(--text-main);
+      margin-bottom: 0.4rem;
+      font-size: 1rem;
+    }
+
+    .info-box ul {
+      padding-left: 1.1rem;
+      font-size: 0.88rem;
+      color: var(--text-muted);
+    }
+
+    .info-box li {
+      margin-bottom: 0.25rem;
+    }
+
+    pre.code-block {
+      background: var(--code-bg);
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      padding: 1rem;
+      overflow-x: auto;
+      font-family: Consolas, Monaco, monospace;
+      font-size: 0.84rem;
+      color: #e2e8f0;
+      line-height: 1.5;
+    }
+
+    .table-wrap {
+      overflow-x: auto;
+      margin-top: 0.5rem;
+    }
+
+    table.api-table {
+      width: 100%;
+      border-collapse: collapse;
+      font-size: 0.86rem;
+      background: var(--card-inner);
+      border-radius: 8px;
+      overflow: hidden;
+    }
+
+    table.api-table th,
+    table.api-table td {
+      border: 1px solid var(--border);
+      padding: 0.5rem 0.7rem;
+      text-align: left;
+    }
+
+    table.api-table th {
+      background: rgba(148, 163, 184, 0.18);
+      color: var(--accent);
+    }
+
+    .phone-simulator {
+      position: sticky;
+      top: 5.2rem;
+      background: #000;
+      border: 6px solid #334155;
+      border-radius: 28px;
+      overflow: hidden;
+      height: 750px;
+      display: flex;
+      flex-direction: column;
+      box-shadow: var(--shadow);
+    }
+
+    .sim-header {
+      background: #1e293b;
+      padding: 0.55rem 1rem;
+      font-size: 0.8rem;
+      color: #cbd5e1;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      border-bottom: 1px solid #334155;
+    }
+
+    .sim-iframe {
+      width: 100%;
+      flex: 1;
+      border: none;
+      background: #fff;
+    }
+
+    .viewer-container {
+      background: #000;
+      border: 4px solid var(--border);
+      border-radius: 16px;
+      overflow: hidden;
+      height: 730px;
+      display: flex;
+      flex-direction: column;
+      margin: 0 auto;
+      transition: max-width 0.3s ease;
+      box-shadow: var(--shadow);
+    }
+
+    /* 頁尾團隊名單區 */
+    footer.site-footer {
+      border-top: 1px solid var(--border);
+      background: var(--card-bg);
+      padding: 1.25rem 1.75rem;
+      text-align: center;
+      font-size: 0.88rem;
+      color: var(--text-muted);
+      margin-top: 2rem;
+    }
+  </style>
+</head>
+<body>
+
+  <header>
+    <div class="brand">
+      <span class="badge-course">通識課進度報告</span>
+      <h1>資訊科技應用當地長者 — 小組作品整合平台</h1>
+    </div>
+
+    <div class="header-controls">
+      <nav class="nav-tabs">
+        <button type="button" class="tab-btn active" onclick="switchTab('tab-overview', 0)">📋 總覽 (1~5)</button>
+        <button type="button" class="tab-btn" onclick="switchTab('tab-m1', 1)">👤 組員 1</button>
+        <button type="button" class="tab-btn" onclick="switchTab('tab-m2', 2)">👤 組員 2</button>
+        <button type="button" class="tab-btn" onclick="switchTab('tab-m3', 3)">👤 組員 3</button>
+        <button type="button" class="tab-btn" onclick="switchTab('tab-m4', 4)">👤 組員 4</button>
+        <button type="button" class="tab-btn" onclick="switchTab('tab-m5', 5)">👤 組員 5</button>
+        <button type="button" class="tab-btn" onclick="switchTab('tab-viewer', 6)">🖥️ 實機切換台</button>
+      </nav>
+
+      <button type="button" class="theme-toggle" id="themeBtn" onclick="toggleTheme()">
+        ☀️ 切換淺色
+      </button>
+    </div>
+  </header>
+
+  <main>
+    <!-- ================= 總覽頁：組員 1 ~ 5 專案卡片 ================= -->
+    <section id="tab-overview" class="section active">
+      <div class="hero">
+        <h2>資訊科技應用當地長者 — 小組專案進度總覽</h2>
+        <p>本平台整合本組針對金門在地長者設計之五項小網站、互動遊戲與 PWA 應用，支援「深色 / 淺色背景」一鍵切換，點擊任一專案即可查看功能介紹並直接於報告頁內操作預覽。</p>
+
+        <!-- 團隊 7 位成員隱私遮罩名牌列 -->
+        <div class="team-roster">
+          <span class="roster-label">👥 小組團隊成員（7人）：</span>
+          <span class="member-pill"><span class="member-dot"></span>邱〇峰</span>
+          <span class="member-pill"><span class="member-dot"></span>何〇哲</span>
+          <span class="member-pill"><span class="member-dot"></span>擺〇豪</span>
+          <span class="member-pill"><span class="member-dot"></span>李〇鎗</span>
+          <span class="member-pill"><span class="member-dot"></span>洪〇鈞</span>
+          <span class="member-pill"><span class="member-dot"></span>洪〇恩</span>
+          <span class="member-pill"><span class="member-dot"></span>陳〇宇</span>
+        </div>
+      </div>
+
+      <div class="grid-5">
+        <!-- 組員 1 -->
+        <div class="card">
+          <div>
+            <span class="card-tag tag-m1">組員 1 專案</span>
+            <h3>長者關懷小幫手</h3>
+            <p>結合「記事布告欄 ‧ 健康動一動 ‧ 佈置小遊戲」的三合一長輩日常陪伴與居家活動小網站。</p>
+            <ul class="feature-list">
+              <li>記事布告欄：提供長輩隨手記錄日常待辦與備忘事項</li>
+              <li>運動建議：可依全身、上下半身或「坐著就能做」抽籤運動</li>
+              <li>佈置小遊戲：自由選擇背景與道具分類，支援上傳自訂素材</li>
+            </ul>
+          </div>
+          <div class="btn-group">
+            <button type="button" class="btn btn-primary" onclick="switchTab('tab-m1', 1)">查看組員 1 詳情</button>
+            <button type="button" class="btn btn-outline" onclick="openInViewer('組員 1：長者關懷小幫手', 'https://doandlearn-naro.github.io/Program-one/')">實機畫面預覽</button>
+            <a class="btn btn-outline" href="https://doandlearn-naro.github.io/Program-one/" target="_blank">開新分頁 ↗</a>
+          </div>
+        </div>
+
+        <!-- 組員 2 -->
+        <div class="card">
+          <div>
+            <span class="card-tag tag-m2">組員 2 專案</span>
+            <h3>樂活在地通｜長輩關懷 PWA</h3>
+            <p>拆分為「長輩端 PWA」與「佳儒後台」雙前端，搭配零依賴 Node.js 伺服器與 SSE 跨視窗即時同步[cite: 1]。</p>
+            <ul class="feature-list">
+              <li>長輩端：大字/特大字、緊急求助 SOS、佳儒叮嚀語音朗讀[cite: 1]</li>
+              <li>社交互動：老友照片牆、健康步數問答、里長廣播共餐/接駁車[cite: 1]</li>
+              <li>佳儒後台：即時接收 SOS 警報、追蹤提醒進度、一鍵重設 Demo[cite: 1]</li>
+            </ul>
+          </div>
+          <div class="btn-group">
+            <button type="button" class="btn btn-primary" onclick="switchTab('tab-m2', 2)">查看組員 2 詳情</button>
+            <button type="button" class="btn btn-outline" onclick="openInViewer('組員 2：樂活在地通 (GitHub Pages)', 'https://chifeng-chiu.github.io/mytest/legacy/index.html')">實機畫面預覽</button>
+            <a class="btn btn-outline" href="https://chifeng-chiu.github.io/mytest/legacy/index.html" target="_blank">開新分頁 ↗</a>
+          </div>
+        </div>
+
+        <!-- 組員 3 -->
+        <div class="card">
+          <div>
+            <span class="card-tag tag-m3">組員 3 專案</span>
+            <h3>溫馨小宅｜長者居家養成與任務遊戲</h3>
+            <p>以遊戲化（Gamification）機制結合日常健康任務，讓長輩透過完成任務賺取經驗值與金幣來佈置專屬房間。</p>
+            <ul class="feature-list">
+              <li>等級與經驗值系統：從「等級 1 新手長者」逐步累積經驗升級</li>
+              <li>計時日常任務：內建 10 分鐘任務倒數計時器與冷卻獎勵機制</li>
+              <li>互動式房間佈置：點擊溫馨客廳內的傢俱即可解鎖並更換喜愛款式</li>
+            </ul>
+          </div>
+          <div class="btn-group">
+            <button type="button" class="btn btn-primary" onclick="switchTab('tab-m3', 3)">查看組員 3 詳情</button>
+            <button type="button" class="btn btn-outline" onclick="openInViewer('組員 3：溫馨小宅', 'https://doandlearn-naro.github.io/Mytry/home/')">實機畫面預覽</button>
+            <a class="btn btn-outline" href="https://doandlearn-naro.github.io/Mytry/home/" target="_blank">開新分頁 ↗</a>
+          </div>
+        </div>
+
+        <!-- 組員 4 -->
+        <div class="card">
+          <div>
+            <span class="card-tag tag-m4">組員 4 專案</span>
+            <h3>🐍 長者知識貪吃蛇</h3>
+            <p>將經典貪吃蛇結合「每 30 秒長者衛教與防詐知識問答」，寓教於樂訓練長輩反應力與健康安全知識。</p>
+            <ul class="feature-list">
+              <li>三色積分果實：藍點 +10 分、紅點 +50 分、限時金點 +150 分（目標 5000 分過關）</li>
+              <li>15 題實用題庫：涵蓋 165 防詐騙、1966 長照專線、中風急救、肌少症與用藥安全</li>
+              <li>答對雙倍獎勵：每 30 秒觸發問答，答對享 10 秒得分雙倍，支援螢幕大方向鍵與滑動操作</li>
+            </ul>
+          </div>
+          <div class="btn-group">
+            <button type="button" class="btn btn-primary" onclick="switchTab('tab-m4', 4)">查看組員 4 詳情</button>
+            <button type="button" class="btn btn-outline" onclick="openInViewer('組員 4：長者知識貪吃蛇', 'INLINE_M4')">實機畫面預覽</button>
+            <button type="button" class="btn btn-outline" onclick="openInlineInNewTab('m4')">開新分頁 ↗</button>
+          </div>
+        </div>
+
+        <!-- 組員 5 (原創內嵌程式碼版) -->
+        <div class="card">
+          <div>
+            <span class="card-tag tag-m5">組員 5 專案</span>
+            <h3>💧 大字體尊榮喝水健康管家 PWA</h3>
+            <p>專為年長者設計的大字體、保溫杯直覺式喝水提醒管家，結合動態水波視覺、Web Speech 語音朗讀與離線快取[cite: 3]。</p>
+            <ul class="feature-list">
+              <li>生活化直覺記錄：「喝了 1 瓶、喝了半瓶、喝幾大口」立體大按鈕與「扣回上一口」復原功能[cite: 3]</li>
+              <li>語音關懷與音效：內建 Web Audio 水聲/提示音與 <code>speechSynthesis</code> 慢速國語朗讀鼓勵[cite: 3]</li>
+              <li>單檔完整 PWA：動態生成 Web Manifest、SVG 圖示與 Service Worker 離線快取[cite: 3]</li>
+            </ul>
+          </div>
+          <div class="btn-group">
+            <button type="button" class="btn btn-primary" onclick="switchTab('tab-m5', 5)">查看組員 5 詳情</button>
+            <button type="button" class="btn btn-outline" onclick="openInViewer('組員 5：大字體尊榮喝水健康管家 PWA', 'INLINE_M5')">實機畫面預覽</button>
+            <button type="button" class="btn btn-outline" onclick="openInlineInNewTab('m5')">開新分頁 ↗</button>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ================= 組員 1 詳情頁 ================= -->
+    <section id="tab-m1" class="section">
+      <div class="member-layout">
+        <div class="doc-panel">
+          <span class="card-tag tag-m1">組員 1 進度報告</span>
+          <h2>長者關懷小幫手（記事布告欄 ‧ 健康動一動 ‧ 佈置小遊戲）</h2>
+          <p style="color: var(--text-muted);">
+            部署網址：<a href="https://doandlearn-naro.github.io/Program-one/" target="_blank" style="color: var(--accent);">https://doandlearn-naro.github.io/Program-one/</a>
+          </p>
+
+          <h3>核心三大模組設計</h3>
+          <div class="sub-grid">
+            <div class="info-box">
+              <h4>📌 1. 記事布告欄</h4>
+              <ul>
+                <li>提供長輩清晰、無廣告干擾的個人記事清單</li>
+                <li>可隨時新增日常提醒或生活備忘，避免忘記重要事項</li>
+              </ul>
+            </div>
+            <div class="info-box">
+              <h4>🤸 2. 健康動一動（運動建議）</h4>
+              <ul>
+                <li>支援依身體部位篩選：<strong>隨機、全身、上半身、下半身、坐著就能做</strong></li>
+                <li>按下「給我一個建議」即可抽取適合長輩體能的居家伸展與運動，亦能展開查看全部建議</li>
+              </ul>
+            </div>
+            <div class="info-box">
+              <h4>🎨 3. 佈置小遊戲</h4>
+              <ul>
+                <li>提供多種場景背景與道具分類，訓練長輩手眼協調與美感創造力</li>
+                <li>支援「新增我的素材」功能（上傳小於 500 KB 之圖片），將自己或家人的照片變成佈置素材</li>
+              </ul>
+            </div>
+          </div>
+        </div>
+
+        <div class="phone-simulator">
+          <div class="sim-header">
+            <span>📱 組員 1 實機操作 (長者關懷小幫手)</span>
+            <a href="https://doandlearn-naro.github.io/Program-one/" target="_blank" style="color: #fbbf24; text-decoration: none; font-weight: 700;">開新分頁 ↗</a>
+          </div>
+          <iframe class="sim-iframe" src="https://doandlearn-naro.github.io/Program-one/" title="組員1長者關懷小幫手"></iframe>
+        </div>
+      </div>
+    </section>
+
+    <!-- ================= 組員 2 詳情頁 ================= -->
+    <section id="tab-m2" class="section">
+      <div class="member-layout">
+        <div class="doc-panel">
+          <span class="card-tag tag-m2">組員 2 進度報告｜邱〇峰 (Feng)</span>
+          <h2>樂活在地通｜長輩關懷 PWA（前後端分離版 & 線上展示版）</h2>
+          <p style="color: var(--text-muted);">
+            將原本的單檔 <code>index.html</code> 拆成「長輩端」與「佳儒後台」兩個前端，並加上零外部依賴的 Node.js 伺服器[cite: 1]。資料統一保存至 <code>data/db.json</code>，兩個視窗透過 SSE 即時同步[cite: 1]；同時保留 <code>legacy/index.html</code> 部署於 GitHub Pages 供直接操作體驗[cite: 1, 2]。
+          </p>
+
+          <h3>1. 雙入口功能設計（長輩端 vs. 佳儒後台）</h3>
+          <div class="sub-grid">
+            <div class="info-box">
+              <h4>👵 長輩端 <code>elder.html</code> (PWA)</h4>
+              <ul>
+                <li><strong>大字／特大字切換</strong>：固定於頁面上方並記住選擇（內文最小 22px，按鈕至少 64px 高）[cite: 1]</li>
+                <li><strong>緊急求助 SOS</strong>：按下立即建立求助紀錄，後台同步跳出警報[cite: 1]</li>
+                <li><strong>佳儒的叮嚀</strong>：查看提醒、<code>speechSynthesis</code> 語音朗讀、回報完成[cite: 1]</li>
+                <li><strong>老友照片牆</strong>：上傳照片、按讚、語音介紹、參加老友湊咖[cite: 1]</li>
+                <li><strong>健康步數</strong>：模擬計步、金幣獎勵、每日問答、兌換獎勵[cite: 1]</li>
+                <li><strong>社區廣播站</strong>：里長廣播、共餐報名（36人）、接駁車預約（醫院線/市場線）[cite: 1]</li>
+              </ul>
+            </div>
+            <div class="info-box">
+              <h4>👩‍💼 佳儒後台 <code>admin.html</code> (管理端)</h4>
+              <ul>
+                <li><strong>SOS 求助監控</strong>：查看待處理警報、位置與時間，按「📞 已聯繫並解除警報」結案[cite: 1]</li>
+                <li><strong>提醒發布與追蹤</strong>：指定班級（如長青A班林阿公）、時間、類型，追蹤長輩回報進度[cite: 1]</li>
+                <li><strong>社區廣播發布</strong>：新增里長廣播，長輩端 1~3 秒內即時收到[cite: 1]</li>
+                <li><strong>名單管理</strong>：集中查看共餐名單、接駁車名單、老友湊咖名單[cite: 1]</li>
+                <li><strong>一鍵重設 Demo</strong>：右上角按鈕呼叫 <code>POST /api/reset</code> 從 <code>seed.json</code> 還原初始狀態[cite: 1]</li>
+              </ul>
+            </div>
+          </div>
+
+          <h3>2. 跨視窗即時同步與並排示範流程</h3>
+          <div class="sub-grid">
+            <div class="info-box">
+              <h4>⚡ 技術架構與離線佇列</h4>
+              <ul>
+                <li>後端透過 <strong>Server-Sent Events (SSE)</strong> <code>GET /api/events</code> 即時推送完整狀態[cite: 1]</li>
+                <li>若 SSE 中斷，前端自動改用每 3 秒輪詢 <code>GET /api/state</code>[cite: 1]</li>
+                <li><code>sw.js</code> 快取 App Shell；離線時先顯示 <code>localStorage</code> 上次資料，修改排入離線佇列，恢復連線後自動補送[cite: 1]</li>
+                <li><code>db.json</code> 採「先寫暫存檔、再重新命名」原子寫入，避免檔案損毀[cite: 1]</li>
+              </ul>
+            </div>
+            <div class="info-box">
+              <h4>🖥️ 報告現場並排示範 6 步驟</h4>
+              <ul>
+                <li>1. 執行 <code>node server.js</code> 啟動零依賴伺服器[cite: 1]</li>
+                <li>2. 左右並排開啟 <code>elder.html</code> 與 <code>admin.html</code>[cite: 1]</li>
+                <li>3. 長輩端按「緊急求助」→ 後台立即跳出 SOS 警報[cite: 1]</li>
+                <li>4. 後台按「📞 已聯繫並解除警報」→ 長輩端同步更新狀態[cite: 1]</li>
+                <li>5. 後台發布新提醒或里長廣播 → 長輩端 1 秒內即時顯示[cite: 1]</li>
+                <li>6. 按後台右上角「重設 Demo」→ 雙視窗瞬間回到初始資料[cite: 1]</li>
+              </ul>
+            </div>
+          </div>
+
+          <h3>3. 專案目錄結構</h3>
+          <pre class="code-block">長者APP/
+├─ server.js                 # 零依賴 Node.js 伺服器：靜態檔案、REST API、SSE
+├─ README-PWA.md
+├─ data/
+│  ├─ seed.json              # 示範資料母本；按「重設 Demo」時會從這裡還原
+│  └─ db.json                # 目前運作中的資料；伺服器啟動後自動建立／載入
+├─ public/
+│  ├─ elder.html             # 長輩端（PWA）
+│  ├─ admin.html             # 佳儒後台
+│  ├─ manifest.json          # 長輩端 PWA manifest
+│  ├─ sw.js                  # Service Worker（App Shell 快取）
+│  ├─ css/styles.css         # 共用視覺樣式（暖米色背景、高對比色塊）
+│  ├─ js/                    # api.js (快取/離線佇列/SSE)、elder.js、admin.js
+│  └─ icons/                 # PWA 圖示
+└─ legacy/                   # 原始單檔版本備份（目前已部署於 GitHub Pages 線上展示）</pre>
+
+          <h3>4. 後端 REST API 一覽表</h3>
+          <div class="table-wrap">
+            <table class="api-table">
+              <thead>
+                <tr>
+                  <th>方法</th>
+                  <th>路徑</th>
+                  <th>用途</th>
+                  <th>主要請求內容</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr><td>GET</td><td><code>/api/state</code></td><td>取得目前完整狀態</td><td>無</td></tr>
+                <tr><td>GET</td><td><code>/api/events</code></td><td>SSE 即時狀態推送</td><td>無</td></tr>
+                <tr><td>POST</td><td><code>/api/reset</code></td><td>重設為示範資料</td><td>無</td></tr>
+                <tr><td>POST</td><td><code>/api/reminders</code></td><td>發布提醒</td><td><code>content</code>, <code>time</code>, <code>group</code>, <code>type</code>, <code>note</code></td></tr>
+                <tr><td>POST</td><td><code>/api/reminders/:id/complete</code></td><td>回報提醒完成</td><td><code>elderName</code></td></tr>
+                <tr><td>POST</td><td><code>/api/sos</code></td><td>建立 SOS 求助</td><td><code>elderName</code>, <code>location</code></td></tr>
+                <tr><td>POST</td><td><code>/api/sos/resolve</code></td><td>解除 SOS</td><td><code>id</code>（可省略）</td></tr>
+                <tr><td>POST</td><td><code>/api/photos</code></td><td>新增照片 / 按讚 / 語音</td><td><code>/like</code>、<code>/voice</code> (<code>voiceText</code>)</td></tr>
+                <tr><td>POST</td><td><code>/api/health/*</code></td><td>新增步數、兌換獎勵、每日問答</td><td><code>/steps</code>, <code>/redeem</code>, <code>/quiz</code></td></tr>
+                <tr><td>POST</td><td><code>/api/community/*</code></td><td>共餐報名、老友湊咖、接駁車預約</td><td><code>/meal</code>, <code>/gathering</code>, <code>/shuttle</code></td></tr>
+                <tr><td>POST</td><td><code>/api/notices</code></td><td>發布社區廣播</td><td><code>title</code>, <code>body</code>, <code>category</code>, <code>icon</code></td></tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+
+        <div class="phone-simulator">
+          <div class="sim-header">
+            <span>📱 組員 2 實機操作 (樂活在地通)</span>
+            <a href="https://chifeng-chiu.github.io/mytest/legacy/index.html" target="_blank" style="color: #fbbf24; text-decoration: none; font-weight: 700;">開新分頁 ↗</a>
+          </div>
+          <iframe class="sim-iframe" src="https://chifeng-chiu.github.io/mytest/legacy/index.html" title="組員2樂活在地通"></iframe>
+        </div>
+      </div>
+    </section>
+
+    <!-- ================= 組員 3 詳情頁 ================= -->
+    <section id="tab-m3" class="section">
+      <div class="member-layout">
+        <div class="doc-panel">
+          <span class="card-tag tag-m3">組員 3 進度報告</span>
+          <h2>🏠 溫馨小宅｜長者居家養成與日常任務遊戲</h2>
+          <p style="color: var(--text-muted);">
+            部署網址：<a href="https://doandlearn-naro.github.io/Mytry/home/" target="_blank" style="color: var(--accent);">https://doandlearn-naro.github.io/Mytry/home/</a>
+          </p>
+
+          <h3>核心設計與功能亮點</h3>
+          <div class="sub-grid">
+            <div class="info-box">
+              <h4>📈 1. 遊戲化等級與經驗值進度</h4>
+              <ul>
+                <li>首頁上方清楚顯示「溫馨客廳｜等級 1 新手長者」與經驗值進度條（如 <code>0 / 120 經驗值</code> 與金幣數量）</li>
+                <li>達成條件時會觸發「🎉 升級了！恭喜升級！」的動態回饋彈窗，帶給長輩滿滿成就感</li>
+              </ul>
+            </div>
+            <div class="info-box">
+              <h4>⏳ 2. 10 分鐘計時任務與冷卻機制</h4>
+              <ul>
+                <li>內建互動式任務對話框，配備 <code>10:00</code> 倒數計時器與冷卻時間提示</li>
+                <li>鼓勵長輩定時起來活動或完成健康小目標，完成後立即獲得經驗值與金幣獎勵</li>
+              </ul>
+            </div>
+            <div class="info-box">
+              <h4>🛋️ 3. 直覺式點擊傢俱換裝</h4>
+              <ul>
+                <li>不用複雜選單，「點一下房間裡的傢俱，就能選款式」</li>
+                <li>消耗累積的經驗值/金幣即可解鎖新傢俱與切換不同房間場景，支援 PWA manifest 安裝</li>
+              </ul>
+            </div>
+          </div>
+        </div>
+
+        <div class="phone-simulator">
+          <div class="sim-header">
+            <span>📱 組員 3 實機操作 (溫馨小宅)</span>
+            <a href="https://doandlearn-naro.github.io/Mytry/home/" target="_blank" style="color: #fbbf24; text-decoration: none; font-weight: 700;">開新分頁 ↗</a>
+          </div>
+          <iframe class="sim-iframe" src="https://doandlearn-naro.github.io/Mytry/home/" title="組員3溫馨小宅"></iframe>
+        </div>
+      </div>
+    </section>
+
+    <!-- ================= 組員 4 詳情頁 ================= -->
+    <section id="tab-m4" class="section">
+      <div class="member-layout">
+        <div class="doc-panel">
+          <span class="card-tag tag-m4">組員 4 進度報告</span>
+          <h2>🐍 長者知識貪吃蛇（經典遊戲 × 高齡防詐與衛教問答）</h2>
+          <p style="color: var(--text-muted);">
+            將長輩熟悉的貪吃蛇玩法結合「每 30 秒彈出長者知識問答」，支援螢幕大型方向鍵、觸控滑動與鍵盤操作，讓長輩在動腦動手的同時記住重要防詐與健康常識。
+          </p>
+
+          <h3>核心玩法與高齡友善設計</h3>
+          <div class="sub-grid">
+            <div class="info-box">
+              <h4>🍎 1. 三色果實與 5000 分過關機制</h4>
+              <ul>
+                <li><strong>藍點（+10 分）</strong>：常駐基礎果實</li>
+                <li><strong>紅點（+50 分）</strong>：限時 12 秒出現的高分果實</li>
+                <li><strong>金點（+150 分）</strong>：限時 6 秒出現的稀有大獎</li>
+                <li>累積達到 <strong>5,000 分</strong> 即可觸發「恭喜過關！」畫面</li>
+              </ul>
+            </div>
+            <div class="info-box">
+              <h4>🧠 2. 每 30 秒知識問答 ＆ 答對雙倍得分</h4>
+              <ul>
+                <li>遊戲每進行 30 秒自動暫停並彈出「長者知識問答」卡片</li>
+                <li>答對後啟動 <strong>10 秒得分雙倍（x2 黃金標籤）</strong>，答錯也會貼心顯示正確解答</li>
+                <li>隨機洗牌不重複出題，確保每次遊玩都能學到新知識</li>
+              </ul>
+            </div>
+            <div class="info-box">
+              <h4>🎮 3. 多元無障礙操控方式</h4>
+              <ul>
+                <li>畫面下方內建大型十字方向按鈕（▲ ◀ ▼ ▶），適合手機與平板長輩點擊</li>
+                <li>畫布支援手指直覺滑動轉向，電腦端亦支援方向鍵、WASD 與 P 鍵暫停</li>
+              </ul>
+            </div>
+          </div>
+
+          <h3>內建 15 題高齡核心題庫一覽</h3>
+          <div class="sub-grid">
+            <div class="info-box">
+              <h4>🛡️ 防詐騙與社福專線</h4>
+              <ul>
+                <li>反詐騙諮詢專線：<strong>165</strong>（遇檢警要求轉帳安全帳戶應掛斷查證）</li>
+                <li>台灣長照服務專線：<strong>1966</strong></li>
+                <li>65 歲以上占總人口達 14% 稱為：<strong>高齡社會</strong></li>
+              </ul>
+            </div>
+            <div class="info-box">
+              <h4>🏥 急救、慢性病與用藥安全</h4>
+              <ul>
+                <li>懷疑中風應：<strong>立刻撥 119 送醫</strong></li>
+                <li>理想收縮壓小於 <strong>120 mmHg</strong>；每日食鹽少於 <strong>6 公克</strong></li>
+                <li>起床防姿勢性低血壓：<strong>先坐一下再緩慢站起</strong></li>
+                <li>服藥應遵照醫囑、流感疫苗每年接種一次、認識失智症早期警訊</li>
+              </ul>
+            </div>
+            <div class="info-box">
+              <h4>💪 居家防跌與肌少症預防</h4>
+              <ul>
+                <li>浴室防跌：<strong>加裝扶手並鋪防滑墊</strong></li>
+                <li>預防肌少症：<strong>多運動並攝取足夠蛋白質</strong>（每週至少 150 分鐘中強度運動）</li>
+                <li>預防骨質疏鬆：<strong>補充鈣質、適度曬太陽與運動</strong></li>
+              </ul>
+            </div>
+          </div>
+        </div>
+
+        <div class="phone-simulator">
+          <div class="sim-header">
+            <span>📱 組員 4 實機操作 (長者知識貪吃蛇)</span>
+            <a href="javascript:void(0)" onclick="openInlineInNewTab('m4')" style="color: #fbbf24; text-decoration: none; font-weight: 700;">開新分頁 ↗</a>
+          </div>
+          <iframe id="m4-sim-iframe" class="sim-iframe" title="組員4長者知識貪吃蛇"></iframe>
+        </div>
+      </div>
+    </section>
+
+    <!-- ================= 組員 5 詳情頁 (原創程式碼內嵌版) ================= -->
+    <section id="tab-m5" class="section">
+      <div class="member-layout">
+        <div class="doc-panel">
+          <span class="card-tag tag-m5">組員 5 進度報告</span>
+          <h2>💧 大字體尊榮喝水健康管家 PWA（原創單檔完整內嵌版）</h2>
+          <p style="color: var(--text-muted);">
+            專為高齡長輩量身打造的直覺式飲水健康管家，不讓長輩被複雜的毫升數字困擾，改用日常習慣的「保溫杯幾瓶、半瓶、幾大口」來記錄，並整合動態水波視覺、國語語音朗讀回饋與完整單檔 PWA 架構[cite: 3]。
+          </p>
+
+          <h3>核心設計與高齡友善技術亮點</h3>
+          <div class="sub-grid">
+            <div class="info-box">
+              <h4>🍶 1. 保溫杯動態水位 ＆ 直覺生活單位</h4>
+              <ul>
+                <li>支援切換三種預設杯型：<strong>小馬克杯 (300cc)、標準保溫杯 (500cc)、大運動水壺 (750cc)</strong> 或自訂容量[cite: 3]</li>
+                <li>提供三顆立體大按鈕：<strong>「喝了 1 瓶」、「喝了半瓶」、「喝幾大口 (70cc)」</strong>，並貼心設計「按錯了，扣回上一口」復原鍵[cite: 3]</li>
+                <li>隨喝水量即時呈現保溫杯水波上升動畫與今日達標歡慶標語[cite: 3]</li>
+              </ul>
+            </div>
+            <div class="info-box">
+              <h4>🔊 2. 慢速語音關懷 (Web Speech) ＆ 合成音效</h4>
+              <ul>
+                <li>每次點擊喝水，透過 <strong>Web Audio API</strong> 即時合成清脆倒水音效，無須依賴外部音檔[cite: 3]</li>
+                <li>結合 <strong>Web Speech API (<code>speechSynthesis</code>)</strong> 以 <code>0.9</code> 慢速朗讀國語關懷（如：「好棒！記錄喝了一整瓶，今天累積喝了 2 瓶」）[cite: 3]</li>
+              </ul>
+            </div>
+            <div class="info-box">
+              <h4>⏰ 3. 定時喝水鬧鐘 ＆ 單檔離線 PWA</h4>
+              <ul>
+                <li>支援每 <strong>30 / 45 / 60 / 90 / 120 分鐘</strong> 推播系統通知、三連音和弦提醒與語音呼喚[cite: 3]</li>
+                <li>透過 Blob 動態生成 <strong>Inline Web Manifest、SVG 桌面圖示與 Service Worker (<code>water-pwa-v1</code>)</strong>，斷網也能完整記錄並自動偵測離線狀態條[cite: 3]</li>
+              </ul>
+            </div>
+          </div>
+        </div>
+
+        <div class="phone-simulator">
+          <div class="sim-header">
+            <span>📱 組員 5 實機操作 (健康喝水管家)</span>
+            <a href="javascript:void(0)" onclick="openInlineInNewTab('m5')" style="color: #fbbf24; text-decoration: none; font-weight: 700;">開新分頁 ↗</a>
+          </div>
+          <iframe id="m5-sim-iframe" class="sim-iframe" title="組員5健康喝水管家"></iframe>
+        </div>
+      </div>
+    </section>
+
+    <!-- ================= 網頁實機切換台 ================= -->
+    <section id="tab-viewer" class="section">
+      <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1rem; flex-wrap: wrap; gap: 1rem;">
+        <div>
+          <h2 id="viewer-title" style="color: var(--accent);">目前展示：組員 1 — 長者關懷小幫手</h2>
+        </div>
+        <div class="btn-group">
+          <button type="button" class="btn btn-outline" onclick="openInViewer('組員 1：長者關懷小幫手', 'https://doandlearn-naro.github.io/Program-one/')">組員 1</button>
+          <button type="button" class="btn btn-outline" onclick="openInViewer('組員 2：樂活在地通 (GitHub Pages)', 'https://chifeng-chiu.github.io/mytest/legacy/index.html')">組員 2</button>
+          <button type="button" class="btn btn-outline" onclick="openInViewer('組員 3：溫馨小宅', 'https://doandlearn-naro.github.io/Mytry/home/')">組員 3</button>
+          <button type="button" class="btn btn-outline" onclick="openInViewer('組員 4：長者知識貪吃蛇', 'INLINE_M4')">組員 4</button>
+          <button type="button" class="btn btn-outline" onclick="openInViewer('組員 5：大字體尊榮喝水健康管家 PWA', 'INLINE_M5')">組員 5</button>
+          <button type="button" class="btn btn-outline" onclick="resizeViewer('430px')">📱 手機寬度</button>
+          <button type="button" class="btn btn-outline" onclick="resizeViewer('100%')">💻 電腦全寬</button>
+          <a id="viewer-link" class="btn btn-primary" href="https://doandlearn-naro.github.io/Program-one/" target="_blank">開新分頁 ↗</a>
+        </div>
+      </div>
+
+      <div id="viewer-box" class="viewer-container" style="max-width: 100%;">
+        <div class="sim-header">
+          <span id="viewer-url">https://doandlearn-naro.github.io/Program-one/</span>
+        </div>
+        <iframe id="viewer-iframe" class="sim-iframe" src="https://doandlearn-naro.github.io/Program-one/"></iframe>
+      </div>
+    </section>
+  </main>
+
+  <footer class="site-footer">
+    <p>通識課程「資訊科技應用當地長者」小組進度報告整合平台 ｜ 團隊成員：邱〇峰、何〇哲、擺〇豪、李〇鎗、洪〇鈞、洪〇恩、陳〇宇</p>
+  </footer>
+
+  <script>
+    const m4RawHtml = `<!doctype html>
+<html lang="zh-Hant">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>長者知識貪吃蛇</title>
+<style>
+:root{box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px);
+--bg:#f5f5f2;--fg:#1d1d1b;--card:#fff;--cell:#fbfbf8;--mut:#6b6b66;--btn:#2f6fed;--btnfg:#fff;--ov:rgba(245,245,242,.92);--bd:#d9d9d3}
+html{scroll-padding-top:env(safe-area-inset-top,0px)}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){--bg:#16171a;--fg:#ececea;--card:#25262b;--cell:#1d1e22;--mut:#9a9a95;--btn:#5b8cff;--btnfg:#0b0b0d;--ov:rgba(22,23,26,.92);--bd:#3a3b41}}
+:root[data-theme="dark"]{--bg:#16171a;--fg:#ececea;--card:#25262b;--cell:#1d1e22;--mut:#9a9a95;--btn:#5b8cff;--btnfg:#0b0b0d;--ov:rgba(22,23,26,.92);--bd:#3a3b41}
+body{margin:0;background:var(--bg);color:var(--fg);font-family:system-ui,-apple-system,"Noto Sans TC","Microsoft JhengHei",sans-serif}
+.wrap{max-width:620px;margin:0 auto;padding:12px}
+h1{font-size:20px;margin:4px 0 8px}
+.hud{display:flex;flex-wrap:wrap;gap:8px 16px;font-size:15px;margin-bottom:8px;align-items:center}
+.hud b{font-variant-numeric:tabular-nums}
+.x2{background:#ffb400;color:#222;border-radius:999px;padding:2px 10px;font-weight:700;display:none}
+.board{position:relative;width:100%}
+canvas{display:block;width:100%;height:auto;border:2px solid var(--bd);border-radius:8px;touch-action:none}
+.ov{position:absolute;inset:0;background:var(--ov);display:none;align-items:center;justify-content:center;padding:12px;border-radius:8px}
+.card{background:var(--card);border:1px solid var(--bd);border-radius:12px;padding:16px;width:100%;max-width:440px;box-sizing:border-box}
+.card h2{margin:0 0 8px;font-size:18px}
+.card p{margin:0 0 10px;line-height:1.5;font-size:15px}
+button{font:inherit;cursor:pointer}
+.opt,.go{display:block;width:100%;margin:8px 0 0;padding:12px;border-radius:10px;border:1px solid var(--bd);background:var(--card);color:var(--fg);font-size:16px;text-align:left}
+.go{background:var(--btn);color:var(--btnfg);border-color:var(--btn);text-align:center;font-weight:700}
+.pad{display:grid;grid-template-columns:repeat(3,64px);grid-template-rows:repeat(2,52px);gap:6px;justify-content:center;margin:12px 0}
+.pad button{border-radius:10px;border:1px solid var(--bd);background:var(--card);color:var(--fg);font-size:20px}
+.pad .u{grid-column:2}.pad .l{grid-row:2;grid-column:1}.pad .d{grid-row:2;grid-column:2}.pad .r{grid-row:2;grid-column:3}
+.tip{font-size:13px;color:var(--mut);text-align:center}
+.dot{display:inline-block;width:10px;height:10px;border-radius:50%;margin:0 2px 0 8px}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <h1>長者知識貪吃蛇</h1>
+  <div class="hud">
+    <span>分數 <b id="sc">0</b> / 5000</span>
+    <span>下次問答 <b id="nq">30</b> 秒</span>
+    <span class="x2" id="x2">雙倍 10 秒</span>
+  </div>
+  <div class="board">
+    <canvas id="cv"></canvas>
+    <div class="ov" id="ov"><div class="card" id="card"></div></div>
+  </div>
+  <div class="pad">
+    <button class="u" data-d="u" aria-label="上">▲</button>
+    <button class="l" data-d="l" aria-label="左">◀</button>
+    <button class="d" data-d="d" aria-label="下">▼</button>
+    <button class="r" data-d="r" aria-label="右">▶</button>
+  </div>
+  <div class="tip">方向鍵 / WASD / 滑動 / 按鈕控制，P 暫停<br>
+    <span class="dot" style="background:#2f6fed"></span>10 分
+    <span class="dot" style="background:#e5322d"></span>50 分
+    <span class="dot" style="background:#f5b800"></span>150 分</div>
+</div>
+<scr` + `ipt>
+const N=30,C=20,STEP=120,TARGET=5000,QI=30,DD=10;
+const PTS={b:10,r:50,g:150},COL={b:'#2f6fed',r:'#e5322d',g:'#f5b800'};
+const cv=document.getElementById('cv'),g=cv.getContext('2d');
+cv.width=cv.height=N*C;
+const $=id=>document.getElementById(id);
+const bank=[
+['台灣的反詐騙諮詢專線是幾號？',['110','165','119'],1],
+['台灣的長照服務專線是幾號？',['1966','1999','1922'],0],
+['懷疑家人中風時，應該立刻怎麼做？',['先睡一覺觀察','自行服用阿斯匹靈','立刻撥119送醫'],2],
+['65歲以上人口占總人口達14%，稱為？',['高齡化社會','高齡社會','超高齡社會'],1],
+['為預防長者在浴室跌倒，最適合的做法是？',['地面保持濕滑好清潔','加裝扶手並鋪防滑墊','關燈節省電費'],1],
+['一般成人理想血壓的收縮壓應小於多少 mmHg？',['120','140','160'],0],
+['長者服藥時，下列哪個觀念正確？',['症狀好了就自行停藥','覺得沒效就自行加倍','遵照醫師藥師指示，不自行增減'],2],
+['預防肌少症，最好的方式是？',['多運動並攝取足夠蛋白質','整天臥床休息','完全不吃肉類與蛋豆'],0],
+['一般建議成人每週至少應有多少分鐘中等強度運動？',['30 分鐘','150 分鐘','600 分鐘'],1],
+['建議每日食鹽（鹽）攝取量約少於多少？',['6 公克','15 公克','25 公克'],0],
+['長者起床時，為避免姿勢性低血壓頭暈，應該？',['猛然起身','起身後立刻快走','先坐一下再緩慢站起'],2],
+['接到自稱「檢警人員」要求你轉帳到「安全帳戶」的電話，應該？',['照指示轉帳','掛斷並撥165查證','提供提款卡密碼'],1],
+['流感疫苗建議多久接種一次？',['每年一次','十年一次','終身一次即可'],0],
+['以下何者屬於失智症的早期警訊？',['偶爾忘記鑰匙放哪裡但能回想起來','記憶力減退影響日常生活','天氣冷會想多穿衣服'],1],
+['為預防骨質疏鬆，長者可以怎麼做？',['補充鈣質、適度曬太陽與運動','完全避免走動','大量喝含糖飲料'],0]
+];
+let S,queue=[];
+function reset(){S={snake:[{x:15,y:15},{x:14,y:15},{x:13,y:15}],dir:{x:1,y:0},nd:{x:1,y:0},score:0,foods:[],t:0,nq:QI,de:-1,state:'idle'};}
+const shuffle=a=>{for(let i=a.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[a[i],a[j]]=[a[j],a[i]];}return a;};
+function show(html){$('card').innerHTML=html;$('ov').style.display='flex';}
+function hide(){$('ov').style.display='none';}
+function start(){reset();S.state='run';hide();}
+function showStart(){reset();show('<h2>準備好了嗎？</h2><p>吃藍點 +10、紅點 +50、金點 +150。每 30 秒會出現一題長者知識問答，答對後 10 秒內得分雙倍。達到 5000 分就過關！</p><button class="go" id="b0">開始遊戲</button>');$('b0').onclick=start;}
+function end(win){S.state='over';show('<h2>'+(win?'恭喜過關！':'遊戲結束')+'</h2><p>最終分數：'+S.score+'</p><button class="go" id="b0">再玩一次</button>');$('b0').onclick=start;}
+function free(){for(let k=0;k<500;k++){const p={x:Math.floor(Math.random()*N),y:Math.floor(Math.random()*N)};
+ if(!S.snake.some(s=>s.x===p.x&&s.y===p.y)&&!S.foods.some(f=>f.x===p.x&&f.y===p.y))return p;}return null;}
+function add(type){const p=free();if(p)S.foods.push({x:p.x,y:p.y,type,t:S.t});}
+function spawn(){
+ S.foods=S.foods.filter(f=>!(f.type==='r'&&S.t-f.t>12)&&!(f.type==='g'&&S.t-f.t>6));
+ const has=t=>S.foods.some(f=>f.type===t);
+ if(!has('b'))add('b');
+ if(!has('r')&&Math.random()<0.02)add('r');
+ if(!has('g')&&Math.random()<0.008)add('g');
+}
+function quiz(){
+ S.state='quiz';
+ if(!queue.length)queue=shuffle([...bank.keys()]);
+ const q=bank[queue.shift()];
+ const opts=shuffle(q[1].map((t,i)=>({t,ok:i===q[2]})));
+ show('<h2>長者知識問答</h2><p>'+q[0]+'</p>'+opts.map((o,i)=>'<button class="opt" data-i="'+i+'">'+o.t+'</button>').join(''));
+ document.querySelectorAll('.opt').forEach(b=>b.onclick=()=>{
+  const o=opts[+b.dataset.i];
+  if(o.ok)S.de=S.t+DD;
+  show('<h2>'+(o.ok?'答對了！':'答錯了')+'</h2><p>'+(o.ok?'接下來 '+DD+' 秒內得分雙倍！':'正確答案：'+q[1][q[2]])+'</p><button class="go" id="b0">繼續遊戲</button>');
+  $('b0').onclick=()=>{S.nq=S.t+QI;S.state='run';hide();};
+ });
+}
+function step(){
+ if(S.state!=='run')return;
+ S.t+=STEP/1000;
+ S.dir=S.nd;
+ const h={x:S.snake[0].x+S.dir.x,y:S.snake[0].y+S.dir.y};
+ if(h.x<0||h.y<0||h.x>=N||h.y>=N)return end(false);
+ const i=S.foods.findIndex(f=>f.x===h.x&&f.y===h.y);
+ let grow=false;
+ if(i>=0){let p=PTS[S.foods[i].type];if(S.t<S.de)p*=2;S.score+=p;S.foods.splice(i,1);grow=true;}
+ const body=grow?S.snake:S.snake.slice(0,-1);
+ if(body.some(s=>s.x===h.x&&s.y===h.y))return end(false);
+ S.snake=[h,...body];
+ if(S.score>=TARGET)return end(true);
+ spawn();
+ if(S.t>=S.nq)quiz();
+}
+function draw(){
+ g.fillStyle=getComputedStyle(document.documentElement).getPropertyValue('--cell');
+ g.fillRect(0,0,N*C,N*C);
+ S.foods.forEach(f=>{g.fillStyle=COL[f.type];g.beginPath();g.arc(f.x*C+C/2,f.y*C+C/2,C/2-2,0,7);g.fill();});
+ S.snake.forEach((s,i)=>{g.fillStyle=i?'#4cae4c':'#1f7a1f';g.beginPath();g.roundRect(s.x*C+1,s.y*C+1,C-2,C-2,5);g.fill();});
+ $('sc').textContent=S.score;
+ $('nq').textContent=Math.max(0,Math.ceil(S.nq-S.t));
+ const dbl=S.t<S.de;$('x2').style.display=dbl?'inline-block':'none';
+ if(dbl)$('x2').textContent='雙倍 '+Math.ceil(S.de-S.t)+' 秒';
+}
+function turn(d){
+ const m={u:{x:0,y:-1},d:{x:0,y:1},l:{x:-1,y:0},r:{x:1,y:0}}[d];
+ if(S.state==='run'&&!(m.x===-S.dir.x&&m.y===-S.dir.y))S.nd=m;
+}
+function pause(){
+ if(S.state==='run'){S.state='pause';show('<h2>暫停中</h2><button class="go" id="b0">繼續</button>');$('b0').onclick=()=>{S.state='run';hide();};}
+ else if(S.state==='pause'){S.state='run';hide();}
+}
+addEventListener('keydown',e=>{
+ const k={ArrowUp:'u',w:'u',W:'u',ArrowDown:'d',s:'d',S:'d',ArrowLeft:'l',a:'l',A:'l',ArrowRight:'r',d:'r',D:'r'}[e.key];
+ if(k){e.preventDefault();turn(k);}
+ else if(e.key==='p'||e.key==='P')pause();
+});
+document.querySelectorAll('.pad button').forEach(b=>b.addEventListener('pointerdown',e=>{e.preventDefault();turn(b.dataset.d);}));
+let tx=0,ty=0;
+cv.addEventListener('touchstart',e=>{tx=e.touches[0].clientX;ty=e.touches[0].clientY;},{passive:true});
+cv.addEventListener('touchend',e=>{
+ const t=e.changedTouches[0],dx=t.clientX-tx,dy=t.clientY-ty;
+ if(Math.max(Math.abs(dx),Math.abs(dy))<20)return;
+ turn(Math.abs(dx)>Math.abs(dy)?(dx>0?'r':'l'):(dy>0?'d':'u'));
+},{passive:true});
+showStart();draw();
+setInterval(()=>{step();draw();},STEP);
+</scr` + `ipt>
+</body>
+</html>`;
+
+    const m5RawHtml = `<!DOCTYPE html>
 <html lang="zh-TW">
 <head>
     <meta charset="UTF-8">
-    <!-- 防縮放與適應手機 safe-area -->
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
     <title>大字體尊榮喝水健康管家 PWA</title>
-
-    <!-- PWA / iOS 主畫面相關 Meta -->
     <meta name="theme-color" content="#1D4ED8">
     <meta name="apple-mobile-web-app-capable" content="yes">
     <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
     <meta name="apple-mobile-web-app-title" content="喝水管家">
-
-    <!-- Tailwind CSS CDN -->
-    <script src="https://cdn.tailwindcss.com"></script>
-    <!-- FontAwesome 圖示 CDN -->
+    <scr` + `ipt src="https://cdn.tailwindcss.com"></scr` + `ipt>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    <!-- Google Fonts Noto Sans TC -->
     <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@400;700;900&display=swap" rel="stylesheet">
-
-    <!-- Inline Web Manifest 動態生成腳本 -->
-    <script>
+    <scr` + `ipt>
         (function() {
-            // 自動生成 Inline PWA Icon (192x192 & 512x512 SVG Data URL)
-            const iconSvg = `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" fill="#1D4ED8"><rect width="512" height="512" rx="100" fill="#2563EB"/><path d="M256 80c-50 70-120 160-120 230 0 70 50 120 120 120s120-50 120-120c0-70-70-160-120-230z" fill="#38BDF8"/><path d="M210 320c0-30 20-60 40-80 5 15 15 35 15 50 0 20-15 30-35 30z" fill="#FFFFFF" opacity="0.6"/></svg>`;
+            const iconSvg = '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" fill="#1D4ED8"><rect width="512" height="512" rx="100" fill="#2563EB"/><path d="M256 80c-50 70-120 160-120 230 0 70 50 120 120 120s120-50 120-120c0-70-70-160-120-230z" fill="#38BDF8"/><path d="M210 320c0-30 20-60 40-80 5 15 15 35 15 50 0 20-15 30-35 30z" fill="#FFFFFF" opacity="0.6"/></svg>';
             const iconUrl = 'data:image/svg+xml;charset=utf-8,' + encodeURIComponent(iconSvg);
-
-            // 動態新增 app icon 到 head
             const linkIcon = document.createElement('link');
             linkIcon.rel = 'apple-touch-icon';
             linkIcon.href = iconUrl;
@@ -45,7 +1225,6 @@
                     { src: iconUrl, sizes: "512x512", type: "image/svg+xml", purpose: "any maskable" }
                 ]
             };
-
             const manifestStr = JSON.stringify(manifestObj);
             const blob = new Blob([manifestStr], {type: 'application/json'});
             const manifestUrl = URL.createObjectURL(blob);
@@ -54,8 +1233,7 @@
             linkManifest.href = manifestUrl;
             document.head.appendChild(linkManifest);
         })();
-    </script>
-
+    </scr` + `ipt>
     <style>
         body {
             font-family: 'Noto Sans TC', sans-serif;
@@ -67,8 +1245,6 @@
             -webkit-user-select: none;
             user-select: none;
         }
-
-        /* 保溫杯與水波動畫 */
         .thermos-container {
             position: relative;
             width: 170px;
@@ -79,7 +1255,6 @@
             overflow: hidden;
             box-shadow: 0 10px 25px rgba(0, 0, 0, 0.15);
         }
-
         .thermos-cap {
             width: 100px;
             height: 24px;
@@ -87,7 +1262,6 @@
             border-radius: 12px 12px 0 0;
             margin: 0 auto -4px auto;
         }
-
         .water-fill {
             position: absolute;
             bottom: 0;
@@ -96,7 +1270,6 @@
             background: linear-gradient(180deg, #3B82F6 0%, #1D4ED8 100%);
             transition: height 0.8s ease-in-out;
         }
-
         .wave {
             position: absolute;
             top: -15px;
@@ -107,42 +1280,28 @@
             border-radius: 50%;
             animation: wave-anim 3s infinite linear;
         }
-
         @keyframes wave-anim {
             0% { transform: translateX(0) scaleY(1); }
             50% { transform: translateX(-25%) scaleY(0.8); }
             100% { transform: translateX(-50%) scaleY(1); }
         }
-
-        /* 立體大按鈕效果 */
         .btn-large {
             box-shadow: 0 6px 0px rgba(0,0,0,0.2);
             transition: all 0.1s ease;
         }
-
         .btn-large:active {
             transform: translateY(4px);
             box-shadow: 0 2px 0px rgba(0,0,0,0.2);
         }
-
-        .modal {
-            display: none;
-        }
-
-        .modal.active {
-            display: flex;
-        }
+        .modal { display: none; }
+        .modal.active { display: flex; }
     </style>
 </head>
 <body class="min-h-screen flex flex-col justify-between p-3 sm:p-6 max-w-2xl mx-auto">
-
-    <!-- 離線與網路狀態提示條 -->
     <div id="offline-bar" class="hidden bg-amber-500 text-black font-black text-center py-2 px-4 rounded-xl mb-3 border-2 border-amber-700 shadow flex items-center justify-center gap-2 text-lg">
         <i class="fa-solid fa-wifi-slash text-2xl"></i>
         <span>目前離線中 (所有功能與記錄皆可正常使用)</span>
     </div>
-
-    <!-- PWA 安裝快捷提示藍條 (當瀏覽器觸發 beforeinstallprompt 或 iOS 手動提示時) -->
     <div id="pwa-install-banner" class="hidden bg-gradient-to-r from-emerald-600 to-teal-700 text-white p-4 rounded-2xl mb-3 shadow-lg border-4 border-emerald-900 flex flex-col sm:flex-row items-center justify-between gap-3">
         <div class="flex items-center gap-3">
             <i class="fa-solid fa-mobile-screen-button text-4xl text-yellow-300"></i>
@@ -156,8 +1315,6 @@
             <span>放到手機桌面</span>
         </button>
     </div>
-
-    <!-- 頂部標題與時間 -->
     <header class="bg-blue-700 text-white p-4 rounded-2xl shadow-lg text-center mb-3 border-4 border-blue-900">
         <h1 class="text-3xl sm:text-4xl font-black tracking-wide flex items-center justify-center gap-3">
             <i class="fa-solid fa-bottle-water text-yellow-300"></i>
@@ -165,11 +1322,7 @@
         </h1>
         <p id="current-date" class="text-xl sm:text-2xl mt-1 text-blue-100 font-bold">載入中...</p>
     </header>
-
-    <!-- 主要內容區 -->
     <main class="flex-1 flex flex-col gap-4">
-
-        <!-- 網頁通知與提醒設定區 -->
         <section class="bg-amber-100 border-4 border-amber-400 p-4 rounded-2xl shadow">
             <div class="flex flex-col sm:flex-row items-center justify-between gap-3">
                 <div class="flex items-center gap-3">
@@ -184,8 +1337,6 @@
                     <span>開啟喝水提醒</span>
                 </button>
             </div>
-
-            <!-- 提醒間隔選擇 -->
             <div id="interval-setting-box" class="mt-3 pt-3 border-t-2 border-amber-300 flex flex-col sm:flex-row items-center justify-between gap-2">
                 <label for="reminder-interval" class="text-xl font-black text-gray-800">多久提醒一次喝水？</label>
                 <select id="reminder-interval" onchange="changeInterval()" class="text-xl font-black p-2 bg-white border-2 border-gray-400 rounded-xl w-full sm:w-auto">
@@ -197,8 +1348,6 @@
                 </select>
             </div>
         </section>
-
-        <!-- 設定專用杯容量卡片 -->
         <section class="bg-blue-50 border-4 border-blue-300 p-3 rounded-2xl flex items-center justify-between shadow-sm">
             <div class="flex items-center gap-3">
                 <div class="w-12 h-12 bg-blue-600 text-white rounded-full flex items-center justify-center text-2xl font-black">
@@ -213,11 +1362,7 @@
                 <i class="fa-solid fa-gear"></i> 更換杯子
             </button>
         </section>
-
-        <!-- 水量視覺化與直覺進度標語 -->
         <section class="bg-white border-4 border-blue-400 p-4 rounded-2xl shadow-md flex flex-col items-center justify-center">
-            
-            <!-- 瓶數進度標語 -->
             <div class="text-center mb-2">
                 <div id="bottle-progress-text" class="text-3xl sm:text-4xl font-black text-blue-800">
                     今天已經喝了 <span class="text-amber-600 text-4xl sm:text-5xl">0</span> 瓶囉！
@@ -226,8 +1371,6 @@
                     目標是喝滿 4 瓶（約 2000 cc）
                 </p>
             </div>
-
-            <!-- 保溫杯水位動畫 -->
             <div class="flex flex-col items-center my-2">
                 <div class="thermos-cap"></div>
                 <div class="thermos-container">
@@ -236,14 +1379,10 @@
                     </div>
                 </div>
             </div>
-
-            <!-- 達成目標歡慶標語 -->
             <div id="goal-message" class="hidden mt-2 bg-green-100 text-green-800 font-black text-2xl p-3 rounded-xl border-2 border-green-500 text-center animate-bounce w-full">
                 🎉 太棒了！您已經達成今天的喝水目標囉！
             </div>
         </section>
-
-        <!-- 快速喝水按鈕區（直覺生活單位） -->
         <section class="bg-white border-4 border-gray-300 p-4 rounded-2xl shadow-md">
             <h2 class="text-2xl font-black text-gray-900 mb-3 text-center">喝了水，按一下幫您記錄：</h2>
             <div class="grid grid-cols-3 gap-3">
@@ -252,21 +1391,17 @@
                     <span class="text-2xl sm:text-3xl font-black">喝了 1 瓶</span>
                     <span class="text-base font-bold text-blue-100">(裝滿喝完)</span>
                 </button>
-
                 <button onclick="addWaterByFraction(0.5, '喝了半瓶')" class="btn-large bg-sky-500 hover:bg-sky-600 active:bg-sky-700 text-white py-4 rounded-2xl flex flex-col items-center justify-center border-4 border-sky-800">
                     <i class="fa-solid fa-glass-water-droplet text-3xl mb-1 text-yellow-300"></i>
                     <span class="text-2xl sm:text-3xl font-black">喝了 半瓶</span>
                     <span class="text-base font-bold text-sky-100">(喝了一半)</span>
                 </button>
-
                 <button onclick="addWaterSips(70, '喝了幾大口')" class="btn-large bg-teal-600 hover:bg-teal-700 active:bg-teal-800 text-white py-4 rounded-2xl flex flex-col items-center justify-center border-4 border-teal-900">
                     <i class="fa-solid fa-mug-hot text-3xl mb-1 text-yellow-300"></i>
                     <span class="text-2xl sm:text-3xl font-black">喝幾大口</span>
                     <span class="text-base font-bold text-teal-100">(潤潤喉嚨)</span>
                 </button>
             </div>
-
-            <!-- 輔助復原按鈕 -->
             <div class="mt-4">
                 <button onclick="undoLastWater()" class="btn-large w-full bg-gray-200 hover:bg-gray-300 active:bg-gray-400 text-gray-800 font-black text-xl py-3 rounded-xl border-2 border-gray-400 flex items-center justify-center gap-2">
                     <i class="fa-solid fa-rotate-left"></i>
@@ -274,10 +1409,7 @@
                 </button>
             </div>
         </section>
-
     </main>
-
-    <!-- 頁尾說明與 App 安裝選單 -->
     <footer class="mt-4 text-center flex flex-col gap-2">
         <button onclick="openHelpModal()" class="text-blue-800 underline text-xl font-black p-2 hover:text-blue-900">
             <i class="fa-solid fa-circle-question"></i> 遇到問題？看設定說明與提醒教學
@@ -286,15 +1418,10 @@
             <i class="fa-solid fa-mobile-retro"></i> 如何放入手機桌面？（iOS / Android 教學）
         </button>
     </footer>
-
-    <!-- ===== MODALS (對話框) ===== -->
-
-    <!-- 1. 設定專用保溫杯對話框 -->
     <div id="cup-modal" class="modal fixed inset-0 bg-black bg-opacity-60 items-center justify-center p-4 z-50">
         <div class="bg-white rounded-3xl p-5 max-w-lg w-full border-4 border-blue-600 shadow-2xl overflow-y-auto max-h-[90vh]">
             <h3 class="text-3xl font-black text-gray-900 mb-2 text-center">設定您的專用杯</h3>
             <p class="text-xl text-gray-700 text-center font-bold mb-4">請點選您平常喝水用的保溫杯或杯子：</p>
-
             <div class="space-y-3">
                 <button onclick="selectCupPreset('小馬克杯 / 小玻璃杯', 300)" class="btn-large w-full p-4 bg-blue-50 hover:bg-blue-100 border-4 border-blue-300 rounded-2xl text-left flex items-center justify-between">
                     <div>
@@ -303,7 +1430,6 @@
                     </div>
                     <i class="fa-solid fa-circle-check text-3xl text-blue-600"></i>
                 </button>
-
                 <button onclick="selectCupPreset('標準保溫杯', 500)" class="btn-large w-full p-4 bg-blue-50 hover:bg-blue-100 border-4 border-blue-400 rounded-2xl text-left flex items-center justify-between">
                     <div>
                         <div class="text-2xl font-black text-blue-900">🥤 標準保溫杯 (最常見)</div>
@@ -311,7 +1437,6 @@
                     </div>
                     <i class="fa-solid fa-circle-check text-3xl text-blue-600"></i>
                 </button>
-
                 <button onclick="selectCupPreset('大運動水壺', 750)" class="btn-large w-full p-4 bg-blue-50 hover:bg-blue-100 border-4 border-blue-300 rounded-2xl text-left flex items-center justify-between">
                     <div>
                         <div class="text-2xl font-black text-blue-900">🍼 大運動水壺</div>
@@ -320,8 +1445,6 @@
                     <i class="fa-solid fa-circle-check text-3xl text-blue-600"></i>
                 </button>
             </div>
-
-            <!-- 自訂容量可選 -->
             <div class="mt-4 pt-3 border-t-2 border-gray-300">
                 <label class="text-xl font-black text-gray-800 block mb-2">或自訂單瓶容量 (cc)：</label>
                 <div class="flex items-center gap-2">
@@ -329,21 +1452,14 @@
                     <button onclick="saveCustomCup()" class="btn-large bg-blue-600 text-white font-black text-xl py-3 px-6 rounded-xl border-2 border-blue-900 whitespace-nowrap">確定</button>
                 </div>
             </div>
-
-            <button onclick="closeCupModal()" class="btn-large w-full mt-5 bg-gray-300 text-gray-800 font-black text-2xl py-3 rounded-xl border-2 border-gray-500">
-                取消
-            </button>
+            <button onclick="closeCupModal()" class="btn-large w-full mt-5 bg-gray-300 text-gray-800 font-black text-2xl py-3 rounded-xl border-2 border-gray-500">取消</button>
         </div>
     </div>
-
-    <!-- 2. 通知幫助 Modal -->
     <div id="help-modal" class="modal fixed inset-0 bg-black bg-opacity-60 items-center justify-center p-4 z-50">
         <div class="bg-white rounded-3xl p-6 max-w-lg w-full border-4 border-amber-500 shadow-2xl overflow-y-auto max-h-[90vh]">
             <h3 class="text-3xl font-black text-gray-900 mb-4 text-center flex items-center justify-center gap-2">
-                <i class="fa-solid fa-bell text-amber-600"></i>
-                如何開啟提醒鬧鐘？
+                <i class="fa-solid fa-bell text-amber-600"></i> 如何開啟提醒鬧鐘？
             </h3>
-            
             <div class="text-xl leading-relaxed text-gray-800 space-y-4">
                 <p class="font-bold text-blue-900 bg-blue-50 p-3 rounded-xl border border-blue-200">
                     💡 開啟提醒後，當時間到了，手機或電腦會自動發出聲音與訊息提示，提醒您補充水分！
@@ -354,84 +1470,56 @@
                     <li>若不小心封鎖，請點網址列左邊的<span class="font-black text-gray-700">「鎖頭 🔒」</span>，將「通知」改為<span class="text-green-600 font-black">「允許」</span>即可。</li>
                 </ol>
             </div>
-
-            <button onclick="closeHelpModal()" class="btn-large w-full mt-6 bg-blue-600 text-white font-black text-2xl py-3 rounded-xl border-2 border-blue-900">
-                我知道了
-            </button>
+            <button onclick="closeHelpModal()" class="btn-large w-full mt-6 bg-blue-600 text-white font-black text-2xl py-3 rounded-xl border-2 border-blue-900">我知道了</button>
         </div>
     </div>
-
-    <!-- 3. PWA 安裝手機桌面教學 Modal (iPhone iOS & Android) -->
     <div id="install-modal" class="modal fixed inset-0 bg-black bg-opacity-60 items-center justify-center p-4 z-50">
         <div class="bg-white rounded-3xl p-6 max-w-lg w-full border-4 border-emerald-600 shadow-2xl overflow-y-auto max-h-[90vh]">
             <h3 class="text-3xl font-black text-gray-900 mb-3 text-center flex items-center justify-center gap-2">
-                <i class="fa-solid fa-mobile-button text-emerald-600"></i>
-                放入手機桌面步驟
+                <i class="fa-solid fa-mobile-button text-emerald-600"></i> 放入手機桌面步驟
             </h3>
-            
-            <!-- iOS Safari 教學 -->
             <div class="bg-emerald-50 p-4 rounded-2xl border-2 border-emerald-300 mb-4">
-                <h4 class="text-2xl font-black text-emerald-900 mb-2 border-b border-emerald-200 pb-1">
-                    🍎 蘋果 iPhone / iPad (Safari 瀏覽器)：
-                </h4>
+                <h4 class="text-2xl font-black text-emerald-900 mb-2 border-b border-emerald-200 pb-1">🍎 蘋果 iPhone / iPad (Safari 瀏覽器)：</h4>
                 <ol class="list-decimal list-inside text-lg font-bold text-gray-800 space-y-2">
                     <li>點選螢幕下方（或上方）的<span class="text-blue-700 font-black">「分享」圖示 <i class="fa-solid fa-share-from-square"></i></span>。</li>
                     <li>往下滑動選單，找到並點選<span class="text-blue-700 font-black">「加入主畫面 <i class="fa-regular fa-square-plus"></i>」</span>。</li>
                     <li>點選右上角的「新增」，手機桌面上就會出現喝水管家圖示！</li>
                 </ol>
             </div>
-
-            <!-- Android Chrome 教學 -->
             <div class="bg-teal-50 p-4 rounded-2xl border-2 border-teal-300 mb-4">
-                <h4 class="text-2xl font-black text-teal-900 mb-2 border-b border-teal-200 pb-1">
-                    🤖 安卓 Android 手機 (Chrome 瀏覽器)：
-                </h4>
+                <h4 class="text-2xl font-black text-teal-900 mb-2 border-b border-teal-200 pb-1">🤖 安卓 Android 手機 (Chrome 瀏覽器)：</h4>
                 <ol class="list-decimal list-inside text-lg font-bold text-gray-800 space-y-2">
                     <li>點選瀏覽器右上角的<span class="text-gray-900 font-black">「三個點點選單 <i class="fa-solid fa-ellipsis-vertical"></i>」</span>。</li>
                     <li>點選<span class="text-teal-800 font-black">「新增至主畫面」</span>或<span class="text-teal-800 font-black">「安裝應用程式」</span>。</li>
                     <li>確認新增，即可在桌面直接點開使用！</li>
                 </ol>
             </div>
-
-            <button onclick="closeInstallModal()" class="btn-large w-full bg-emerald-600 text-white font-black text-2xl py-3 rounded-xl border-2 border-emerald-900">
-                關閉教學
-            </button>
+            <button onclick="closeInstallModal()" class="btn-large w-full bg-emerald-600 text-white font-black text-2xl py-3 rounded-xl border-2 border-emerald-900">關閉教學</button>
         </div>
     </div>
-
-    <!-- ===== JS 邏輯區 ===== -->
-    <script>
-        // === 全局狀態 ===
-        let currentWater = 0; // 今日已喝總容量 (cc)
-        let cupCapacity = 500; // 單瓶/單杯容量 (cc)
+    <scr` + `ipt>
+        let currentWater = 0;
+        let cupCapacity = 500;
         let cupName = '標準保溫杯';
-        let targetDailyWater = 2000; // 每日建議總目標 (cc)
-        let waterHistory = []; // 用於復原
-
+        let targetDailyWater = 2000;
+        let waterHistory = [];
         let reminderTimer = null;
         let intervalMinutes = 60;
         let isNotificationEnabled = false;
-
-        let deferredPrompt = null; // PWA Install Event
-
-        // === Web Audio API 音效 ===
+        let deferredPrompt = null;
         const audioCtx = new (window.AudioContext || window.webkitAudioContext)();
 
         function playWaterSound() {
             if (audioCtx.state === 'suspended') audioCtx.resume();
             const osc = audioCtx.createOscillator();
             const gain = audioCtx.createGain();
-            
             osc.type = 'sine';
             osc.frequency.setValueAtTime(350, audioCtx.currentTime);
             osc.frequency.exponentialRampToValueAtTime(750, audioCtx.currentTime + 0.18);
-            
             gain.gain.setValueAtTime(0.35, audioCtx.currentTime);
             gain.gain.exponentialRampToValueAtTime(0.01, audioCtx.currentTime + 0.18);
-            
             osc.connect(gain);
             gain.connect(audioCtx.destination);
-            
             osc.start();
             osc.stop(audioCtx.currentTime + 0.18);
         }
@@ -441,43 +1529,35 @@
             const now = audioCtx.currentTime;
             const osc = audioCtx.createOscillator();
             const gain = audioCtx.createGain();
-
             osc.type = 'triangle';
-            osc.frequency.setValueAtTime(523.25, now); // C5
-            osc.frequency.setValueAtTime(659.25, now + 0.15); // E5
-            osc.frequency.setValueAtTime(783.99, now + 0.3); // G5
-
+            osc.frequency.setValueAtTime(523.25, now);
+            osc.frequency.setValueAtTime(659.25, now + 0.15);
+            osc.frequency.setValueAtTime(783.99, now + 0.3);
             gain.gain.setValueAtTime(0.4, now);
             gain.gain.exponentialRampToValueAtTime(0.01, now + 0.6);
-
             osc.connect(gain);
             gain.connect(audioCtx.destination);
-
             osc.start(now);
             osc.stop(now + 0.6);
         }
 
-        // === 長者友善 Web Speech API 語音朗讀關懷 ===
         function speakText(text) {
             if ('speechSynthesis' in window) {
-                window.speechSynthesis.cancel(); // 停止先前的語音
+                window.speechSynthesis.cancel();
                 const utterance = new SpeechSynthesisUtterance(text);
                 utterance.lang = 'zh-TW';
-                utterance.rate = 0.9; // 稍微放慢速度適合長者
+                utterance.rate = 0.9;
                 utterance.pitch = 1.0;
                 window.speechSynthesis.speak(utterance);
             }
         }
 
-        // === 初始化與生命週期 ===
         window.onload = function() {
             updateDateDisplay();
             loadLocalStorage();
             updateUI();
             checkNotificationStatus();
             initNetworkDetector();
-            registerServiceWorker();
-            checkPWAState();
         };
 
         function updateDateDisplay() {
@@ -487,80 +1567,43 @@
         }
 
         function loadLocalStorage() {
-            const todayKey = new Date().toISOString().slice(0, 10);
-            const savedDate = localStorage.getItem('water_tracker_date');
-            
-            if (savedDate !== todayKey) {
-                localStorage.setItem('water_tracker_date', todayKey);
-                localStorage.setItem('water_current', 0);
-            } else {
-                currentWater = parseInt(localStorage.getItem('water_current')) || 0;
-            }
-
-            cupCapacity = parseInt(localStorage.getItem('water_cup_capacity')) || 500;
-            cupName = localStorage.getItem('water_cup_name') || '標準保溫杯';
-            targetDailyWater = parseInt(localStorage.getItem('water_daily_target')) || 2000;
+            try {
+                const todayKey = new Date().toISOString().slice(0, 10);
+                const savedDate = localStorage.getItem('water_tracker_date');
+                if (savedDate !== todayKey) {
+                    localStorage.setItem('water_tracker_date', todayKey);
+                    localStorage.setItem('water_current', 0);
+                } else {
+                    currentWater = parseInt(localStorage.getItem('water_current')) || 0;
+                }
+                cupCapacity = parseInt(localStorage.getItem('water_cup_capacity')) || 500;
+                cupName = localStorage.getItem('water_cup_name') || '標準保溫杯';
+                targetDailyWater = parseInt(localStorage.getItem('water_daily_target')) || 2000;
+            } catch (e) {}
         }
 
         function saveLocalStorage() {
-            localStorage.setItem('water_current', currentWater);
-            localStorage.setItem('water_cup_capacity', cupCapacity);
-            localStorage.setItem('water_cup_name', cupName);
-            localStorage.setItem('water_daily_target', targetDailyWater);
+            try {
+                localStorage.setItem('water_current', currentWater);
+                localStorage.setItem('water_cup_capacity', cupCapacity);
+                localStorage.setItem('water_cup_name', cupName);
+                localStorage.setItem('water_daily_target', targetDailyWater);
+            } catch (e) {}
         }
 
-        // === 網路離線/連線偵測 ===
         function initNetworkDetector() {
             const offlineBar = document.getElementById('offline-bar');
-            
             function updateOnlineStatus() {
-                if (navigator.onLine) {
-                    offlineBar.classList.add('hidden');
-                } else {
-                    offlineBar.classList.remove('hidden');
-                }
+                if (navigator.onLine) offlineBar.classList.add('hidden');
+                else offlineBar.classList.remove('hidden');
             }
-
             window.addEventListener('online', updateOnlineStatus);
             window.addEventListener('offline', updateOnlineStatus);
             updateOnlineStatus();
         }
 
-        // === PWA 安裝引導邏輯 ===
-        window.addEventListener('beforeinstallprompt', (e) => {
-            e.preventDefault();
-            deferredPrompt = e;
-            document.getElementById('pwa-install-banner').classList.remove('hidden');
-        });
+        function installPWA() { openInstallTutorialModal(); }
 
-        function installPWA() {
-            if (deferredPrompt) {
-                deferredPrompt.prompt();
-                deferredPrompt.userChoice.then((choiceResult) => {
-                    if (choiceResult.outcome === 'accepted') {
-                        document.getElementById('pwa-install-banner').classList.add('hidden');
-                    }
-                    deferredPrompt = null;
-                });
-            } else {
-                openInstallTutorialModal();
-            }
-        }
-
-        function checkPWAState() {
-            // 若為 standalone 獨立模式開啟，可隱藏 install banner
-            if (window.matchMedia('(display-mode: standalone)').matches || window.navigator.standalone === true) {
-                document.getElementById('pwa-install-banner').classList.add('hidden');
-            } else {
-                // 如果是 iOS 裝置且未安裝，預設顯示 Banner 引導
-                const isIOS = /iPad|iPhone|iPod/.test(navigator.userAgent) && !window.MSStream;
-                if (isIOS) {
-                    document.getElementById('pwa-install-banner').classList.remove('hidden');
-                }
-            }
-        }
-
-        // === 喝水計數邏輯 ===
         function addWaterByFraction(fraction, labelText) {
             const amount = Math.round(cupCapacity * fraction);
             addWaterAmount(amount, labelText);
@@ -576,14 +1619,12 @@
             currentWater += amount;
             saveLocalStorage();
             updateUI();
-
-            // 語音朗讀關懷
             const currentBottlesStr = getFormattedBottles(currentWater);
-            let speechMsg = `好棒！記錄${labelText}。`;
+            let speechMsg = '好棒！記錄' + labelText + '。';
             if (currentWater >= targetDailyWater) {
-                speechMsg += `恭喜您！今天已經喝了 ${currentBottlesStr} 瓶，成功達成目標囉！`;
+                speechMsg += '恭喜您！今天已經喝了 ' + currentBottlesStr + ' 瓶，成功達成目標囉！';
             } else {
-                speechMsg += `今天累積喝了 ${currentBottlesStr} 瓶。`;
+                speechMsg += '今天累積喝了 ' + currentBottlesStr + ' 瓶。';
             }
             speakText(speechMsg);
         }
@@ -603,31 +1644,19 @@
             return drankBottles.endsWith('.0') ? parseInt(drankBottles) : drankBottles;
         }
 
-        // === 畫面上文字與水位更新 ===
         function updateUI() {
-            document.getElementById('bottle-info-text').innerText = `${cupName} (約 ${cupCapacity} cc)`;
-
+            document.getElementById('bottle-info-text').innerText = cupName + ' (約 ' + cupCapacity + ' cc)';
             const formattedBottles = getFormattedBottles(currentWater);
             const targetBottles = Math.ceil(targetDailyWater / cupCapacity);
-
-            document.getElementById('bottle-progress-text').innerHTML = 
-                `今天已經喝了 <span class="text-amber-600 text-4xl sm:text-5xl font-black">${formattedBottles}</span> 瓶囉！`;
-
-            document.getElementById('bottle-target-text').innerText = 
-                `目標是喝滿 ${targetBottles} 瓶（約 ${targetDailyWater} cc）`;
-
+            document.getElementById('bottle-progress-text').innerHTML = '今天已經喝了 <span class="text-amber-600 text-4xl sm:text-5xl font-black">' + formattedBottles + '</span> 瓶囉！';
+            document.getElementById('bottle-target-text').innerText = '目標是喝滿 ' + targetBottles + ' 瓶（約 ' + targetDailyWater + ' cc）';
             const percent = Math.min(100, Math.round((currentWater / targetDailyWater) * 100));
-            document.getElementById('water-fill').style.height = `${percent}%`;
-
+            document.getElementById('water-fill').style.height = percent + '%';
             const goalMsg = document.getElementById('goal-message');
-            if (currentWater >= targetDailyWater) {
-                goalMsg.classList.remove('hidden');
-            } else {
-                goalMsg.classList.add('hidden');
-            }
+            if (currentWater >= targetDailyWater) goalMsg.classList.remove('hidden');
+            else goalMsg.classList.add('hidden');
         }
 
-        // === Modal 選單操作 ===
         function openCupModal() { document.getElementById('cup-modal').classList.add('active'); }
         function closeCupModal() { document.getElementById('cup-modal').classList.remove('active'); }
 
@@ -637,7 +1666,7 @@
             saveLocalStorage();
             updateUI();
             closeCupModal();
-            speakText(`已切換專用杯為${cupName}`);
+            speakText('已切換專用杯為' + cupName);
         }
 
         function saveCustomCup() {
@@ -648,26 +1677,22 @@
                 saveLocalStorage();
                 updateUI();
                 closeCupModal();
-                speakText(`已設定保溫杯容量為${val}毫升`);
+                speakText('已設定保溫杯容量為' + val + '毫升');
             }
         }
 
         function openHelpModal() { document.getElementById('help-modal').classList.add('active'); }
         function closeHelpModal() { document.getElementById('help-modal').classList.remove('active'); }
-
         function openInstallTutorialModal() { document.getElementById('install-modal').classList.add('active'); }
         function closeInstallModal() { document.getElementById('install-modal').classList.remove('active'); }
 
-        // === 網頁通知鬧鐘邏輯 ===
         function checkNotificationStatus() {
             if (!("Notification" in window)) {
                 document.getElementById('notification-status-text').innerText = "狀態：瀏覽器不支援通知";
                 return;
             }
-
-            if (Notification.permission === "granted") {
-                setNotificationUIActive(true);
-            } else if (Notification.permission === "denied") {
+            if (Notification.permission === "granted") setNotificationUIActive(true);
+            else if (Notification.permission === "denied") {
                 document.getElementById('notification-status-text').innerText = "狀態：通知已被封鎖";
                 setNotificationUIActive(false);
             } else {
@@ -681,7 +1706,6 @@
                 alert("很抱歉，您的裝置不支援網頁通知功能。");
                 return;
             }
-
             if (Notification.permission === "granted") {
                 stopReminderTimer();
                 setNotificationUIActive(false);
@@ -691,7 +1715,6 @@
                 Notification.requestPermission().then(permission => {
                     if (permission === "granted") {
                         setNotificationUIActive(true);
-                        triggerNotification("喝水提醒已開啟！", "我們會定時提醒您喝水，保持身體健康！");
                         startReminderTimer();
                         speakText("喝水提醒鬧鐘已成功開啟！");
                     } else {
@@ -706,24 +1729,23 @@
             isNotificationEnabled = active;
             const btn = document.getElementById('toggle-notification-btn');
             const statusText = document.getElementById('notification-status-text');
-
             if (active) {
                 btn.classList.remove('bg-amber-500', 'hover:bg-amber-600');
                 btn.classList.add('bg-green-600', 'hover:bg-green-700', 'text-white');
-                btn.innerHTML = `<i class="fa-solid fa-check-circle text-2xl"></i><span>提醒開啟中</span>`;
-                statusText.innerText = `狀態：提醒運作中 (每 ${intervalMinutes} 分鐘)`;
+                btn.innerHTML = '<i class="fa-solid fa-check-circle text-2xl"></i><span>提醒開啟中</span>';
+                statusText.innerText = '狀態：提醒運作中 (每 ' + intervalMinutes + ' 分鐘)';
                 startReminderTimer();
             } else {
                 btn.classList.remove('bg-green-600', 'hover:bg-green-700', 'text-white');
                 btn.classList.add('bg-amber-500', 'hover:bg-amber-600', 'text-black');
-                btn.innerHTML = `<i class="fa-solid fa-power-off text-2xl"></i><span>開啟喝水提醒</span>`;
+                btn.innerHTML = '<i class="fa-solid fa-power-off text-2xl"></i><span>開啟喝水提醒</span>';
             }
         }
 
         function changeInterval() {
             intervalMinutes = parseInt(document.getElementById('reminder-interval').value);
             if (isNotificationEnabled) {
-                document.getElementById('notification-status-text').innerText = `狀態：提醒運作中 (每 ${intervalMinutes} 分鐘)`;
+                document.getElementById('notification-status-text').innerText = '狀態：提醒運作中 (每 ' + intervalMinutes + ' 分鐘)';
                 startReminderTimer();
             }
         }
@@ -731,9 +1753,7 @@
         function startReminderTimer() {
             stopReminderTimer();
             const ms = intervalMinutes * 60 * 1000;
-            reminderTimer = setInterval(() => {
-                sendHydrationReminder();
-            }, ms);
+            reminderTimer = setInterval(sendHydrationReminder, ms);
         }
 
         function stopReminderTimer() {
@@ -746,87 +1766,115 @@
         function sendHydrationReminder() {
             playChimeSound();
             speakText("該喝水囉！喝口水潤潤喉吧！");
-            triggerNotification(
-                "💧 該喝水囉！喝口水潤潤喉吧！",
-                "動一動、喝口水，保持身體健康！喝完記得按一下記錄喔！"
-            );
         }
+    </scr` + `ipt>
+</body>
+</html>`;
 
-        function triggerNotification(title, body) {
-            if ("Notification" in window && Notification.permission === "granted") {
-                new Notification(title, {
-                    body: body,
-                    icon: 'data:image/svg+xml;charset=utf-8,' + encodeURIComponent(`<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" fill="#1D4ED8"><rect width="512" height="512" rx="100" fill="#2563EB"/><path d="M256 80c-50 70-120 160-120 230 0 70 50 120 120 120s120-50 120-120c0-70-70-160-120-230z" fill="#38BDF8"/></svg>`)
-                });
-            }
+    // 初始化組員 4 與 組員 5 詳情頁右側的內嵌模擬器
+    window.addEventListener('DOMContentLoaded', function() {
+      const m4Sim = document.getElementById('m4-sim-iframe');
+      if (m4Sim) m4Sim.srcdoc = m4RawHtml;
+
+      const m5Sim = document.getElementById('m5-sim-iframe');
+      if (m5Sim) m5Sim.srcdoc = m5RawHtml;
+    });
+
+    // 在新分頁獨立開啟內嵌作品 (組員 4 或 組員 5)
+    function openInlineInNewTab(memberKey) {
+      const htmlStr = memberKey === 'm5' ? m5RawHtml : m4RawHtml;
+      const blob = new Blob([htmlStr], { type: 'text/html;charset=utf-8' });
+      const blobUrl = URL.createObjectURL(blob);
+      window.open(blobUrl, '_blank');
+    }
+
+    // 分頁切換
+    function switchTab(tabId, tabIndex) {
+      document.querySelectorAll('.section').forEach(function(sec) {
+        sec.classList.remove('active');
+      });
+      const tabBtns = document.querySelectorAll('.tab-btn');
+      tabBtns.forEach(function(btn) {
+        btn.classList.remove('active');
+      });
+      const targetSec = document.getElementById(tabId);
+      if (targetSec) targetSec.classList.add('active');
+      if (typeof tabIndex === 'number' && tabBtns[tabIndex]) {
+        tabBtns[tabIndex].classList.add('active');
+      }
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    }
+
+    // 切換實機展示台內容
+    function openInViewer(title, url) {
+      switchTab('tab-viewer', 6);
+      document.getElementById('viewer-title').textContent = '目前展示：' + title;
+      const iframe = document.getElementById('viewer-iframe');
+      const extLink = document.getElementById('viewer-link');
+
+      if (url === 'INLINE_M4') {
+        document.getElementById('viewer-url').textContent = '內嵌原創程式碼直接執行：長者知識貪吃蛇';
+        iframe.removeAttribute('src');
+        iframe.srcdoc = m4RawHtml;
+        extLink.href = 'javascript:void(0)';
+        extLink.removeAttribute('target');
+        extLink.onclick = function(e) {
+          e.preventDefault();
+          openInlineInNewTab('m4');
+        };
+      } else if (url === 'INLINE_M5') {
+        document.getElementById('viewer-url').textContent = '內嵌原創程式碼直接執行：大字體尊榮喝水健康管家 PWA';
+        iframe.removeAttribute('src');
+        iframe.srcdoc = m5RawHtml;
+        extLink.href = 'javascript:void(0)';
+        extLink.removeAttribute('target');
+        extLink.onclick = function(e) {
+          e.preventDefault();
+          openInlineInNewTab('m5');
+        };
+      } else {
+        document.getElementById('viewer-url').textContent = url;
+        iframe.removeAttribute('srcdoc');
+        iframe.src = url;
+        extLink.onclick = null;
+        extLink.href = url;
+        extLink.target = '_blank';
+      }
+    }
+
+    // 調整預覽框寬度
+    function resizeViewer(maxWidth) {
+      document.getElementById('viewer-box').style.maxWidth = maxWidth;
+    }
+
+    // 淺色 / 深色背景切換與記憶功能
+    function toggleTheme() {
+      const htmlEl = document.documentElement;
+      const current = htmlEl.getAttribute('data-theme');
+      const next = current === 'dark' ? 'light' : 'dark';
+      applyTheme(next);
+      try {
+        localStorage.setItem('report_theme', next);
+      } catch (e) {}
+    }
+
+    function applyTheme(theme) {
+      document.documentElement.setAttribute('data-theme', theme);
+      const btn = document.getElementById('themeBtn');
+      if (btn) {
+        btn.textContent = theme === 'light' ? '🌙 切換深色' : '☀️ 切換淺色';
+      }
+    }
+
+    // 載入上次選擇的顏色主題
+    (function initTheme() {
+      try {
+        const saved = localStorage.getItem('report_theme');
+        if (saved === 'light' || saved === 'dark') {
+          applyTheme(saved);
         }
-
-        // === Inline Service Worker 離線快取註冊 ===
-        function registerServiceWorker() {
-            if ('serviceWorker' in navigator) {
-                const swCode = `
-                    const CACHE_NAME = 'water-pwa-v1';
-                    const urlsToCache = ['./'];
-
-                    self.addEventListener('install', (event) => {
-                        event.waitUntil(
-                            caches.open(CACHE_NAME).then((cache) => {
-                                return cache.addAll(urlsToCache);
-                            })
-                        );
-                        self.skipWaiting();
-                    });
-
-                    self.addEventListener('activate', (event) => {
-                        event.waitUntil(
-                            caches.keys().then((cacheNames) => {
-                                return Promise.all(
-                                    cacheNames.map((cacheName) => {
-                                        if (cacheName !== CACHE_NAME) {
-                                            return caches.delete(cacheName);
-                                        }
-                                    })
-                                );
-                            })
-                        );
-                        self.clients.claim();
-                    });
-
-                    self.addEventListener('fetch', (event) => {
-                        event.respondWith(
-                            caches.match(event.request).then((response) => {
-                                if (response) {
-                                    return response;
-                                }
-                                return fetch(event.request).then((networkResponse) => {
-                                    if (!networkResponse || networkResponse.status !== 200 || networkResponse.type !== 'basic') {
-                                        return networkResponse;
-                                    }
-                                    const responseToCache = networkResponse.clone();
-                                    caches.open(CACHE_NAME).then((cache) => {
-                                        cache.put(event.request, responseToCache);
-                                    });
-                                    return networkResponse;
-                                }).catch(() => {
-                                    return caches.match('./');
-                                });
-                            })
-                        );
-                    });
-                `;
-
-                const blob = new Blob([swCode], { type: 'application/javascript' });
-                const swUrl = URL.createObjectURL(blob);
-
-                navigator.serviceWorker.register(swUrl)
-                    .then((reg) => {
-                        console.log('PWA Service Worker 註冊成功！', reg);
-                    })
-                    .catch((err) => {
-                        console.log('Service Worker 註冊失敗或已被限制: ', err);
-                    });
-            }
-        }
-    </script>
+      } catch (e) {}
+    })();
+  </script>
 </body>
 </html>
