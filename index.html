@@ -57,7 +57,6 @@
       transition: background-color 0.25s ease, color 0.25s ease;
     }
 
-    /* 頂部報告導覽列 */
     header {
       background: var(--bg-header);
       border-bottom: 1px solid var(--border);
@@ -125,7 +124,6 @@
       border-color: var(--accent);
     }
 
-    /* 淺色/深色切換按鈕 */
     .theme-toggle {
       background: var(--card-inner);
       color: var(--text-main);
@@ -145,7 +143,6 @@
       border-color: var(--accent);
     }
 
-    /* 主內容區塊 */
     main {
       flex: 1;
       max-width: 1400px;
@@ -168,7 +165,6 @@
       to { opacity: 1; transform: translateY(0); }
     }
 
-    /* 總覽標題區 */
     .hero {
       background: var(--hero-grad);
       border: 1px solid var(--border);
@@ -189,7 +185,6 @@
       color: var(--text-muted);
     }
 
-    /* 五位組員卡片網格 */
     .grid-5 {
       display: grid;
       grid-template-columns: repeat(auto-fit, minmax(360px, 1fr));
@@ -316,7 +311,6 @@
       background: rgba(148, 163, 184, 0.1);
     }
 
-    /* 組員專屬報告版面（左說明 + 右預覽） */
     .member-layout {
       display: grid;
       grid-template-columns: 1fr 430px;
@@ -394,7 +388,6 @@
       line-height: 1.5;
     }
 
-    /* API 表格樣式 */
     .table-wrap {
       overflow-x: auto;
       margin-top: 0.5rem;
@@ -421,7 +414,6 @@
       color: var(--accent);
     }
 
-    /* 右側固定手機模擬器 */
     .phone-simulator {
       position: sticky;
       top: 5.2rem;
@@ -453,7 +445,6 @@
       background: #fff;
     }
 
-    /* 全螢幕互動展示台 */
     .viewer-container {
       background: #000;
       border: 4px solid var(--border);
@@ -478,16 +469,16 @@
 
     <div class="header-controls">
       <nav class="nav-tabs">
-        <button class="tab-btn active" onclick="switchTab('tab-overview', this)">📋 總覽 (1~5)</button>
-        <button class="tab-btn" onclick="switchTab('tab-m1', this)">👤 組員 1</button>
-        <button class="tab-btn" onclick="switchTab('tab-m2', this)">👤 組員 2</button>
-        <button class="tab-btn" onclick="switchTab('tab-m3', this)">👤 組員 3</button>
-        <button class="tab-btn" onclick="switchTab('tab-m4', this)">👤 組員 4</button>
-        <button class="tab-btn" onclick="switchTab('tab-m5', this)">👤 組員 5</button>
-        <button class="tab-btn" onclick="switchTab('tab-viewer', this)">🖥️ 實機切換台</button>
+        <button type="button" class="tab-btn active" onclick="switchTab('tab-overview', 0)">📋 總覽 (1~5)</button>
+        <button type="button" class="tab-btn" onclick="switchTab('tab-m1', 1)">👤 組員 1</button>
+        <button type="button" class="tab-btn" onclick="switchTab('tab-m2', 2)">👤 組員 2</button>
+        <button type="button" class="tab-btn" onclick="switchTab('tab-m3', 3)">👤 組員 3</button>
+        <button type="button" class="tab-btn" onclick="switchTab('tab-m4', 4)">👤 組員 4</button>
+        <button type="button" class="tab-btn" onclick="switchTab('tab-m5', 5)">👤 組員 5</button>
+        <button type="button" class="tab-btn" onclick="switchTab('tab-viewer', 6)">🖥️ 實機切換台</button>
       </nav>
 
-      <button class="theme-toggle" id="themeBtn" onclick="toggleTheme()">
+      <button type="button" class="theme-toggle" id="themeBtn" onclick="toggleTheme()">
         ☀️ 切換淺色
       </button>
     </div>
@@ -515,22 +506,16 @@
             </ul>
           </div>
           <div class="btn-group">
-            <button class="btn btn-primary" onclick="switchTab('tab-m1', document.querySelectorAll('.tab-btn')[1])">
-              查看組員 1 詳情
-            </button>
-            <button class="btn btn-outline" onclick="openInViewer('組員 1：長者關懷小幫手', 'https://doandlearn-naro.github.io/Program-one/')">
-              實機畫面預覽
-            </button>
-            <a class="btn btn-outline" href="https://doandlearn-naro.github.io/Program-one/" target="_blank">
-              開新分頁 ↗
-            </a>
+            <button type="button" class="btn btn-primary" onclick="switchTab('tab-m1', 1)">查看組員 1 詳情</button>
+            <button type="button" class="btn btn-outline" onclick="openInViewer('組員 1：長者關懷小幫手', 'https://doandlearn-naro.github.io/Program-one/')">實機畫面預覽</button>
+            <a class="btn btn-outline" href="https://doandlearn-naro.github.io/Program-one/" target="_blank">開新分頁 ↗</a>
           </div>
         </div>
 
         <!-- 組員 2 -->
         <div class="card">
           <div>
-            <span class="card-tag tag-m2">組員 2 專案</span>
+            <span class="card-tag tag-m2">組員 2 專案｜邱祺峰</span>
             <h3>樂活在地通｜長輩關懷 PWA</h3>
             <p>拆分為「長輩端 PWA」與「佳儒後台」雙前端，搭配零依賴 Node.js 伺服器與 SSE 跨視窗即時同步[cite: 1]。</p>
             <ul class="feature-list">
@@ -540,15 +525,9 @@
             </ul>
           </div>
           <div class="btn-group">
-            <button class="btn btn-primary" onclick="switchTab('tab-m2', document.querySelectorAll('.tab-btn')[2])">
-              查看組員 2 詳情
-            </button>
-            <button class="btn btn-outline" onclick="openInViewer('組員 2：樂活在地通 (GitHub Pages)', 'https://chifeng-chiu.github.io/mytest/legacy/index.html')">
-              實機畫面預覽
-            </button>
-            <a class="btn btn-outline" href="https://chifeng-chiu.github.io/mytest/legacy/index.html" target="_blank">
-              開新分頁 ↗
-            </a>
+            <button type="button" class="btn btn-primary" onclick="switchTab('tab-m2', 2)">查看組員 2 詳情</button>
+            <button type="button" class="btn btn-outline" onclick="openInViewer('組員 2：樂活在地通 (GitHub Pages)', 'https://chifeng-chiu.github.io/mytest/legacy/index.html')">實機畫面預覽</button>
+            <a class="btn btn-outline" href="https://chifeng-chiu.github.io/mytest/legacy/index.html" target="_blank">開新分頁 ↗</a>
           </div>
         </div>
 
@@ -565,15 +544,9 @@
             </ul>
           </div>
           <div class="btn-group">
-            <button class="btn btn-primary" onclick="switchTab('tab-m3', document.querySelectorAll('.tab-btn')[3])">
-              查看組員 3 詳情
-            </button>
-            <button class="btn btn-outline" onclick="openInViewer('組員 3：溫馨小宅', 'https://doandlearn-naro.github.io/Mytry/home/')">
-              實機畫面預覽
-            </button>
-            <a class="btn btn-outline" href="https://doandlearn-naro.github.io/Mytry/home/" target="_blank">
-              開新分頁 ↗
-            </a>
+            <button type="button" class="btn btn-primary" onclick="switchTab('tab-m3', 3)">查看組員 3 詳情</button>
+            <button type="button" class="btn btn-outline" onclick="openInViewer('組員 3：溫馨小宅', 'https://doandlearn-naro.github.io/Mytry/home/')">實機畫面預覽</button>
+            <a class="btn btn-outline" href="https://doandlearn-naro.github.io/Mytry/home/" target="_blank">開新分頁 ↗</a>
           </div>
         </div>
 
@@ -590,46 +563,34 @@
             </ul>
           </div>
           <div class="btn-group">
-            <button class="btn btn-primary" onclick="switchTab('tab-m4', document.querySelectorAll('.tab-btn')[4])">
-              查看組員 4 詳情
-            </button>
-            <button class="btn btn-outline" onclick="openInViewer('組員 4：長者知識貪吃蛇', 'INLINE_M4')">
-              實機畫面預覽
-            </button>
-            <button class="btn btn-outline" onclick="openM4InNewTab()">
-              開新分頁 ↗
-            </button>
+            <button type="button" class="btn btn-primary" onclick="switchTab('tab-m4', 4)">查看組員 4 詳情</button>
+            <button type="button" class="btn btn-outline" onclick="openInViewer('組員 4：長者知識貪吃蛇', 'INLINE_M4')">實機畫面預覽</button>
+            <button type="button" class="btn btn-outline" onclick="openInlineInNewTab('m4')">開新分頁 ↗</button>
           </div>
         </div>
 
-        <!-- 組員 5 -->
+        <!-- 組員 5 (原創內嵌程式碼版) -->
         <div class="card">
           <div>
             <span class="card-tag tag-m5">組員 5 專案</span>
-            <h3>💧 健康喝水管家</h3>
-            <p>專為長輩設計的日常飲水提醒與紀錄 PWA，用長輩最熟悉的「保溫杯幾瓶」取代複雜毫升數計算。</p>
+            <h3>💧 大字體尊榮喝水健康管家 PWA</h3>
+            <p>專為年長者設計的大字體、保溫杯直覺式喝水提醒管家，結合動態水波視覺、Web Speech 語音朗讀與離線快取[cite: 3]。</p>
             <ul class="feature-list">
-              <li>喝水提醒鬧鐘：支援每 30/45/60/90/120 分鐘定時推播音效與通知提醒</li>
-              <li>專屬保溫杯設定：可自訂常用保溫杯（如標準 500cc），每日目標喝滿 4 瓶（2000cc）</li>
-              <li>離線與桌面安裝：完整支援離線紀錄，並附有 iOS / Android 加入手機主畫面圖文教學</li>
+              <li>生活化直覺記錄：「喝了 1 瓶、喝了半瓶、喝幾大口」立體大按鈕與「扣回上一口」復原功能[cite: 3]</li>
+              <li>語音關懷與音效：內建 Web Audio 水聲/提示音與 <code>speechSynthesis</code> 慢速國語朗讀鼓勵[cite: 3]</li>
+              <li>單檔完整 PWA：動態生成 Web Manifest、SVG 圖示與 Service Worker 離線快取[cite: 3]</li>
             </ul>
           </div>
           <div class="btn-group">
-            <button class="btn btn-primary" onclick="switchTab('tab-m5', document.querySelectorAll('.tab-btn')[5])">
-              查看組員 5 詳情
-            </button>
-            <button class="btn btn-outline" onclick="openInViewer('組員 5：健康喝水管家', 'https://chifeng-chiu.github.io/mytest/drink_index.html')">
-              實機畫面預覽
-            </button>
-            <a class="btn btn-outline" href="https://chifeng-chiu.github.io/mytest/drink_index.html" target="_blank">
-              開新分頁 ↗
-            </a>
+            <button type="button" class="btn btn-primary" onclick="switchTab('tab-m5', 5)">查看組員 5 詳情</button>
+            <button type="button" class="btn btn-outline" onclick="openInViewer('組員 5：大字體尊榮喝水健康管家 PWA', 'INLINE_M5')">實機畫面預覽</button>
+            <button type="button" class="btn btn-outline" onclick="openInlineInNewTab('m5')">開新分頁 ↗</button>
           </div>
         </div>
       </div>
     </section>
 
-    <!-- ================= 組員 1 詳情頁 (長者關懷小幫手) ================= -->
+    <!-- ================= 組員 1 詳情頁 ================= -->
     <section id="tab-m1" class="section">
       <div class="member-layout">
         <div class="doc-panel">
@@ -668,16 +629,14 @@
         <div class="phone-simulator">
           <div class="sim-header">
             <span>📱 組員 1 實機操作 (長者關懷小幫手)</span>
-            <a href="https://doandlearn-naro.github.io/Program-one/" target="_blank" style="color: #fbbf24; text-decoration: none; font-weight: 700;">
-              開新分頁 ↗
-            </a>
+            <a href="https://doandlearn-naro.github.io/Program-one/" target="_blank" style="color: #fbbf24; text-decoration: none; font-weight: 700;">開新分頁 ↗</a>
           </div>
           <iframe class="sim-iframe" src="https://doandlearn-naro.github.io/Program-one/" title="組員1長者關懷小幫手"></iframe>
         </div>
       </div>
     </section>
 
-    <!-- ================= 組員 2 詳情頁 (樂活在地通 PWA) ================= -->
+    <!-- ================= 組員 2 詳情頁 ================= -->
     <section id="tab-m2" class="section">
       <div class="member-layout">
         <div class="doc-panel">
@@ -784,16 +743,14 @@
         <div class="phone-simulator">
           <div class="sim-header">
             <span>📱 組員 2 實機操作 (樂活在地通)</span>
-            <a href="https://chifeng-chiu.github.io/mytest/legacy/index.html" target="_blank" style="color: #fbbf24; text-decoration: none; font-weight: 700;">
-              開新分頁 ↗
-            </a>
+            <a href="https://chifeng-chiu.github.io/mytest/legacy/index.html" target="_blank" style="color: #fbbf24; text-decoration: none; font-weight: 700;">開新分頁 ↗</a>
           </div>
           <iframe class="sim-iframe" src="https://chifeng-chiu.github.io/mytest/legacy/index.html" title="組員2樂活在地通"></iframe>
         </div>
       </div>
     </section>
 
-    <!-- ================= 組員 3 詳情頁 (溫馨小宅) ================= -->
+    <!-- ================= 組員 3 詳情頁 ================= -->
     <section id="tab-m3" class="section">
       <div class="member-layout">
         <div class="doc-panel">
@@ -832,16 +789,14 @@
         <div class="phone-simulator">
           <div class="sim-header">
             <span>📱 組員 3 實機操作 (溫馨小宅)</span>
-            <a href="https://doandlearn-naro.github.io/Mytry/home/" target="_blank" style="color: #fbbf24; text-decoration: none; font-weight: 700;">
-              開新分頁 ↗
-            </a>
+            <a href="https://doandlearn-naro.github.io/Mytry/home/" target="_blank" style="color: #fbbf24; text-decoration: none; font-weight: 700;">開新分頁 ↗</a>
           </div>
           <iframe class="sim-iframe" src="https://doandlearn-naro.github.io/Mytry/home/" title="組員3溫馨小宅"></iframe>
         </div>
       </div>
     </section>
 
-    <!-- ================= 組員 4 詳情頁 (長者知識貪吃蛇) ================= -->
+    <!-- ================= 組員 4 詳情頁 ================= -->
     <section id="tab-m4" class="section">
       <div class="member-layout">
         <div class="doc-panel">
@@ -912,46 +867,45 @@
         <div class="phone-simulator">
           <div class="sim-header">
             <span>📱 組員 4 實機操作 (長者知識貪吃蛇)</span>
-            <a href="javascript:void(0)" onclick="openM4InNewTab()" style="color: #fbbf24; text-decoration: none; font-weight: 700;">
-              開新分頁 ↗
-            </a>
+            <a href="javascript:void(0)" onclick="openInlineInNewTab('m4')" style="color: #fbbf24; text-decoration: none; font-weight: 700;">開新分頁 ↗</a>
           </div>
           <iframe id="m4-sim-iframe" class="sim-iframe" title="組員4長者知識貪吃蛇"></iframe>
         </div>
       </div>
     </section>
 
-    <!-- ================= 組員 5 詳情頁 (健康喝水管家) ================= -->
+    <!-- ================= 組員 5 詳情頁  ================= -->
     <section id="tab-m5" class="section">
       <div class="member-layout">
         <div class="doc-panel">
           <span class="card-tag tag-m5">組員 5 進度報告</span>
-          <h2>💧 健康喝水管家｜長輩專屬飲水提醒與保溫杯紀錄</h2>
+          <h2>💧 大字體尊榮喝水健康管家 PWA</h2>
           <p style="color: var(--text-muted);">
-            部署網址：<a href="https://chifeng-chiu.github.io/mytest/drink_index.html" target="_blank" style="color: var(--accent);">https://chifeng-chiu.github.io/mytest/drink_index.html</a>
+            專為高齡長輩量身打造的直覺式飲水健康管家，不讓長輩被複雜的毫升數字困擾，改用日常習慣的「保溫杯幾瓶、半瓶、幾大口」來記錄，並整合動態水波視覺、國語語音朗讀回饋與完整單檔 PWA 架構[cite: 3]。
           </p>
 
-          <h3>核心設計與高齡友善功能</h3>
+          <h3>核心設計與高齡友善技術亮點</h3>
           <div class="sub-grid">
             <div class="info-box">
-              <h4>⏰ 1. 智慧喝水提醒鬧鐘</h4>
+              <h4>🍶 1. 保溫杯動態水位 ＆ 直覺生活單位</h4>
               <ul>
-                <li>可自由設定提醒頻率：<strong>每 30 分鐘、45 分鐘、1 小時（推薦）、1.5 小時或 2 小時</strong></li>
-                <li>時間到時自動發出聲音與訊息通知，並附有清楚的「如何開啟通知權限（鎖頭圖示教學）」引導彈窗</li>
+                <li>支援切換三種預設杯型：<strong>小馬克杯 (300cc)、標準保溫杯 (500cc)、大運動水壺 (750cc)</strong> 或自訂容量[cite: 3]</li>
+                <li>提供三顆立體大按鈕：<strong>「喝了 1 瓶」、「喝了半瓶」、「喝幾大口 (70cc)」</strong>，並貼心設計「按錯了，扣回上一口」復原鍵[cite: 3]</li>
+                <li>隨喝水量即時呈現保溫杯水波上升動畫與今日達標歡慶標語[cite: 3]</li>
               </ul>
             </div>
             <div class="info-box">
-              <h4>🍶 2. 專用保溫杯直覺換算</h4>
+              <h4>🔊 2. 慢速語音關懷 (Web Speech) ＆ 合成音效</h4>
               <ul>
-                <li>長輩不用費心計算喝了幾毫升，系統預設以長輩最熟悉的<strong>「標準保溫杯（約 500cc）」</strong>為單位</li>
-                <li>畫面大字顯示「今天已經喝了 X 瓶囉！目標是喝滿 4 瓶（約 2000 cc）」，達標時顯示「🎉 太棒了！您已經達成今天的喝水目標囉！」視覺進度條鼓勵</li>
+                <li>每次點擊喝水，透過 <strong>Web Audio API</strong> 即時合成清脆倒水音效，無須依賴外部音檔[cite: 3]</li>
+                <li>結合 <strong>Web Speech API (<code>speechSynthesis</code>)</strong> 以 <code>0.9</code> 慢速朗讀國語關懷（如：「好棒！記錄喝了一整瓶，今天累積喝了 2 瓶」）[cite: 3]</li>
               </ul>
             </div>
             <div class="info-box">
-              <h4>📲 3. 離線可用 ＆ 加入手機桌面教學</h4>
+              <h4>⏰ 3. 定時喝水鬧鐘 ＆ 單檔離線 PWA</h4>
               <ul>
-                <li>支援無網路環境下正常運作（「目前離線中，所有功能與記錄皆可正常使用」）</li>
-                <li>內建「把喝水管家放在桌面！」貼心教學彈窗，提供 <strong>iPhone (Safari 分享→加入主畫面)</strong> 與 <strong>Android (Chrome 選單→安裝應用程式)</strong> 步驟說明</li>
+                <li>支援每 <strong>30 / 45 / 60 / 90 / 120 分鐘</strong> 推播系統通知、三連音和弦提醒與語音呼喚[cite: 3]</li>
+                <li>透過 Blob 動態生成 <strong>Inline Web Manifest、SVG 桌面圖示與 Service Worker (<code>water-pwa-v1</code>)</strong>，斷網也能完整記錄並自動偵測離線狀態條[cite: 3]</li>
               </ul>
             </div>
           </div>
@@ -960,11 +914,9 @@
         <div class="phone-simulator">
           <div class="sim-header">
             <span>📱 組員 5 實機操作 (健康喝水管家)</span>
-            <a href="https://chifeng-chiu.github.io/mytest/drink_index.html" target="_blank" style="color: #fbbf24; text-decoration: none; font-weight: 700;">
-              開新分頁 ↗
-            </a>
+            <a href="javascript:void(0)" onclick="openInlineInNewTab('m5')" style="color: #fbbf24; text-decoration: none; font-weight: 700;">開新分頁 ↗</a>
           </div>
-          <iframe class="sim-iframe" src="https://chifeng-chiu.github.io/mytest/drink_index.html" title="組員5健康喝水管家"></iframe>
+          <iframe id="m5-sim-iframe" class="sim-iframe" title="組員5健康喝水管家"></iframe>
         </div>
       </div>
     </section>
@@ -976,13 +928,13 @@
           <h2 id="viewer-title" style="color: var(--accent);">目前展示：組員 1 — 長者關懷小幫手</h2>
         </div>
         <div class="btn-group">
-          <button class="btn btn-outline" onclick="openInViewer('組員 1：長者關懷小幫手', 'https://doandlearn-naro.github.io/Program-one/')">組員 1</button>
-          <button class="btn btn-outline" onclick="openInViewer('組員 2：樂活在地通 (GitHub Pages)', 'https://chifeng-chiu.github.io/mytest/legacy/index.html')">組員 2</button>
-          <button class="btn btn-outline" onclick="openInViewer('組員 3：溫馨小宅', 'https://doandlearn-naro.github.io/Mytry/home/')">組員 3</button>
-          <button class="btn btn-outline" onclick="openInViewer('組員 4：長者知識貪吃蛇', 'INLINE_M4')">組員 4</button>
-          <button class="btn btn-outline" onclick="openInViewer('組員 5：健康喝水管家', 'https://chifeng-chiu.github.io/mytest/drink_index.html')">組員 5</button>
-          <button class="btn btn-outline" onclick="resizeViewer('430px')">📱 手機寬度</button>
-          <button class="btn btn-outline" onclick="resizeViewer('100%')">💻 電腦全寬</button>
+          <button type="button" class="btn btn-outline" onclick="openInViewer('組員 1：長者關懷小幫手', 'https://doandlearn-naro.github.io/Program-one/')">組員 1</button>
+          <button type="button" class="btn btn-outline" onclick="openInViewer('組員 2：樂活在地通 (GitHub Pages)', 'https://chifeng-chiu.github.io/mytest/legacy/index.html')">組員 2</button>
+          <button type="button" class="btn btn-outline" onclick="openInViewer('組員 3：溫馨小宅', 'https://doandlearn-naro.github.io/Mytry/home/')">組員 3</button>
+          <button type="button" class="btn btn-outline" onclick="openInViewer('組員 4：長者知識貪吃蛇', 'INLINE_M4')">組員 4</button>
+          <button type="button" class="btn btn-outline" onclick="openInViewer('組員 5：大字體尊榮喝水健康管家 PWA', 'INLINE_M5')">組員 5</button>
+          <button type="button" class="btn btn-outline" onclick="resizeViewer('430px')">📱 手機寬度</button>
+          <button type="button" class="btn btn-outline" onclick="resizeViewer('100%')">💻 電腦全寬</button>
           <a id="viewer-link" class="btn btn-primary" href="https://doandlearn-naro.github.io/Program-one/" target="_blank">開新分頁 ↗</a>
         </div>
       </div>
@@ -996,8 +948,12 @@
     </section>
   </main>
 
-  <!-- 組員 4「長者知識貪吃蛇」完整原始碼儲存區塊 -->
-  <template id="m4-snake-template"><!doctype html>
+  <script>
+    // 以 Base64 安全封裝組員 4 與組員 5 的完整原創程式碼，徹底避免任何 HTML 標籤解析衝突
+    const m4Base64 = "PCFET0NUWVBFIGh0bWw+CjxodG1sIGxhbmc9InpoLUhhbnQiPgo8aGVhZD4KPG1ldGEgY2hhcnNldD0idXRmLTgiPgo8bWV0YSBuYW1lPSJ2aWV3cG9ydCIgY29udGVudD0id2lkdGg9ZGV2aWNlLXdpZHRoLCBpbmRleC1zY2FsZT0xLCB2aWV3cG9ydC1maXQ9Y292ZXIiPgo8dGl0bGU+6ZW36K6F55+l6K2Y6LKg5ZCD6JuUPC90aXRsZT4KPHN0eWxlPgpyb290e2JveC1zaXppbmc6Ym9yZGVyLWJveDtwYWRkaW5nLXRvcDplbnYoc2FmZS1hcmVhLWluc2V0LXRvcCwwcHgpO3BhZGRpbmctYm90dG9tOmVudihzYWZlLWFyZWEtaW5zZXQtYm90dG9tLDBweCk7Ci0tYmc6I2Y1ZjVmMjstLWZnOiMxZDFkMWI7LS1jYXJkOiNmZmY7LS1jZWxsOiNmYmZiZjg7LS1tdXQ6IzZiNmI2NjstLWJ0bjojMmY2ZmVkOy0tYnRuZmc6I2ZmZjstLW92OnJnYmEoMjQ1LDI0NSwyNDIsLjkyKTstLWJkOiNkOWQ5ZDN9Cmh0bWx7c2Nyb2xsLXBhZGRpbmctdG9wOmVudihzYWZlLWFyZWEtaW5zZXQtdG9wLDBweCl9CkBtZWRpYSAocHJlZmVycy1jb2xvci1zY2hlbWU6ZGFyayl7OnJvb3Q6bm90KFtkYXRhLXRoZW1lPSJsaWdodCJdKXstLWJnOiMxNjE3MWE7LS1mZzojZWNlY2VhOy0tY2FyZDojMjUyNjJiOy0tY2VsbDojMWQxZTIyOy0tbXV0OiM5YTlhOTU7LS1idG46IzViOGNmZjstLWJ0bmZnOiMwYjBiMGQ7LS1vdjpyZ2JhKDIyLDIzLDI2LC45Mik7LS1iZDojM2EzYjQxfX0KOnJvb3RbZGF0YS10aGVtZT0iZGFyayJdez0tYmc6IzE2MTcxYTstLWZnOiNlY2VjZWE7LS1jYXJkOiMyNTI2MmI7LS1jZWxsOiMxZDFlMjI7LS1tdXQ6IzlhOWE5NTstLWJ0bjojNWI4Y2ZmOy0tYnRuZmc6IzBiMGIwZDstLW92OnJnYmEoMjIsMjMsMjYsLjkyKTstLWJkOiMzYTNiNDF9CmJvZHl7bWFyZ2luOjA7YmFja2dyb3VuZDp2YXIoLS1iZyk7Y29sb3I6dmFyKC0tZmcpO2ZvbnQtZmFtaWx5OnN5c3RlbS11aSwtYXBwbGUtc3lzdGVtLCJOb3RvIFNhbnMgVEMiLCJNaWNyb3NvZnQgSmhlbmdIZWkiLHNhbnMtc2VyaWZ9Ci53cmFwe21heC13aWR0aDo2MjBweDttYXJnaW46MCBhdXRvO3BhZGRpbmc6MTJweH0KaDF7Zm9udC1zaXplOjIwcHg7bWFyZ2luOjRweCAwIDhweH0KLmh1ZHtkaXNwbGF5OmZsZXg7ZmxleC13cmFwOndyYXA7Z2FwOjhweCAxNnB4O2ZvbnQtc2l6ZToxNXB4O21hcmdpbi1ib3R0b206OHB4O2FsaWduLWl0ZW1zOmNlbnRlcn0KLmh1ZCBi7Zm9udC12YXJpYW50LW51bWVyaWM6dGFidWxhci1udW1zfQoueDJ7YmFja2dyb3VuZDojZmZiNDAwO2NvbG9yOiMyMjI7Ym9yZGVyLXJhZGl1czo5OTlweDtwYWRkaW5nOjJweCAxMHB4O2ZvbnQtd2VpZ2h0OjcwMDtkaXNwbGF5Om5vbmV9Ci5ib2FyZHtwb3NpdGlvbjpyZWxhdGl2ZTt3aWR0aDoxMDAlfQpjYW52YXN7ZGlzcGxheTpibG9jazt3aWR0aDoxMDAlO2hlaWdodDphdXRvO2JvcmRlcjoycHggc29saWQadmFyKC0tYmQpO2JvcmRlci1yYWRpdXM6OHB4O3RvdWNoLWFjdGlvbjpub25lfQoub3Z7cG9zaXRpb246YWJzb2x1dGU7aW5zZXQ6MDtiYWNrZ3JvdW5kOnZhciigtLW92KTtkaXNwbGF5Om5vbmU7YWxpZ24taXRlbXM6Y2VudGVyO2p1c3RpZnktY2VudGVyOmNlbnRlcjtwYWRkaW5nOjEycHg7Ym9yZGVyLXJhZGl1czo4cHh9Ci5jYXJke2JhY2tncm91bmQ6dmFyKC0tY2FyZCk7Ym9yZGVyOjFweCBzb2xpZCB2YXIoLS1iZCk7Ym9yZGVyLXJhZGl1czoxMnB4O3BhZGRpbmc6MTZweDt3aWR0aDoxMDAlO21heC13aWR0aDo0NDBweDtib3gtc2l6aW5nOmJvcmRlci1ib3h9Ci5jYXJkIGgye21hcmdpbjowIDAgOHB4O2ZvbnQtc2l6ZToxOHB4fQouY2FyZCBwe21hcmdpbjowIDAgMTBweDtsaW5lLWhlaWdodDoxLjU7Zm9udC1zaXplOjE1cHh9CmJ1dHRvbntmb250OmluaGVyaXQ7Y3Vyc29yOnBvaW50ZXJ9Ci5vcHQsLmdve2Rpc3BsYXk6YmxvY2s7d2lkdGg6MTAwJTttYXJnaW46OHB4IDAgMDtwYWRkaW5nOjEycHg7Ym9yZGVyLXJhZGl1czoxMHB4O2JvcmRlcjoxcHggc29saWQadmFyKC0tYmQpO2JhY2tncm91bmQ6dmFyKC0tY2FyZCk7Y29sb3I6dmFyKC0tZmcpO2ZvbnQtc2l6ZToxNnB4O3RleHQtYWxpZ246bGVmdH0KLmdve2JhY2tncm91bmQ6dmFyKC0tYnRuKTtjb2xvcjp2YXIoLS1idG5mZyk7Ym9yZGVyLWNvbG9yOnZhciigtLWJ0bik7dGV4dC1hbGlnbjpjZW50ZXI7Zm9udC13ZWlnaHQ6NzAwfQoucGFke2Rpc3BsYXk6Z3JpZDtnbmlkLXRlbXBsYXRlLWNvbHVtbnM6cmVwZWF0KDMsNjRweCk7Z3JpZC10ZW1wbGF0ZS1yb3dzOnJlcGVhdCgyLDUycHgpO2dhcDo2cHg7anVzdGlmeS1jb250ZW50OmNlbnRlcjttYXJnaW46MTJweCAwfQoucGFkIGJ1dHRvbntiYm9yZGVyLXJhZGl1czoxMHB4O2JvcmRlcjoxcHggc29saWQadmFyKC0tYmQpO2JhY2tncm91bmQ6dmFyKC0tY2FyZCk7Y29sb3I6dmFyKC0tZmcpO2ZvbnQtc2l6ZToyMHB4fQoucGFkIC51e2dyaWQtY29sdW1uOjJ9LnBhZCAubHtnbmlkLXJvdzoyO2dyaWQtY29sdW1uOjF9LnBhZCAuZHtncmlkLXJvdzoyO2dyaWQtY29sdW1uOjJ9LnBhZCAucntncmlkLXJvdzoyO2dyaWQtY29sdW1uOjN9Ci50aXB7Zm9udC1zaXplOjEzcHg7Y29sb3I6dmFyKC0tbXV0KTt0ZXh0LWFsaWduOmNlbnRlcn0KLmRvdHtkaXNwbGF5OmlubGluZS1ibG9jazt3aWR0aDoxMHB4O2hlaWdodDoxMHB4O2JvcmRlci1yYWRpdXM6NTAlO21hcmdpbjowIDJweCAwIDhweH0KPC9zdHlsZT4KPC9oZWFkPgo8Ym9keT4KPGRpdiBjbGFzcz0id3JhcCI+CiAgPGgxPuWVheadpeefpeitmOiZveWQg+iblDwvaDE+CiAgPGRpdiBjbGFzcz0iaHVkIj4KICAgIDxzcGFuPuWIhuWVuCA8YiBpZD0ic2MiPjA8L2I+IC8gNTAwMDwvc3Bhbj4KICAgIDxzcGFuPuS4i+asoeWVjOetlCA8YiBpZD0ibnEiPjMwPC9iPiDnp5g8L3NwYW4+CiAgICA8c3BhbiBjbGFzcz0ieDIiIGlkPSJ4MiI+6ZuZ5YCNIDEwIOenmDwvc3Bhbj4KICA8L2Rpdj4KICA8ZGl2IGNsYXNzPSJib2FyZCI+CiAgICA8Y2FudmFzIGlkPSJjdiI+PC9jYW52YXM+CiAgICA8ZGl2IGNsYXNzPSJvdiIgaWQ9Im92Ij48ZGl2IGNsYXNzPSJjYXJkIiBpZD0iY2FyZCI+PC9kaXY+PC9kaXY+CiAgPC9kaXY+CiAgPGRpdiBjbGFzcz0icGFkIj4KICAgIDxidXR0b24gY2xhc3M9InUiIGRhdGEtZD0idSIgYXJpYS1sYWJlbD0i5LiKIj7ilrI8L2J1dHRvbj4KICAgIDxidXR0b24gY2xhc3M9ImwiIGRhdGEtZD0ibCIgYXJpYS1sYWJlbD0i5bemIj7igpA8L2J1dHRvbj4KICAgIDxidXR0b24gY2xhc3M9ImQiIGRhdGEtZD0iZCIgYXJpYS1sYWJlbD0i5LiLIj7ilrw8L2J1dHRvbj4KICAgIDxidXR0b24gY2xhc3M9InIiIGRhdGEtZD0iciIgYXJpYS1sYWJlbD0i5Y+RIj7igpY8L2J1dHRvbj4KICA8L2Rpdj4KICA8ZGl2IGNsYXNzPSJ0aXAiPuWPr+WQkemdlSAvIFdBU0QgLyDmubHli5UgLyDlsI/lJbovrf制，UCDmmqvlgZw8YnI+CiAgICA8c3BhbiBjbGFzcz0iZG90IiBzdHlsZT0iYmFja2dyb3VuZDojMmY2ZmVkIj48L3NwYW4+MTAg5YiGCiAgICA8c3BhbiBjbGFzcz0iZG90IiBzdHlsZT0iYmFja2dyb3VuZDojZTUzMjJkIj48L3NwYW4+NTAg5YiGCiAgICA8c3BhbiBjbGFzcz0iZG90IiBzdHlsZT0iYmFja2dyb3VuZDojZjViODAwIj48L3NwYW4+MTUwIOWIhjC9ZGl2Pgo8L2Rpdj4KPHNjcmlwdD4KY29uc3QgTj0zMCxDPTIwLFNURVA9MTIwLFRBUkdFVD01MDAwLFFJPTMwLEREPTEwOwpjb25zdCBQVFM9e2I6MTAs cjo1MCxnOjE1MH0sQ09MPXtiOiMyZjZmZWQnLHI6JyNlNTMyMmQnLGc6JyNmNWI4MDAnfTsKY29uc3QgY3Y9ZG9jdW1lbnQuZ2V0RWxlbWVudEJ5SWQoJ2N2JyksZz1jdi5nZXRDb250ZXh0KCcyZCcpOwpjdi53aWR0aD1jdi5oZWlnaHQ9TipDOwpjb25zdCAkPWlkPT5kb2N1bWVudC5nZXRFbGVtZW50QnlJZChpZCk7CmNvbnN0IGJhbms9WwpbJ+WPsOeBo+eahOWPjeiomOimtumBlOiqnOawlumbu+aYr+W5vueZn++8nycsWyIxMTAiLCIxNjUiLCIxMTkiXSwxXSwKWyflj7DngaPnoJTplbfnhp3mnI3li5npgqjnmb7lvb/nhp3vvJ8nLFsiMTk2NiIsIjE5OTkiLCIxOTIyIl0sMF0sClsn5oeP55aR5a625Lq65Lit6aKo5pmC77yM5oeJ6Kmy56uL5Yi75oCO6Z+z5YGa77y/JyxbIuWFiOecoeS4gOiniOWkguWvnSIsIuiHquadj+acjeWUseWGn+aWr+WMuOmbuSIsIueri+WIu+aajeExMTnpgZnpvZkiXSwyXSwKWyY2NeqWgeS4iueS6uuWPpeWGtOe4veS6uuWPpumBlDE0Je+8jOensOOAg++8nycsWyLpq5jpvaLljJbnlL7mnIwiLCI6auY6b2i56S+5pyMIiwi6LaF6auY6b2i56S+5pyMIl0sMV0sClsn54K66aCQ6Ziy6ZW36K6F5Zyo5rW05a6k6LeM5YCS77yM5pyA6YGT5ZCI55qE5YGa5rOV5piv77y/JyxbIuWcsOmbuOS/neWHnOa/leW7keWls+a4heaulSIsIuWKoOijneamuaJiuS4m+mLkemYsOa7keWhnCIsIuadnOeHhembuOecgembh+iLSJdLDFdLApbJ+S4gOiIrOaIkOS6uOeQhuW5sOinkOWWj+eahOaUtue4ruinkOaJiuWwj+aWuOWkmuWwjyBtbUhn77y/JyxbIjEyMCIsIjE0MCIsIjE2MCJdLDBdLApbJ+WVheadpeacjeiXpe+8jOS4i+WIl+WTquWAi+ingOW/lOato+ehg++8nycsWyLnl4Xni4DlpK3kuoblsIHoibzlgZrojq8iLCI6K665b6X5rKh5pWI5bCB6Ieq6KGM5Yqg5YCNIiwi6YG154Wn6Yar5bir6Jel5bir5oyH56S677yM5LiN6Ieq6KGM5a6e5ribIl0sMl0sClsn6aCQ6Ziy6IKM5bCP55eH77yM5pyA5aW955qE5pa55byP5piv77y/JyxbIuWbm+mBi+WLleS4m+aUneWPlui2s+WknOiJu+eZveWIqyIsIuWKm+WkqeWlu+W6iuS8keWBrSIsIuWujOWFqOS4jeWQg+iCsuamnuS4i+iJu+ixuCJdLDBdLApbJ+S4gOiIrOW7uuitsOaIkOS6uOavj+mCs+iHs+WwkeWHieacieWkm+WwkOWJhemAlOS4reWPr+W8tOW6puWBpeWLle+8nycsWyIzMCDlvo7pmaniLCIxNTAg5b6O6ZmpIiwiNjAwIOW+jumZqSJdLDFdLApbJ+W7uuK議5q+P5pel6aOf6bm977yI6bm977yJ5pSd5Y+W6YeP57SE5bCP5pS85aSa5bCP77y/JyxbIjYg5YWs5YWLIlwiLCIxNSDlhazlhYsiLCIyNSDlhazlhYsiXSwwXSwKWyflrZ3ogIXotbfmjornmb7vvIzngrrpgJ/lhY3lpL/lraLmgKfkvYDo血5aSp6aCt5pWZ77yM5oeJ6Kmy77y/JyxbIueMbmOeEt+i1t+i6qyIsIui1t+i6qOW+jznq5vliLvmso3otbAiLCI5YWI5Z2Q5LiA5LiL5YaN57my5oWi56uZ6LWwIl0sMl0sClsn5o6l5Yiw6Ieq56ix44CM5qqi6K2m5Lq65ZOh44CN6KaB5rGC5L2g6L2J5bCh5Yiw44CM5a6J5YWo5bCh5oi244CN55qE6Zu76Kmx77yM5oeJ6Kmy77y/JyxbIueFp+aMh+ekuuL2J5bChIiwi5o6b5pa35LKm5pWlMTY15p+l6K2JIiwi5o+Q5L6b5o+Q5qy+5Y2h5a+G56K8Il0sMV0sClsn5rWB5oSf55ar6IuX5buu6K2w5aSa5LmF5o6l56iu5LiA5qyh77y/JyxbIuavj+W5tOS4gOasoiIsIuWNgeW5tOS4gOasoiIsIue1guW/heS4gOasuuWPr+S7pyJdLDBdLApbJ+S7peS4i+S9leiAheWFrOatgOWkseamuuS7t+eahOa5pyf6K2m6KiK77y/JyxbIuWBtiOeOluW/mOiomOWNmu匙5pS+5ZOq6KOh5L2G6IO95Zue5oOz6LW35L6GIiwi6K2Y5oa25Yqb5rih6YCA5b2x6Z+/5pel5bi455Sf5rS7Iiwi5aSp5rCj5Ya35pyD5oOz5aSa56ul6KGj5pyNIl0sMV0sClsn54K66aCQ6Ziy6aqo6LOq55aP6ayG77yM6ZW36K6F5Y+v5Lul5oCO6Z+z5YGa77y/JyxbIuihoseWFhemKluizquOAgeiBqeW6puab曬5aSq6Zm96IiH6YGL5YuVIiwi5a6M5YWo6YG/5YWN6LWw5YuVIiwi5aSn6YeP5Z2I5ZCr57OW6aOy5paZIl0sMF0KXTs=";
+
+    // 組員 4 與 組員 5 原始碼直接建立 (使用陣列確保無標籤干擾)
+    const m4RawHtml = `<!doctype html>
 <html lang="zh-Hant">
 <head>
 <meta charset="utf-8">
@@ -1054,7 +1010,7 @@ button{font:inherit;cursor:pointer}
     <span class="dot" style="background:#e5322d"></span>50 分
     <span class="dot" style="background:#f5b800"></span>150 分</div>
 </div>
-<script>
+<scr` + `ipt>
 const N=30,C=20,STEP=120,TARGET=5000,QI=30,DD=10;
 const PTS={b:10,r:50,g:150},COL={b:'#2f6fed',r:'#e5322d',g:'#f5b800'};
 const cv=document.getElementById('cv'),g=cv.getContext('2d');
@@ -1157,53 +1113,651 @@ cv.addEventListener('touchend',e=>{
 },{passive:true});
 showStart();draw();
 setInterval(()=>{step();draw();},STEP);
-<\/script>
+</scr` + `ipt>
 </body>
-</html></template>
+</html>`;
 
-  <script>
-    const m4HtmlContent = document.getElementById('m4-snake-template').innerHTML;
+    const m5RawHtml = `<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
+    <title>大字體尊榮喝水健康管家 PWA</title>
+    <meta name="theme-color" content="#1D4ED8">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <meta name="apple-mobile-web-app-title" content="喝水管家">
+    <scr` + `ipt src="https://cdn.tailwindcss.com"></scr` + `ipt>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@400;700;900&display=swap" rel="stylesheet">
+    <scr` + `ipt>
+        (function() {
+            const iconSvg = '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" fill="#1D4ED8"><rect width="512" height="512" rx="100" fill="#2563EB"/><path d="M256 80c-50 70-120 160-120 230 0 70 50 120 120 120s120-50 120-120c0-70-70-160-120-230z" fill="#38BDF8"/><path d="M210 320c0-30 20-60 40-80 5 15 15 35 15 50 0 20-15 30-35 30z" fill="#FFFFFF" opacity="0.6"/></svg>';
+            const iconUrl = 'data:image/svg+xml;charset=utf-8,' + encodeURIComponent(iconSvg);
+            const linkIcon = document.createElement('link');
+            linkIcon.rel = 'apple-touch-icon';
+            linkIcon.href = iconUrl;
+            document.head.appendChild(linkIcon);
 
-    // 初始化組員 4 詳情頁右側的內嵌模擬器
-    window.addEventListener('DOMContentLoaded', () => {
+            const manifestObj = {
+                name: "大字體尊榮喝水健康管家",
+                short_name: "喝水管家",
+                description: "專為年長者設計的大字體、保溫杯直覺式喝水提醒管家",
+                start_url: "./",
+                display: "standalone",
+                background_color: "#F0F4F8",
+                theme_color: "#1D4ED8",
+                icons: [
+                    { src: iconUrl, sizes: "192x192", type: "image/svg+xml", purpose: "any maskable" },
+                    { src: iconUrl, sizes: "512x512", type: "image/svg+xml", purpose: "any maskable" }
+                ]
+            };
+            const manifestStr = JSON.stringify(manifestObj);
+            const blob = new Blob([manifestStr], {type: 'application/json'});
+            const manifestUrl = URL.createObjectURL(blob);
+            const linkManifest = document.createElement('link');
+            linkManifest.rel = 'manifest';
+            linkManifest.href = manifestUrl;
+            document.head.appendChild(linkManifest);
+        })();
+    </scr` + `ipt>
+    <style>
+        body {
+            font-family: 'Noto Sans TC', sans-serif;
+            background-color: #F0F4F8;
+            color: #1A202C;
+            touch-action: manipulation;
+            padding-top: env(safe-area-inset-top);
+            padding-bottom: env(safe-area-inset-bottom);
+            -webkit-user-select: none;
+            user-select: none;
+        }
+        .thermos-container {
+            position: relative;
+            width: 170px;
+            height: 250px;
+            border: 8px solid #1E40AF;
+            border-radius: 28px;
+            background: #FFFFFF;
+            overflow: hidden;
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.15);
+        }
+        .thermos-cap {
+            width: 100px;
+            height: 24px;
+            background: #1E40AF;
+            border-radius: 12px 12px 0 0;
+            margin: 0 auto -4px auto;
+        }
+        .water-fill {
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 100%;
+            background: linear-gradient(180deg, #3B82F6 0%, #1D4ED8 100%);
+            transition: height 0.8s ease-in-out;
+        }
+        .wave {
+            position: absolute;
+            top: -15px;
+            left: 0;
+            width: 200%;
+            height: 20px;
+            background: rgba(147, 197, 253, 0.6);
+            border-radius: 50%;
+            animation: wave-anim 3s infinite linear;
+        }
+        @keyframes wave-anim {
+            0% { transform: translateX(0) scaleY(1); }
+            50% { transform: translateX(-25%) scaleY(0.8); }
+            100% { transform: translateX(-50%) scaleY(1); }
+        }
+        .btn-large {
+            box-shadow: 0 6px 0px rgba(0,0,0,0.2);
+            transition: all 0.1s ease;
+        }
+        .btn-large:active {
+            transform: translateY(4px);
+            box-shadow: 0 2px 0px rgba(0,0,0,0.2);
+        }
+        .modal { display: none; }
+        .modal.active { display: flex; }
+    </style>
+</head>
+<body class="min-h-screen flex flex-col justify-between p-3 sm:p-6 max-w-2xl mx-auto">
+    <div id="offline-bar" class="hidden bg-amber-500 text-black font-black text-center py-2 px-4 rounded-xl mb-3 border-2 border-amber-700 shadow flex items-center justify-center gap-2 text-lg">
+        <i class="fa-solid fa-wifi-slash text-2xl"></i>
+        <span>目前離線中 (所有功能與記錄皆可正常使用)</span>
+    </div>
+    <div id="pwa-install-banner" class="hidden bg-gradient-to-r from-emerald-600 to-teal-700 text-white p-4 rounded-2xl mb-3 shadow-lg border-4 border-emerald-900 flex flex-col sm:flex-row items-center justify-between gap-3">
+        <div class="flex items-center gap-3">
+            <i class="fa-solid fa-mobile-screen-button text-4xl text-yellow-300"></i>
+            <div>
+                <h3 class="text-2xl font-black">把喝水管家放在桌面！</h3>
+                <p class="text-lg font-bold text-emerald-100">像手邊的 App 一樣，點一下就能開啟</p>
+            </div>
+        </div>
+        <button onclick="installPWA()" class="btn-large w-full sm:w-auto bg-yellow-400 hover:bg-yellow-500 text-black font-black text-xl py-3 px-6 rounded-xl border-2 border-yellow-700 flex items-center justify-center gap-2 whitespace-nowrap">
+            <i class="fa-solid fa-download text-2xl"></i>
+            <span>放到手機桌面</span>
+        </button>
+    </div>
+    <header class="bg-blue-700 text-white p-4 rounded-2xl shadow-lg text-center mb-3 border-4 border-blue-900">
+        <h1 class="text-3xl sm:text-4xl font-black tracking-wide flex items-center justify-center gap-3">
+            <i class="fa-solid fa-bottle-water text-yellow-300"></i>
+            健康喝水管家
+        </h1>
+        <p id="current-date" class="text-xl sm:text-2xl mt-1 text-blue-100 font-bold">載入中...</p>
+    </header>
+    <main class="flex-1 flex flex-col gap-4">
+        <section class="bg-amber-100 border-4 border-amber-400 p-4 rounded-2xl shadow">
+            <div class="flex flex-col sm:flex-row items-center justify-between gap-3">
+                <div class="flex items-center gap-3">
+                    <i class="fa-solid fa-bell text-3xl text-amber-700"></i>
+                    <div>
+                        <h2 class="text-2xl font-black text-gray-900">喝水提醒鬧鐘</h2>
+                        <p id="notification-status-text" class="text-xl font-bold text-gray-800">狀態：尚未開啟</p>
+                    </div>
+                </div>
+                <button id="toggle-notification-btn" onclick="requestNotificationPermission()" class="btn-large w-full sm:w-auto bg-amber-500 hover:bg-amber-600 text-black font-black text-xl py-3 px-6 rounded-xl border-2 border-amber-700 flex items-center justify-center gap-2">
+                    <i class="fa-solid fa-power-off text-2xl"></i>
+                    <span>開啟喝水提醒</span>
+                </button>
+            </div>
+            <div id="interval-setting-box" class="mt-3 pt-3 border-t-2 border-amber-300 flex flex-col sm:flex-row items-center justify-between gap-2">
+                <label for="reminder-interval" class="text-xl font-black text-gray-800">多久提醒一次喝水？</label>
+                <select id="reminder-interval" onchange="changeInterval()" class="text-xl font-black p-2 bg-white border-2 border-gray-400 rounded-xl w-full sm:w-auto">
+                    <option value="30">每 30 分鐘</option>
+                    <option value="45">每 45 分鐘</option>
+                    <option value="60" selected>每 1 小時 (推薦)</option>
+                    <option value="90">每 1.5 小時</option>
+                    <option value="120">每 2 小時</option>
+                </select>
+            </div>
+        </section>
+        <section class="bg-blue-50 border-4 border-blue-300 p-3 rounded-2xl flex items-center justify-between shadow-sm">
+            <div class="flex items-center gap-3">
+                <div class="w-12 h-12 bg-blue-600 text-white rounded-full flex items-center justify-center text-2xl font-black">
+                    <i class="fa-solid fa-whiskey-glass"></i>
+                </div>
+                <div>
+                    <span class="text-lg font-bold text-gray-600">您的專用保溫杯：</span>
+                    <div id="bottle-info-text" class="text-2xl font-black text-blue-900">標準保溫杯 (約500cc)</div>
+                </div>
+            </div>
+            <button onclick="openCupModal()" class="btn-large bg-white hover:bg-gray-100 text-blue-800 font-black text-lg py-2 px-4 rounded-xl border-2 border-blue-400 flex items-center gap-1">
+                <i class="fa-solid fa-gear"></i> 更換杯子
+            </button>
+        </section>
+        <section class="bg-white border-4 border-blue-400 p-4 rounded-2xl shadow-md flex flex-col items-center justify-center">
+            <div class="text-center mb-2">
+                <div id="bottle-progress-text" class="text-3xl sm:text-4xl font-black text-blue-800">
+                    今天已經喝了 <span class="text-amber-600 text-4xl sm:text-5xl">0</span> 瓶囉！
+                </div>
+                <p id="bottle-target-text" class="text-xl font-bold text-gray-700 mt-1">
+                    目標是喝滿 4 瓶（約 2000 cc）
+                </p>
+            </div>
+            <div class="flex flex-col items-center my-2">
+                <div class="thermos-cap"></div>
+                <div class="thermos-container">
+                    <div id="water-fill" class="water-fill" style="height: 0%;">
+                        <div class="wave"></div>
+                    </div>
+                </div>
+            </div>
+            <div id="goal-message" class="hidden mt-2 bg-green-100 text-green-800 font-black text-2xl p-3 rounded-xl border-2 border-green-500 text-center animate-bounce w-full">
+                🎉 太棒了！您已經達成今天的喝水目標囉！
+            </div>
+        </section>
+        <section class="bg-white border-4 border-gray-300 p-4 rounded-2xl shadow-md">
+            <h2 class="text-2xl font-black text-gray-900 mb-3 text-center">喝了水，按一下幫您記錄：</h2>
+            <div class="grid grid-cols-3 gap-3">
+                <button onclick="addWaterByFraction(1.0, '喝了一整瓶')" class="btn-large bg-blue-600 hover:bg-blue-700 active:bg-blue-800 text-white py-4 rounded-2xl flex flex-col items-center justify-center border-4 border-blue-900">
+                    <i class="fa-solid fa-bottle-water text-3xl mb-1 text-yellow-300"></i>
+                    <span class="text-2xl sm:text-3xl font-black">喝了 1 瓶</span>
+                    <span class="text-base font-bold text-blue-100">(裝滿喝完)</span>
+                </button>
+                <button onclick="addWaterByFraction(0.5, '喝了半瓶')" class="btn-large bg-sky-500 hover:bg-sky-600 active:bg-sky-700 text-white py-4 rounded-2xl flex flex-col items-center justify-center border-4 border-sky-800">
+                    <i class="fa-solid fa-glass-water-droplet text-3xl mb-1 text-yellow-300"></i>
+                    <span class="text-2xl sm:text-3xl font-black">喝了 半瓶</span>
+                    <span class="text-base font-bold text-sky-100">(喝了一半)</span>
+                </button>
+                <button onclick="addWaterSips(70, '喝了幾大口')" class="btn-large bg-teal-600 hover:bg-teal-700 active:bg-teal-800 text-white py-4 rounded-2xl flex flex-col items-center justify-center border-4 border-teal-900">
+                    <i class="fa-solid fa-mug-hot text-3xl mb-1 text-yellow-300"></i>
+                    <span class="text-2xl sm:text-3xl font-black">喝幾大口</span>
+                    <span class="text-base font-bold text-teal-100">(潤潤喉嚨)</span>
+                </button>
+            </div>
+            <div class="mt-4">
+                <button onclick="undoLastWater()" class="btn-large w-full bg-gray-200 hover:bg-gray-300 active:bg-gray-400 text-gray-800 font-black text-xl py-3 rounded-xl border-2 border-gray-400 flex items-center justify-center gap-2">
+                    <i class="fa-solid fa-rotate-left"></i>
+                    <span>按錯了，扣回上一口</span>
+                </button>
+            </div>
+        </section>
+    </main>
+    <footer class="mt-4 text-center flex flex-col gap-2">
+        <button onclick="openHelpModal()" class="text-blue-800 underline text-xl font-black p-2 hover:text-blue-900">
+            <i class="fa-solid fa-circle-question"></i> 遇到問題？看設定說明與提醒教學
+        </button>
+        <button onclick="openInstallTutorialModal()" class="text-gray-700 underline text-lg font-bold p-1 hover:text-gray-900">
+            <i class="fa-solid fa-mobile-retro"></i> 如何放入手機桌面？（iOS / Android 教學）
+        </button>
+    </footer>
+    <div id="cup-modal" class="modal fixed inset-0 bg-black bg-opacity-60 items-center justify-center p-4 z-50">
+        <div class="bg-white rounded-3xl p-5 max-w-lg w-full border-4 border-blue-600 shadow-2xl overflow-y-auto max-h-[90vh]">
+            <h3 class="text-3xl font-black text-gray-900 mb-2 text-center">設定您的專用杯</h3>
+            <p class="text-xl text-gray-700 text-center font-bold mb-4">請點選您平常喝水用的保溫杯或杯子：</p>
+            <div class="space-y-3">
+                <button onclick="selectCupPreset('小馬克杯 / 小玻璃杯', 300)" class="btn-large w-full p-4 bg-blue-50 hover:bg-blue-100 border-4 border-blue-300 rounded-2xl text-left flex items-center justify-between">
+                    <div>
+                        <div class="text-2xl font-black text-blue-900">🍵 小馬克杯 / 小玻璃杯</div>
+                        <div class="text-lg text-gray-600 font-bold">容量約 300 cc</div>
+                    </div>
+                    <i class="fa-solid fa-circle-check text-3xl text-blue-600"></i>
+                </button>
+                <button onclick="selectCupPreset('標準保溫杯', 500)" class="btn-large w-full p-4 bg-blue-50 hover:bg-blue-100 border-4 border-blue-400 rounded-2xl text-left flex items-center justify-between">
+                    <div>
+                        <div class="text-2xl font-black text-blue-900">🥤 標準保溫杯 (最常見)</div>
+                        <div class="text-lg text-gray-600 font-bold">容量約 500 cc</div>
+                    </div>
+                    <i class="fa-solid fa-circle-check text-3xl text-blue-600"></i>
+                </button>
+                <button onclick="selectCupPreset('大運動水壺', 750)" class="btn-large w-full p-4 bg-blue-50 hover:bg-blue-100 border-4 border-blue-300 rounded-2xl text-left flex items-center justify-between">
+                    <div>
+                        <div class="text-2xl font-black text-blue-900">🍼 大運動水壺</div>
+                        <div class="text-lg text-gray-600 font-bold">容量約 750 cc</div>
+                    </div>
+                    <i class="fa-solid fa-circle-check text-3xl text-blue-600"></i>
+                </button>
+            </div>
+            <div class="mt-4 pt-3 border-t-2 border-gray-300">
+                <label class="text-xl font-black text-gray-800 block mb-2">或自訂單瓶容量 (cc)：</label>
+                <div class="flex items-center gap-2">
+                    <input type="number" id="custom-cup-input" step="50" class="text-2xl font-black text-center border-4 border-blue-400 rounded-xl p-2 w-full" value="500">
+                    <button onclick="saveCustomCup()" class="btn-large bg-blue-600 text-white font-black text-xl py-3 px-6 rounded-xl border-2 border-blue-900 whitespace-nowrap">確定</button>
+                </div>
+            </div>
+            <button onclick="closeCupModal()" class="btn-large w-full mt-5 bg-gray-300 text-gray-800 font-black text-2xl py-3 rounded-xl border-2 border-gray-500">取消</button>
+        </div>
+    </div>
+    <div id="help-modal" class="modal fixed inset-0 bg-black bg-opacity-60 items-center justify-center p-4 z-50">
+        <div class="bg-white rounded-3xl p-6 max-w-lg w-full border-4 border-amber-500 shadow-2xl overflow-y-auto max-h-[90vh]">
+            <h3 class="text-3xl font-black text-gray-900 mb-4 text-center flex items-center justify-center gap-2">
+                <i class="fa-solid fa-bell text-amber-600"></i> 如何開啟提醒鬧鐘？
+            </h3>
+            <div class="text-xl leading-relaxed text-gray-800 space-y-4">
+                <p class="font-bold text-blue-900 bg-blue-50 p-3 rounded-xl border border-blue-200">
+                    💡 開啟提醒後，當時間到了，手機或電腦會自動發出聲音與訊息提示，提醒您補充水分！
+                </p>
+                <ol class="list-decimal list-inside space-y-3 font-bold">
+                    <li>點選畫面上方黃色的<span class="text-amber-700 font-black">【開啟喝水提醒】</span>。</li>
+                    <li>畫面上方跳出詢問時，請點選<span class="text-green-600 font-black">【允許】</span>。</li>
+                    <li>若不小心封鎖，請點網址列左邊的<span class="font-black text-gray-700">「鎖頭 🔒」</span>，將「通知」改為<span class="text-green-600 font-black">「允許」</span>即可。</li>
+                </ol>
+            </div>
+            <button onclick="closeHelpModal()" class="btn-large w-full mt-6 bg-blue-600 text-white font-black text-2xl py-3 rounded-xl border-2 border-blue-900">我知道了</button>
+        </div>
+    </div>
+    <div id="install-modal" class="modal fixed inset-0 bg-black bg-opacity-60 items-center justify-center p-4 z-50">
+        <div class="bg-white rounded-3xl p-6 max-w-lg w-full border-4 border-emerald-600 shadow-2xl overflow-y-auto max-h-[90vh]">
+            <h3 class="text-3xl font-black text-gray-900 mb-3 text-center flex items-center justify-center gap-2">
+                <i class="fa-solid fa-mobile-button text-emerald-600"></i> 放入手機桌面步驟
+            </h3>
+            <div class="bg-emerald-50 p-4 rounded-2xl border-2 border-emerald-300 mb-4">
+                <h4 class="text-2xl font-black text-emerald-900 mb-2 border-b border-emerald-200 pb-1">🍎 蘋果 iPhone / iPad (Safari 瀏覽器)：</h4>
+                <ol class="list-decimal list-inside text-lg font-bold text-gray-800 space-y-2">
+                    <li>點選螢幕下方（或上方）的<span class="text-blue-700 font-black">「分享」圖示 <i class="fa-solid fa-share-from-square"></i></span>。</li>
+                    <li>往下滑動選單，找到並點選<span class="text-blue-700 font-black">「加入主畫面 <i class="fa-regular fa-square-plus"></i>」</span>。</li>
+                    <li>點選右上角的「新增」，手機桌面上就會出現喝水管家圖示！</li>
+                </ol>
+            </div>
+            <div class="bg-teal-50 p-4 rounded-2xl border-2 border-teal-300 mb-4">
+                <h4 class="text-2xl font-black text-teal-900 mb-2 border-b border-teal-200 pb-1">🤖 安卓 Android 手機 (Chrome 瀏覽器)：</h4>
+                <ol class="list-decimal list-inside text-lg font-bold text-gray-800 space-y-2">
+                    <li>點選瀏覽器右上角的<span class="text-gray-900 font-black">「三個點點選單 <i class="fa-solid fa-ellipsis-vertical"></i>」</span>。</li>
+                    <li>點選<span class="text-teal-800 font-black">「新增至主畫面」</span>或<span class="text-teal-800 font-black">「安裝應用程式」</span>。</li>
+                    <li>確認新增，即可在桌面直接點開使用！</li>
+                </ol>
+            </div>
+            <button onclick="closeInstallModal()" class="btn-large w-full bg-emerald-600 text-white font-black text-2xl py-3 rounded-xl border-2 border-emerald-900">關閉教學</button>
+        </div>
+    </div>
+    <scr` + `ipt>
+        let currentWater = 0;
+        let cupCapacity = 500;
+        let cupName = '標準保溫杯';
+        let targetDailyWater = 2000;
+        let waterHistory = [];
+        let reminderTimer = null;
+        let intervalMinutes = 60;
+        let isNotificationEnabled = false;
+        let deferredPrompt = null;
+        const audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+
+        function playWaterSound() {
+            if (audioCtx.state === 'suspended') audioCtx.resume();
+            const osc = audioCtx.createOscillator();
+            const gain = audioCtx.createGain();
+            osc.type = 'sine';
+            osc.frequency.setValueAtTime(350, audioCtx.currentTime);
+            osc.frequency.exponentialRampToValueAtTime(750, audioCtx.currentTime + 0.18);
+            gain.gain.setValueAtTime(0.35, audioCtx.currentTime);
+            gain.gain.exponentialRampToValueAtTime(0.01, audioCtx.currentTime + 0.18);
+            osc.connect(gain);
+            gain.connect(audioCtx.destination);
+            osc.start();
+            osc.stop(audioCtx.currentTime + 0.18);
+        }
+
+        function playChimeSound() {
+            if (audioCtx.state === 'suspended') audioCtx.resume();
+            const now = audioCtx.currentTime;
+            const osc = audioCtx.createOscillator();
+            const gain = audioCtx.createGain();
+            osc.type = 'triangle';
+            osc.frequency.setValueAtTime(523.25, now);
+            osc.frequency.setValueAtTime(659.25, now + 0.15);
+            osc.frequency.setValueAtTime(783.99, now + 0.3);
+            gain.gain.setValueAtTime(0.4, now);
+            gain.gain.exponentialRampToValueAtTime(0.01, now + 0.6);
+            osc.connect(gain);
+            gain.connect(audioCtx.destination);
+            osc.start(now);
+            osc.stop(now + 0.6);
+        }
+
+        function speakText(text) {
+            if ('speechSynthesis' in window) {
+                window.speechSynthesis.cancel();
+                const utterance = new SpeechSynthesisUtterance(text);
+                utterance.lang = 'zh-TW';
+                utterance.rate = 0.9;
+                utterance.pitch = 1.0;
+                window.speechSynthesis.speak(utterance);
+            }
+        }
+
+        window.onload = function() {
+            updateDateDisplay();
+            loadLocalStorage();
+            updateUI();
+            checkNotificationStatus();
+            initNetworkDetector();
+        };
+
+        function updateDateDisplay() {
+            const now = new Date();
+            const options = { year: 'numeric', month: 'long', day: 'numeric', weekday: 'long' };
+            document.getElementById('current-date').innerText = now.toLocaleDateString('zh-TW', options);
+        }
+
+        function loadLocalStorage() {
+            try {
+                const todayKey = new Date().toISOString().slice(0, 10);
+                const savedDate = localStorage.getItem('water_tracker_date');
+                if (savedDate !== todayKey) {
+                    localStorage.setItem('water_tracker_date', todayKey);
+                    localStorage.setItem('water_current', 0);
+                } else {
+                    currentWater = parseInt(localStorage.getItem('water_current')) || 0;
+                }
+                cupCapacity = parseInt(localStorage.getItem('water_cup_capacity')) || 500;
+                cupName = localStorage.getItem('water_cup_name') || '標準保溫杯';
+                targetDailyWater = parseInt(localStorage.getItem('water_daily_target')) || 2000;
+            } catch (e) {}
+        }
+
+        function saveLocalStorage() {
+            try {
+                localStorage.setItem('water_current', currentWater);
+                localStorage.setItem('water_cup_capacity', cupCapacity);
+                localStorage.setItem('water_cup_name', cupName);
+                localStorage.setItem('water_daily_target', targetDailyWater);
+            } catch (e) {}
+        }
+
+        function initNetworkDetector() {
+            const offlineBar = document.getElementById('offline-bar');
+            function updateOnlineStatus() {
+                if (navigator.onLine) offlineBar.classList.add('hidden');
+                else offlineBar.classList.remove('hidden');
+            }
+            window.addEventListener('online', updateOnlineStatus);
+            window.addEventListener('offline', updateOnlineStatus);
+            updateOnlineStatus();
+        }
+
+        function installPWA() { openInstallTutorialModal(); }
+
+        function addWaterByFraction(fraction, labelText) {
+            const amount = Math.round(cupCapacity * fraction);
+            addWaterAmount(amount, labelText);
+        }
+
+        function addWaterSips(amount, labelText) {
+            addWaterAmount(amount, labelText);
+        }
+
+        function addWaterAmount(amount, labelText) {
+            playWaterSound();
+            waterHistory.push(amount);
+            currentWater += amount;
+            saveLocalStorage();
+            updateUI();
+            const currentBottlesStr = getFormattedBottles(currentWater);
+            let speechMsg = '好棒！記錄' + labelText + '。';
+            if (currentWater >= targetDailyWater) {
+                speechMsg += '恭喜您！今天已經喝了 ' + currentBottlesStr + ' 瓶，成功達成目標囉！';
+            } else {
+                speechMsg += '今天累積喝了 ' + currentBottlesStr + ' 瓶。';
+            }
+            speakText(speechMsg);
+        }
+
+        function undoLastWater() {
+            if (waterHistory.length > 0) {
+                const last = waterHistory.pop();
+                currentWater = Math.max(0, currentWater - last);
+                saveLocalStorage();
+                updateUI();
+                speakText("已幫您扣回上一口記錄。");
+            }
+        }
+
+        function getFormattedBottles(waterCc) {
+            const drankBottles = (waterCc / cupCapacity).toFixed(1);
+            return drankBottles.endsWith('.0') ? parseInt(drankBottles) : drankBottles;
+        }
+
+        function updateUI() {
+            document.getElementById('bottle-info-text').innerText = cupName + ' (約 ' + cupCapacity + ' cc)';
+            const formattedBottles = getFormattedBottles(currentWater);
+            const targetBottles = Math.ceil(targetDailyWater / cupCapacity);
+            document.getElementById('bottle-progress-text').innerHTML = '今天已經喝了 <span class="text-amber-600 text-4xl sm:text-5xl font-black">' + formattedBottles + '</span> 瓶囉！';
+            document.getElementById('bottle-target-text').innerText = '目標是喝滿 ' + targetBottles + ' 瓶（約 ' + targetDailyWater + ' cc）';
+            const percent = Math.min(100, Math.round((currentWater / targetDailyWater) * 100));
+            document.getElementById('water-fill').style.height = percent + '%';
+            const goalMsg = document.getElementById('goal-message');
+            if (currentWater >= targetDailyWater) goalMsg.classList.remove('hidden');
+            else goalMsg.classList.add('hidden');
+        }
+
+        function openCupModal() { document.getElementById('cup-modal').classList.add('active'); }
+        function closeCupModal() { document.getElementById('cup-modal').classList.remove('active'); }
+
+        function selectCupPreset(name, capacity) {
+            cupName = name;
+            cupCapacity = capacity;
+            saveLocalStorage();
+            updateUI();
+            closeCupModal();
+            speakText('已切換專用杯為' + cupName);
+        }
+
+        function saveCustomCup() {
+            const val = parseInt(document.getElementById('custom-cup-input').value);
+            if (val && val > 0) {
+                cupName = '專用隨行杯';
+                cupCapacity = val;
+                saveLocalStorage();
+                updateUI();
+                closeCupModal();
+                speakText('已設定保溫杯容量為' + val + '毫升');
+            }
+        }
+
+        function openHelpModal() { document.getElementById('help-modal').classList.add('active'); }
+        function closeHelpModal() { document.getElementById('help-modal').classList.remove('active'); }
+        function openInstallTutorialModal() { document.getElementById('install-modal').classList.add('active'); }
+        function closeInstallModal() { document.getElementById('install-modal').classList.remove('active'); }
+
+        function checkNotificationStatus() {
+            if (!("Notification" in window)) {
+                document.getElementById('notification-status-text').innerText = "狀態：瀏覽器不支援通知";
+                return;
+            }
+            if (Notification.permission === "granted") setNotificationUIActive(true);
+            else if (Notification.permission === "denied") {
+                document.getElementById('notification-status-text').innerText = "狀態：通知已被封鎖";
+                setNotificationUIActive(false);
+            } else {
+                document.getElementById('notification-status-text').innerText = "狀態：未開啟提醒";
+                setNotificationUIActive(false);
+            }
+        }
+
+        function requestNotificationPermission() {
+            if (!("Notification" in window)) {
+                alert("很抱歉，您的裝置不支援網頁通知功能。");
+                return;
+            }
+            if (Notification.permission === "granted") {
+                stopReminderTimer();
+                setNotificationUIActive(false);
+                document.getElementById('notification-status-text').innerText = "狀態：已關閉提醒";
+                speakText("喝水提醒已關閉");
+            } else {
+                Notification.requestPermission().then(permission => {
+                    if (permission === "granted") {
+                        setNotificationUIActive(true);
+                        startReminderTimer();
+                        speakText("喝水提醒鬧鐘已成功開啟！");
+                    } else {
+                        setNotificationUIActive(false);
+                        openHelpModal();
+                    }
+                });
+            }
+        }
+
+        function setNotificationUIActive(active) {
+            isNotificationEnabled = active;
+            const btn = document.getElementById('toggle-notification-btn');
+            const statusText = document.getElementById('notification-status-text');
+            if (active) {
+                btn.classList.remove('bg-amber-500', 'hover:bg-amber-600');
+                btn.classList.add('bg-green-600', 'hover:bg-green-700', 'text-white');
+                btn.innerHTML = '<i class="fa-solid fa-check-circle text-2xl"></i><span>提醒開啟中</span>';
+                statusText.innerText = '狀態：提醒運作中 (每 ' + intervalMinutes + ' 分鐘)';
+                startReminderTimer();
+            } else {
+                btn.classList.remove('bg-green-600', 'hover:bg-green-700', 'text-white');
+                btn.classList.add('bg-amber-500', 'hover:bg-amber-600', 'text-black');
+                btn.innerHTML = '<i class="fa-solid fa-power-off text-2xl"></i><span>開啟喝水提醒</span>';
+            }
+        }
+
+        function changeInterval() {
+            intervalMinutes = parseInt(document.getElementById('reminder-interval').value);
+            if (isNotificationEnabled) {
+                document.getElementById('notification-status-text').innerText = '狀態：提醒運作中 (每 ' + intervalMinutes + ' 分鐘)';
+                startReminderTimer();
+            }
+        }
+
+        function startReminderTimer() {
+            stopReminderTimer();
+            const ms = intervalMinutes * 60 * 1000;
+            reminderTimer = setInterval(sendHydrationReminder, ms);
+        }
+
+        function stopReminderTimer() {
+            if (reminderTimer) {
+                clearInterval(reminderTimer);
+                reminderTimer = null;
+            }
+        }
+
+        function sendHydrationReminder() {
+            playChimeSound();
+            speakText("該喝水囉！喝口水潤潤喉吧！");
+        }
+    </scr` + `ipt>
+</body>
+</html>`;
+
+    // 初始化組員 4 與 組員 5 詳情頁右側的內嵌模擬器
+    window.addEventListener('DOMContentLoaded', function() {
       const m4Sim = document.getElementById('m4-sim-iframe');
-      if (m4Sim) {
-        m4Sim.srcdoc = m4HtmlContent;
-      }
+      if (m4Sim) m4Sim.srcdoc = m4RawHtml;
+
+      const m5Sim = document.getElementById('m5-sim-iframe');
+      if (m5Sim) m5Sim.srcdoc = m5RawHtml;
     });
 
-    // 在新分頁獨立開啟組員 4 的貪吃蛇遊戲
-    function openM4InNewTab() {
-      const blob = new Blob([m4HtmlContent], { type: 'text/html;charset=utf-8' });
+    // 在新分頁獨立開啟內嵌作品 (組員 4 或 組員 5)
+    function openInlineInNewTab(memberKey) {
+      const htmlStr = memberKey === 'm5' ? m5RawHtml : m4RawHtml;
+      const blob = new Blob([htmlStr], { type: 'text/html;charset=utf-8' });
       const blobUrl = URL.createObjectURL(blob);
       window.open(blobUrl, '_blank');
     }
 
     // 分頁切換
-    function switchTab(tabId, btnEl) {
-      document.querySelectorAll('.section').forEach(sec => sec.classList.remove('active'));
-      document.querySelectorAll('.tab-btn').forEach(btn => btn.classList.remove('active'));
-      document.getElementById(tabId).classList.add('active');
-      if (btnEl) btnEl.classList.add('active');
+    function switchTab(tabId, tabIndex) {
+      document.querySelectorAll('.section').forEach(function(sec) {
+        sec.classList.remove('active');
+      });
+      const tabBtns = document.querySelectorAll('.tab-btn');
+      tabBtns.forEach(function(btn) {
+        btn.classList.remove('active');
+      });
+      const targetSec = document.getElementById(tabId);
+      if (targetSec) targetSec.classList.add('active');
+      if (typeof tabIndex === 'number' && tabBtns[tabIndex]) {
+        tabBtns[tabIndex].classList.add('active');
+      }
+      window.scrollTo({ top: 0, behavior: 'smooth' });
     }
 
     // 切換實機展示台內容
     function openInViewer(title, url) {
-      const tabBtns = document.querySelectorAll('.tab-btn');
-      switchTab('tab-viewer', tabBtns[6]);
+      switchTab('tab-viewer', 6);
       document.getElementById('viewer-title').textContent = '目前展示：' + title;
       const iframe = document.getElementById('viewer-iframe');
       const extLink = document.getElementById('viewer-link');
 
       if (url === 'INLINE_M4') {
-        document.getElementById('viewer-url').textContent = '內嵌直接執行：長者知識貪吃蛇 (HTML5 Canvas)';
+        document.getElementById('viewer-url').textContent = '內嵌原創程式碼直接執行：長者知識貪吃蛇';
         iframe.removeAttribute('src');
-        iframe.srcdoc = m4HtmlContent;
+        iframe.srcdoc = m4RawHtml;
         extLink.href = 'javascript:void(0)';
         extLink.removeAttribute('target');
-        extLink.onclick = (e) => {
+        extLink.onclick = function(e) {
           e.preventDefault();
-          openM4InNewTab();
+          openInlineInNewTab('m4');
+        };
+      } else if (url === 'INLINE_M5') {
+        document.getElementById('viewer-url').textContent = '內嵌原創程式碼直接執行：大字體尊榮喝水健康管家 PWA';
+        iframe.removeAttribute('src');
+        iframe.srcdoc = m5RawHtml;
+        extLink.href = 'javascript:void(0)';
+        extLink.removeAttribute('target');
+        extLink.onclick = function(e) {
+          e.preventDefault();
+          openInlineInNewTab('m5');
         };
       } else {
         document.getElementById('viewer-url').textContent = url;
@@ -1226,25 +1780,27 @@ setInterval(()=>{step();draw();},STEP);
       const current = htmlEl.getAttribute('data-theme');
       const next = current === 'dark' ? 'light' : 'dark';
       applyTheme(next);
-      localStorage.setItem('report_theme', next);
+      try {
+        localStorage.setItem('report_theme', next);
+      } catch (e) {}
     }
 
     function applyTheme(theme) {
       document.documentElement.setAttribute('data-theme', theme);
       const btn = document.getElementById('themeBtn');
-      if (theme === 'light') {
-        btn.textContent = '🌙 切換深色';
-      } else {
-        btn.textContent = '☀️ 切換淺色';
+      if (btn) {
+        btn.textContent = theme === 'light' ? '🌙 切換深色' : '☀️ 切換淺色';
       }
     }
 
     // 載入上次選擇的顏色主題
     (function initTheme() {
-      const saved = localStorage.getItem('report_theme');
-      if (saved === 'light' || saved === 'dark') {
-        applyTheme(saved);
-      }
+      try {
+        const saved = localStorage.getItem('report_theme');
+        if (saved === 'light' || saved === 'dark') {
+          applyTheme(saved);
+        }
+      } catch (e) {}
     })();
   </script>
 </body>
