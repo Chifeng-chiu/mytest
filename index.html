@@ -1,22 +1,43 @@
 <!DOCTYPE html>
-<html lang="zh-TW">
+<html lang="zh-TW" data-theme="dark">
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>資訊科技應用當地長者 — 團隊進度報告平台</title>
   <style>
-    :root {
-      --bg-dark: #0f172a;
+    /* 深色模式變數 (預設) */
+    :root,
+    [data-theme="dark"] {
+      --bg-main: #0f172a;
+      --bg-header: rgba(15, 23, 42, 0.92);
       --card-bg: #1e293b;
       --card-inner: #0f172a;
-      --accent: #f59e0b;
-      --accent-hover: #d97706;
-      --blue: #38bdf8;
-      --emerald: #34d399;
-      --purple: #c084fc;
+      --code-bg: #090d16;
       --text-main: #f8fafc;
       --text-muted: #94a3b8;
       --border: #334155;
+      --accent: #f59e0b;
+      --accent-hover: #d97706;
+      --accent-text: #000000;
+      --shadow: 0 12px 30px rgba(0, 0, 0, 0.35);
+      --hero-grad: linear-gradient(135deg, #1e293b 0%, #0f172a 100%);
+    }
+
+    /* 淺色模式變數 */
+    [data-theme="light"] {
+      --bg-main: #f8fafc;
+      --bg-header: rgba(255, 255, 255, 0.92);
+      --card-bg: #ffffff;
+      --card-inner: #f1f5f9;
+      --code-bg: #1e293b;
+      --text-main: #0f172a;
+      --text-muted: #475569;
+      --border: #cbd5e1;
+      --accent: #d97706;
+      --accent-hover: #b45309;
+      --accent-text: #ffffff;
+      --shadow: 0 10px 25px rgba(15, 23, 42, 0.08);
+      --hero-grad: linear-gradient(135deg, #fef3c7 0%, #ffffff 100%);
     }
 
     * {
@@ -27,19 +48,20 @@
     }
 
     body {
-      background-color: var(--bg-dark);
+      background-color: var(--bg-main);
       color: var(--text-main);
       line-height: 1.6;
       min-height: 100vh;
       display: flex;
       flex-direction: column;
+      transition: background-color 0.25s ease, color 0.25s ease;
     }
 
     /* 頂部報告導覽列 */
     header {
-      background: rgba(15, 23, 42, 0.95);
+      background: var(--bg-header);
       border-bottom: 1px solid var(--border);
-      padding: 1rem 2rem;
+      padding: 0.9rem 1.75rem;
       position: sticky;
       top: 0;
       z-index: 100;
@@ -48,7 +70,7 @@
       align-items: center;
       flex-wrap: wrap;
       gap: 1rem;
-      backdrop-filter: blur(8px);
+      backdrop-filter: blur(10px);
     }
 
     .brand {
@@ -59,21 +81,28 @@
 
     .badge-course {
       background: var(--accent);
-      color: #000;
+      color: var(--accent-text);
       font-weight: 700;
       padding: 0.25rem 0.65rem;
       border-radius: 6px;
-      font-size: 0.85rem;
+      font-size: 0.82rem;
     }
 
     .brand h1 {
-      font-size: 1.3rem;
+      font-size: 1.25rem;
       font-weight: 700;
+    }
+
+    .header-controls {
+      display: flex;
+      align-items: center;
+      gap: 0.6rem;
+      flex-wrap: wrap;
     }
 
     .nav-tabs {
       display: flex;
-      gap: 0.5rem;
+      gap: 0.4rem;
       flex-wrap: wrap;
     }
 
@@ -81,10 +110,10 @@
       background: var(--card-bg);
       color: var(--text-muted);
       border: 1px solid var(--border);
-      padding: 0.55rem 1rem;
+      padding: 0.48rem 0.85rem;
       border-radius: 8px;
       cursor: pointer;
-      font-size: 0.92rem;
+      font-size: 0.88rem;
       font-weight: 600;
       transition: all 0.2s;
     }
@@ -92,17 +121,37 @@
     .tab-btn:hover,
     .tab-btn.active {
       background: var(--accent);
-      color: #000;
+      color: var(--accent-text);
+      border-color: var(--accent);
+    }
+
+    /* 淺色/深色切換按鈕 */
+    .theme-toggle {
+      background: var(--card-inner);
+      color: var(--text-main);
+      border: 1px solid var(--border);
+      padding: 0.48rem 0.9rem;
+      border-radius: 999px;
+      cursor: pointer;
+      font-size: 0.88rem;
+      font-weight: 700;
+      display: inline-flex;
+      align-items: center;
+      gap: 0.4rem;
+      transition: all 0.2s;
+    }
+
+    .theme-toggle:hover {
       border-color: var(--accent);
     }
 
     /* 主內容區塊 */
     main {
       flex: 1;
-      max-width: 1380px;
+      max-width: 1400px;
       width: 100%;
       margin: 0 auto;
-      padding: 2rem;
+      padding: 1.75rem;
     }
 
     .section {
@@ -121,33 +170,34 @@
 
     /* 總覽標題區 */
     .hero {
-      background: linear-gradient(135deg, #1e293b 0%, #0f172a 100%);
+      background: var(--hero-grad);
       border: 1px solid var(--border);
       border-radius: 16px;
-      padding: 2rem 2.5rem;
-      margin-bottom: 2rem;
+      padding: 1.75rem 2.25rem;
+      margin-bottom: 1.75rem;
+      box-shadow: var(--shadow);
     }
 
     .hero h2 {
-      font-size: 1.8rem;
-      margin-bottom: 0.5rem;
+      font-size: 1.7rem;
+      margin-bottom: 0.45rem;
       color: var(--accent);
     }
 
     .hero p {
-      font-size: 1.05rem;
+      font-size: 1rem;
       color: var(--text-muted);
     }
 
-    /* 三位組員平起平坐網格 */
-    .grid-3 {
+    /* 五位組員卡片網格 */
+    .grid-5 {
       display: grid;
-      grid-template-columns: repeat(3, 1fr);
-      gap: 1.5rem;
+      grid-template-columns: repeat(auto-fit, minmax(360px, 1fr));
+      gap: 1.4rem;
     }
 
-    @media (max-width: 1024px) {
-      .grid-3 {
+    @media (max-width: 768px) {
+      .grid-5 {
         grid-template-columns: 1fr;
       }
     }
@@ -156,10 +206,11 @@
       background: var(--card-bg);
       border: 1px solid var(--border);
       border-radius: 14px;
-      padding: 1.6rem;
+      padding: 1.5rem;
       display: flex;
       flex-direction: column;
       justify-content: space-between;
+      box-shadow: var(--shadow);
       transition: transform 0.2s, border-color 0.2s;
     }
 
@@ -170,38 +221,49 @@
 
     .card-tag {
       display: inline-block;
-      font-size: 0.82rem;
+      font-size: 0.8rem;
       font-weight: 700;
-      padding: 0.25rem 0.7rem;
+      padding: 0.22rem 0.65rem;
       border-radius: 999px;
-      margin-bottom: 0.85rem;
+      margin-bottom: 0.75rem;
       width: fit-content;
     }
 
-    .tag-m1 { background: rgba(56, 189, 248, 0.18); color: var(--blue); }
-    .tag-m2 { background: rgba(52, 211, 153, 0.18); color: var(--emerald); }
-    .tag-m3 { background: rgba(192, 132, 252, 0.18); color: var(--purple); }
+    .tag-m1 { background: rgba(14, 165, 233, 0.16); color: #0284c7; }
+    [data-theme="dark"] .tag-m1 { color: #38bdf8; }
+
+    .tag-m2 { background: rgba(16, 185, 129, 0.16); color: #059669; }
+    [data-theme="dark"] .tag-m2 { color: #34d399; }
+
+    .tag-m3 { background: rgba(168, 85, 247, 0.16); color: #9333ea; }
+    [data-theme="dark"] .tag-m3 { color: #c084fc; }
+
+    .tag-m4 { background: rgba(244, 63, 94, 0.16); color: #e11d48; }
+    [data-theme="dark"] .tag-m4 { color: #fb7185; }
+
+    .tag-m5 { background: rgba(234, 179, 8, 0.16); color: #ca8a04; }
+    [data-theme="dark"] .tag-m5 { color: #facc15; }
 
     .card h3 {
-      font-size: 1.35rem;
-      margin-bottom: 0.6rem;
+      font-size: 1.3rem;
+      margin-bottom: 0.5rem;
     }
 
     .card p {
       color: var(--text-muted);
-      font-size: 0.95rem;
-      margin-bottom: 1.1rem;
+      font-size: 0.94rem;
+      margin-bottom: 1rem;
     }
 
     .feature-list {
       list-style: none;
-      margin-bottom: 1.4rem;
+      margin-bottom: 1.25rem;
     }
 
     .feature-list li {
-      font-size: 0.92rem;
-      margin-bottom: 0.45rem;
-      padding-left: 1.3rem;
+      font-size: 0.9rem;
+      margin-bottom: 0.4rem;
+      padding-left: 1.25rem;
       position: relative;
     }
 
@@ -215,15 +277,15 @@
 
     .btn-group {
       display: flex;
-      gap: 0.6rem;
+      gap: 0.5rem;
       flex-wrap: wrap;
     }
 
     .btn {
-      padding: 0.55rem 1rem;
+      padding: 0.5rem 0.95rem;
       border-radius: 8px;
       font-weight: 600;
-      font-size: 0.9rem;
+      font-size: 0.88rem;
       cursor: pointer;
       border: none;
       text-decoration: none;
@@ -236,7 +298,7 @@
 
     .btn-primary {
       background: var(--accent);
-      color: #000;
+      color: var(--accent-text);
     }
 
     .btn-primary:hover {
@@ -250,8 +312,8 @@
     }
 
     .btn-outline:hover {
-      border-color: var(--text-main);
-      background: rgba(255, 255, 255, 0.05);
+      border-color: var(--accent);
+      background: rgba(148, 163, 184, 0.1);
     }
 
     /* 組員專屬報告版面（左說明 + 右預覽） */
@@ -273,17 +335,18 @@
       border: 1px solid var(--border);
       border-radius: 14px;
       padding: 1.75rem;
+      box-shadow: var(--shadow);
     }
 
     .doc-panel h2 {
-      font-size: 1.55rem;
+      font-size: 1.5rem;
       color: var(--accent);
       margin-bottom: 0.5rem;
     }
 
     .doc-panel h3 {
-      font-size: 1.2rem;
-      color: var(--emerald);
+      font-size: 1.15rem;
+      color: var(--accent);
       margin: 1.5rem 0 0.75rem;
       padding-bottom: 0.4rem;
       border-bottom: 1px solid var(--border);
@@ -304,14 +367,14 @@
     }
 
     .info-box h4 {
-      color: var(--blue);
+      color: var(--text-main);
       margin-bottom: 0.4rem;
       font-size: 1rem;
     }
 
     .info-box ul {
       padding-left: 1.1rem;
-      font-size: 0.9rem;
+      font-size: 0.88rem;
       color: var(--text-muted);
     }
 
@@ -320,13 +383,13 @@
     }
 
     pre.code-block {
-      background: #090d16;
+      background: var(--code-bg);
       border: 1px solid var(--border);
       border-radius: 10px;
       padding: 1rem;
       overflow-x: auto;
       font-family: Consolas, Monaco, monospace;
-      font-size: 0.85rem;
+      font-size: 0.84rem;
       color: #e2e8f0;
       line-height: 1.5;
     }
@@ -340,7 +403,7 @@
     table.api-table {
       width: 100%;
       border-collapse: collapse;
-      font-size: 0.88rem;
+      font-size: 0.86rem;
       background: var(--card-inner);
       border-radius: 8px;
       overflow: hidden;
@@ -349,38 +412,38 @@
     table.api-table th,
     table.api-table td {
       border: 1px solid var(--border);
-      padding: 0.55rem 0.75rem;
+      padding: 0.5rem 0.7rem;
       text-align: left;
     }
 
     table.api-table th {
-      background: rgba(51, 65, 85, 0.5);
+      background: rgba(148, 163, 184, 0.18);
       color: var(--accent);
     }
 
     /* 右側固定手機模擬器 */
     .phone-simulator {
       position: sticky;
-      top: 5.5rem;
+      top: 5.2rem;
       background: #000;
       border: 6px solid #334155;
       border-radius: 28px;
       overflow: hidden;
-      height: 760px;
+      height: 750px;
       display: flex;
       flex-direction: column;
-      box-shadow: 0 20px 40px rgba(0, 0, 0, 0.5);
+      box-shadow: var(--shadow);
     }
 
     .sim-header {
       background: #1e293b;
-      padding: 0.6rem 1rem;
-      font-size: 0.82rem;
-      color: var(--text-muted);
+      padding: 0.55rem 1rem;
+      font-size: 0.8rem;
+      color: #cbd5e1;
       display: flex;
       justify-content: space-between;
       align-items: center;
-      border-bottom: 1px solid var(--border);
+      border-bottom: 1px solid #334155;
     }
 
     .sim-iframe {
@@ -396,11 +459,12 @@
       border: 4px solid var(--border);
       border-radius: 16px;
       overflow: hidden;
-      height: 740px;
+      height: 730px;
       display: flex;
       flex-direction: column;
       margin: 0 auto;
       transition: max-width 0.3s ease;
+      box-shadow: var(--shadow);
     }
   </style>
 </head>
@@ -411,62 +475,73 @@
       <span class="badge-course">通識課進度報告</span>
       <h1>資訊科技應用當地長者 — 小組作品整合平台</h1>
     </div>
-    <nav class="nav-tabs">
-      <button class="tab-btn active" onclick="switchTab('tab-overview', this)">📋 小組總覽 (1 / 2 / 3)</button>
-      <button class="tab-btn" onclick="switchTab('tab-m1', this)">👤 組員 1</button>
-      <button class="tab-btn" onclick="switchTab('tab-m2', this)">👤 組員 2 (樂活在地通)</button>
-      <button class="tab-btn" onclick="switchTab('tab-m3', this)">👤 組員 3</button>
-      <button class="tab-btn" onclick="switchTab('tab-viewer', this)">🖥️ 網頁實機切換台</button>
-    </nav>
+
+    <div class="header-controls">
+      <nav class="nav-tabs">
+        <button class="tab-btn active" onclick="switchTab('tab-overview', this)">📋 總覽 (1~5)</button>
+        <button class="tab-btn" onclick="switchTab('tab-m1', this)">👤 組員 1</button>
+        <button class="tab-btn" onclick="switchTab('tab-m2', this)">👤 組員 2</button>
+        <button class="tab-btn" onclick="switchTab('tab-m3', this)">👤 組員 3</button>
+        <button class="tab-btn" onclick="switchTab('tab-m4', this)">👤 組員 4</button>
+        <button class="tab-btn" onclick="switchTab('tab-m5', this)">👤 組員 5</button>
+        <button class="tab-btn" onclick="switchTab('tab-viewer', this)">🖥️ 實機切換台</button>
+      </nav>
+
+      <button class="theme-toggle" id="themeBtn" onclick="toggleTheme()">
+        ☀️ 切換淺色
+      </button>
+    </div>
   </header>
 
   <main>
-    <!-- ================= 總覽頁：組員 1、2、3 並排 ================= -->
+    <!-- ================= 總覽頁：組員 1 ~ 5 專案卡片 ================= -->
     <section id="tab-overview" class="section active">
       <div class="hero">
-        <h2>資訊科技應用當地長者 — 目前開發進度報告</h2>
-        <p>本網頁整合本組三位成員針對在地長者設計之小網站與應用系統，點擊各組員卡片即可查看詳細功能介紹或直接在畫面中操作預覽。</p>
+        <h2>資訊科技應用當地長者 — 五位組員專案進度總覽</h2>
+        <p>本平台整合小組五位成員針對在地長者設計之小網站與 PWA 應用，支援「深色 / 淺色背景」一鍵切換，點擊任一組員即可查看功能介紹並直接於報告頁內操作預覽。</p>
       </div>
 
-      <div class="grid-3">
+      <div class="grid-5">
         <!-- 組員 1 -->
         <div class="card">
           <div>
-            <span class="card-tag tag-m1">組員 1</span>
-            <h3>【組員 1 專案名稱待填】</h3>
-            <p>針對當地長者日常需求設計的互動小網站（可填入組員 1 的主題說明）。</p>
+            <span class="card-tag tag-m1">組員 1 專案</span>
+            <h3>長者關懷小幫手</h3>
+            <p>結合「記事布告欄 ‧ 健康動一動 ‧ 佈置小遊戲」的三合一長輩日常陪伴與居家活動小網站。</p>
             <ul class="feature-list">
-              <li>目標對象：金門在地社區高齡長者</li>
-              <li>核心理念：簡化操作流程、提供直覺回饋</li>
-              <li>目前進度：前端畫面與互動邏輯建置中</li>
+              <li>記事布告欄：提供長輩隨手記錄日常待辦與備忘事項</li>
+              <li>運動建議：可依全身、上下半身或「坐著就能做」抽籤運動</li>
+              <li>佈置小遊戲：自由選擇背景與道具分類，支援上傳自訂素材</li>
             </ul>
           </div>
           <div class="btn-group">
             <button class="btn btn-primary" onclick="switchTab('tab-m1', document.querySelectorAll('.tab-btn')[1])">
-              查看組員 1 報告詳情
+              查看組員 1 詳情
             </button>
-            <button class="btn btn-outline" onclick="openInViewer('組員 1 小網站', 'about:blank')">
+            <button class="btn btn-outline" onclick="openInViewer('組員 1：長者關懷小幫手', 'https://doandlearn-naro.github.io/Program-one/')">
               實機畫面預覽
             </button>
+            <a class="btn btn-outline" href="https://doandlearn-naro.github.io/Program-one/" target="_blank">
+              開新分頁 ↗
+            </a>
           </div>
         </div>
 
-        <!-- 組員 2 (你的作品) -->
+        <!-- 組員 2 -->
         <div class="card">
           <div>
-            <span class="card-tag tag-m2">組員 2｜邱祺峰</span>
+            <span class="card-tag tag-m2">組員 2 專案｜邱祺峰</span>
             <h3>樂活在地通｜長輩關懷 PWA</h3>
-            <p>拆分為「長輩端 PWA」與「佳儒後台」雙前端，搭配零外部依賴 Node.js 伺服器與 SSE 跨視窗即時同步。</p>
+            <p>拆分為「長輩端 PWA」與「佳儒後台」雙前端，搭配零依賴 Node.js 伺服器與 SSE 跨視窗即時同步。</p>
             <ul class="feature-list">
               <li>長輩端：大字/特大字、緊急求助 SOS、佳儒叮嚀語音朗讀</li>
               <li>社交互動：老友照片牆、健康步數問答、里長廣播共餐/接駁車</li>
               <li>佳儒後台：即時接收 SOS 警報、追蹤提醒進度、一鍵重設 Demo</li>
-              <li>支援 GitHub Pages 單檔展示版與本地端前後端分離同步版</li>
             </ul>
           </div>
           <div class="btn-group">
             <button class="btn btn-primary" onclick="switchTab('tab-m2', document.querySelectorAll('.tab-btn')[2])">
-              查看 README 與完整介紹
+              查看組員 2 詳情
             </button>
             <button class="btn btn-outline" onclick="openInViewer('組員 2：樂活在地通 (GitHub Pages)', 'https://chifeng-chiu.github.io/mytest/legacy/index.html')">
               實機畫面預覽
@@ -480,20 +555,67 @@
         <!-- 組員 3 -->
         <div class="card">
           <div>
-            <span class="card-tag tag-m3">組員 3</span>
-            <h3>【組員 3 專案名稱待填】</h3>
-            <p>針對當地長者生活或社交情境設計的輔助小網站（可填入組員 3 的主題說明）。</p>
+            <span class="card-tag tag-m3">組員 3 專案</span>
+            <h3>溫馨小宅｜長者居家養成與任務遊戲</h3>
+            <p>以遊戲化（Gamification）機制結合日常健康任務，讓長輩透過完成任務賺取經驗值與金幣來佈置專屬房間。</p>
             <ul class="feature-list">
-              <li>目標對象：金門在地社區高齡長者</li>
-              <li>核心理念：高齡友善字體與清楚的資訊呈現</li>
-              <li>目前進度：前端畫面與互動邏輯建置中</li>
+              <li>等級與經驗值系統：從「等級 1 新手長者」逐步累積經驗升級</li>
+              <li>計時日常任務：內建 10 分鐘任務倒數計時器與冷卻獎勵機制</li>
+              <li>互動式房間佈置：點擊溫馨客廳內的傢俱即可解鎖並更換喜愛款式</li>
             </ul>
           </div>
           <div class="btn-group">
             <button class="btn btn-primary" onclick="switchTab('tab-m3', document.querySelectorAll('.tab-btn')[3])">
-              查看組員 3 報告詳情
+              查看組員 3 詳情
             </button>
-            <button class="btn btn-outline" onclick="openInViewer('組員 3 小網站', 'about:blank')">
+            <button class="btn btn-outline" onclick="openInViewer('組員 3：溫馨小宅', 'https://doandlearn-naro.github.io/Mytry/home/')">
+              實機畫面預覽
+            </button>
+            <a class="btn btn-outline" href="https://doandlearn-naro.github.io/Mytry/home/" target="_blank">
+              開新分頁 ↗
+            </a>
+          </div>
+        </div>
+
+        <!-- 組員 4 -->
+        <div class="card">
+          <div>
+            <span class="card-tag tag-m4">組員 4 專案</span>
+            <h3>【組員 4 專案名稱待填】</h3>
+            <p>針對當地長者生活、健康或社交情境設計的輔助小網站（待填入組員 4 主題說明）。</p>
+            <ul class="feature-list">
+              <li>目標對象：金門在地社區高齡長者</li>
+              <li>核心理念：高齡友善大字體與直覺操作設計</li>
+              <li>目前進度：前端畫面與互動邏輯建置中</li>
+            </ul>
+          </div>
+          <div class="btn-group">
+            <button class="btn btn-primary" onclick="switchTab('tab-m4', document.querySelectorAll('.tab-btn')[4])">
+              查看組員 4 詳情
+            </button>
+            <button class="btn btn-outline" onclick="openInViewer('組員 4 小網站', 'about:blank')">
+              實機畫面預覽
+            </button>
+          </div>
+        </div>
+
+        <!-- 組員 5 -->
+        <div class="card">
+          <div>
+            <span class="card-tag tag-m5">組員 5 專案</span>
+            <h3>【組員 5 專案名稱待填】</h3>
+            <p>針對當地長者生活、健康或社交情境設計的輔助小網站（待填入組員 5 主題說明）。</p>
+            <ul class="feature-list">
+              <li>目標對象：金門在地社區高齡長者</li>
+              <li>核心理念：高齡友善大字體與直覺操作設計</li>
+              <li>目前進度：前端畫面與互動邏輯建置中</li>
+            </ul>
+          </div>
+          <div class="btn-group">
+            <button class="btn btn-primary" onclick="switchTab('tab-m5', document.querySelectorAll('.tab-btn')[5])">
+              查看組員 5 詳情
+            </button>
+            <button class="btn btn-outline" onclick="openInViewer('組員 5 小網站', 'about:blank')">
               實機畫面預覽
             </button>
           </div>
@@ -501,27 +623,57 @@
       </div>
     </section>
 
-    <!-- ================= 組員 1 詳情頁 ================= -->
+    <!-- ================= 組員 1 詳情頁 (長者關懷小幫手) ================= -->
     <section id="tab-m1" class="section">
-      <div class="doc-panel">
-        <span class="card-tag tag-m1">組員 1 進度報告</span>
-        <h2>【組員 1 專案名稱】</h2>
-        <p style="color: var(--text-muted); margin-bottom: 1rem;">
-          把組員 1 的小網站網址與功能介紹貼進來，即可在這裡直接展示說明與內嵌網頁。
-        </p>
-        <h3>功能重點</h3>
-        <ul class="feature-list">
-          <li>功能亮點 1（待填入）</li>
-          <li>功能亮點 2（待填入）</li>
-          <li>功能亮點 3（待填入）</li>
-        </ul>
+      <div class="member-layout">
+        <div class="doc-panel">
+          <span class="card-tag tag-m1">組員 1 進度報告</span>
+          <h2>長者關懷小幫手（記事布告欄 ‧ 健康動一動 ‧ 佈置小遊戲）</h2>
+          <p style="color: var(--text-muted);">
+            部署網址：<a href="https://doandlearn-naro.github.io/Program-one/" target="_blank" style="color: var(--accent);">https://doandlearn-naro.github.io/Program-one/</a>
+          </p>
+
+          <h3>核心三大模組設計</h3>
+          <div class="sub-grid">
+            <div class="info-box">
+              <h4>📌 1. 記事布告欄</h4>
+              <ul>
+                <li>提供長輩清晰、無廣告干擾的個人記事清單</li>
+                <li>可隨時新增日常提醒或生活備忘，避免忘記重要事項</li>
+              </ul>
+            </div>
+            <div class="info-box">
+              <h4>🤸 2. 健康動一動（運動建議）</h4>
+              <ul>
+                <li>支援依身體部位篩選：<strong>隨機、全身、上半身、下半身、坐著就能做</strong></li>
+                <li>按下「給我一個建議」即可抽取適合長輩體能的居家伸展與運動，亦能展開查看全部建議</li>
+              </ul>
+            </div>
+            <div class="info-box">
+              <h4>🎨 3. 佈置小遊戲</h4>
+              <ul>
+                <li>提供多種場景背景與道具分類，訓練長輩手眼協調與美感創造力</li>
+                <li>支援「新增我的素材」功能（上傳小於 500 KB 之圖片），將自己或家人的照片變成佈置素材</li>
+              </ul>
+            </div>
+          </div>
+        </div>
+
+        <div class="phone-simulator">
+          <div class="sim-header">
+            <span>📱 組員 1 實機操作 (長者關懷小幫手)</span>
+            <a href="https://doandlearn-naro.github.io/Program-one/" target="_blank" style="color: #fbbf24; text-decoration: none; font-weight: 700;">
+              開新分頁 ↗
+            </a>
+          </div>
+          <iframe class="sim-iframe" src="https://doandlearn-naro.github.io/Program-one/" title="組員1長者關懷小幫手"></iframe>
+        </div>
       </div>
     </section>
 
-    <!-- ================= 組員 2 詳情頁 (你的作品 + README-PWA.md 完整整合) ================= -->
+    <!-- ================= 組員 2 詳情頁 (樂活在地通 PWA) ================= -->
     <section id="tab-m2" class="section">
       <div class="member-layout">
-        <!-- 左側：README-PWA.md 完整報告重點 -->
         <div class="doc-panel">
           <span class="card-tag tag-m2">組員 2 進度報告｜邱祺峰</span>
           <h2>樂活在地通｜長輩關懷 PWA（前後端分離版 & 線上展示版）</h2>
@@ -623,26 +775,90 @@
           </div>
         </div>
 
-        <!-- 右側：直接內嵌你的 GitHub Pages 實機畫面 -->
         <div class="phone-simulator">
           <div class="sim-header">
-            <span>📱 組員 2 線上實機操作 (GitHub Pages)</span>
-            <a href="https://chifeng-chiu.github.io/mytest/legacy/index.html" target="_blank" style="color: var(--accent); text-decoration: none; font-weight: 700;">
-              全螢幕開啟 ↗
+            <span>📱 組員 2 實機操作 (樂活在地通)</span>
+            <a href="https://chifeng-chiu.github.io/mytest/legacy/index.html" target="_blank" style="color: #fbbf24; text-decoration: none; font-weight: 700;">
+              開新分頁 ↗
             </a>
           </div>
-          <iframe class="sim-iframe" src="https://chifeng-chiu.github.io/mytest/legacy/index.html" title="樂活在地通實機展示"></iframe>
+          <iframe class="sim-iframe" src="https://chifeng-chiu.github.io/mytest/legacy/index.html" title="組員2樂活在地通"></iframe>
         </div>
       </div>
     </section>
 
-    <!-- ================= 組員 3 詳情頁 ================= -->
+    <!-- ================= 組員 3 詳情頁 (溫馨小宅) ================= -->
     <section id="tab-m3" class="section">
+      <div class="member-layout">
+        <div class="doc-panel">
+          <span class="card-tag tag-m3">組員 3 進度報告</span>
+          <h2>🏠 溫馨小宅｜長者居家養成與日常任務遊戲</h2>
+          <p style="color: var(--text-muted);">
+            部署網址：<a href="https://doandlearn-naro.github.io/Mytry/home/" target="_blank" style="color: var(--accent);">https://doandlearn-naro.github.io/Mytry/home/</a>
+          </p>
+
+          <h3>核心設計與功能亮點</h3>
+          <div class="sub-grid">
+            <div class="info-box">
+              <h4>📈 1. 遊戲化等級與經驗值進度</h4>
+              <ul>
+                <li>首頁上方清楚顯示「溫馨客廳｜等級 1 新手長者」與經驗值進度條（如 <code>0 / 120 經驗值</code> 與金幣數量）</li>
+                <li>達成條件時會觸發「🎉 升級了！恭喜升級！」的動態回饋彈窗，帶給長輩滿滿成就感</li>
+              </ul>
+            </div>
+            <div class="info-box">
+              <h4>⏳ 2. 10 分鐘計時任務與冷卻機制</h4>
+              <ul>
+                <li>內建互動式任務對話框，配備 <code>10:00</code> 倒數計時器與冷卻時間提示</li>
+                <li>鼓勵長輩定時起來活動或完成健康小目標，完成後立即獲得經驗值與金幣獎勵</li>
+              </ul>
+            </div>
+            <div class="info-box">
+              <h4>🛋️ 3. 直覺式點擊傢俱換裝</h4>
+              <ul>
+                <li>不用複雜選單，「點一下房間裡的傢俱，就能選款式」</li>
+                <li>消耗累積的經驗值/金幣即可解鎖新傢俱與切換不同房間場景，支援 PWA manifest 安裝</li>
+              </ul>
+            </div>
+          </div>
+        </div>
+
+        <div class="phone-simulator">
+          <div class="sim-header">
+            <span>📱 組員 3 實機操作 (溫馨小宅)</span>
+            <a href="https://doandlearn-naro.github.io/Mytry/home/" target="_blank" style="color: #fbbf24; text-decoration: none; font-weight: 700;">
+              開新分頁 ↗
+            </a>
+          </div>
+          <iframe class="sim-iframe" src="https://doandlearn-naro.github.io/Mytry/home/" title="組員3溫馨小宅"></iframe>
+        </div>
+      </div>
+    </section>
+
+    <!-- ================= 組員 4 詳情頁 ================= -->
+    <section id="tab-m4" class="section">
       <div class="doc-panel">
-        <span class="card-tag tag-m3">組員 3 進度報告</span>
-        <h2>【組員 3 專案名稱】</h2>
+        <span class="card-tag tag-m4">組員 4 進度報告</span>
+        <h2>【組員 4 專案名稱待填】</h2>
         <p style="color: var(--text-muted); margin-bottom: 1rem;">
-          把組員 3 的小網站網址與功能介紹貼進來，即可在這裡直接展示說明與內嵌網頁。
+          提供組員 4 的小網站網址後，即可在此處呈現完整功能說明與右側手機實機預覽畫面。
+        </p>
+        <h3>功能重點</h3>
+        <ul class="feature-list">
+          <li>功能亮點 1（待填入）</li>
+          <li>功能亮點 2（待填入）</li>
+          <li>功能亮點 3（待填入）</li>
+        </ul>
+      </div>
+    </section>
+
+    <!-- ================= 組員 5 詳情頁 ================= -->
+    <section id="tab-m5" class="section">
+      <div class="doc-panel">
+        <span class="card-tag tag-m5">組員 5 進度報告</span>
+        <h2>【組員 5 專案名稱待填】</h2>
+        <p style="color: var(--text-muted); margin-bottom: 1rem;">
+          提供組員 5 的小網站網址後，即可在此處呈現完整功能說明與右側手機實機預覽畫面。
         </p>
         <h3>功能重點</h3>
         <ul class="feature-list">
@@ -657,28 +873,31 @@
     <section id="tab-viewer" class="section">
       <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1rem; flex-wrap: wrap; gap: 1rem;">
         <div>
-          <h2 id="viewer-title" style="color: var(--accent);">目前展示：組員 2 — 樂活在地通 (GitHub Pages)</h2>
+          <h2 id="viewer-title" style="color: var(--accent);">目前展示：組員 1 — 長者關懷小幫手</h2>
         </div>
         <div class="btn-group">
-          <button class="btn btn-outline" onclick="openInViewer('組員 1 小網站', 'about:blank')">切換：組員 1</button>
-          <button class="btn btn-primary" onclick="openInViewer('組員 2：樂活在地通 (GitHub Pages)', 'https://chifeng-chiu.github.io/mytest/legacy/index.html')">切換：組員 2</button>
-          <button class="btn btn-outline" onclick="openInViewer('組員 3 小網站', 'about:blank')">切換：組員 3</button>
+          <button class="btn btn-outline" onclick="openInViewer('組員 1：長者關懷小幫手', 'https://doandlearn-naro.github.io/Program-one/')">組員 1</button>
+          <button class="btn btn-outline" onclick="openInViewer('組員 2：樂活在地通 (GitHub Pages)', 'https://chifeng-chiu.github.io/mytest/legacy/index.html')">組員 2</button>
+          <button class="btn btn-outline" onclick="openInViewer('組員 3：溫馨小宅', 'https://doandlearn-naro.github.io/Mytry/home/')">組員 3</button>
+          <button class="btn btn-outline" onclick="openInViewer('組員 4 小網站', 'about:blank')">組員 4</button>
+          <button class="btn btn-outline" onclick="openInViewer('組員 5 小網站', 'about:blank')">組員 5</button>
           <button class="btn btn-outline" onclick="resizeViewer('430px')">📱 手機寬度</button>
           <button class="btn btn-outline" onclick="resizeViewer('100%')">💻 電腦全寬</button>
-          <a id="viewer-link" class="btn btn-primary" href="https://chifeng-chiu.github.io/mytest/legacy/index.html" target="_blank">開新分頁 ↗</a>
+          <a id="viewer-link" class="btn btn-primary" href="https://doandlearn-naro.github.io/Program-one/" target="_blank">開新分頁 ↗</a>
         </div>
       </div>
 
       <div id="viewer-box" class="viewer-container" style="max-width: 100%;">
         <div class="sim-header">
-          <span id="viewer-url">https://chifeng-chiu.github.io/mytest/legacy/index.html</span>
+          <span id="viewer-url">https://doandlearn-naro.github.io/Program-one/</span>
         </div>
-        <iframe id="viewer-iframe" class="sim-iframe" src="https://chifeng-chiu.github.io/mytest/legacy/index.html"></iframe>
+        <iframe id="viewer-iframe" class="sim-iframe" src="https://doandlearn-naro.github.io/Program-one/"></iframe>
       </div>
     </section>
   </main>
 
   <script>
+    // 分頁切換
     function switchTab(tabId, btnEl) {
       document.querySelectorAll('.section').forEach(sec => sec.classList.remove('active'));
       document.querySelectorAll('.tab-btn').forEach(btn => btn.classList.remove('active'));
@@ -686,18 +905,47 @@
       if (btnEl) btnEl.classList.add('active');
     }
 
+    // 切換實機展示台內容
     function openInViewer(title, url) {
       const tabBtns = document.querySelectorAll('.tab-btn');
-      switchTab('tab-viewer', tabBtns[4]);
+      switchTab('tab-viewer', tabBtns[6]);
       document.getElementById('viewer-title').textContent = '目前展示：' + title;
       document.getElementById('viewer-url').textContent = url;
       document.getElementById('viewer-link').href = url;
       document.getElementById('viewer-iframe').src = url;
     }
 
+    // 調整預覽框寬度
     function resizeViewer(maxWidth) {
       document.getElementById('viewer-box').style.maxWidth = maxWidth;
     }
+
+    // 淺色 / 深色背景切換與記憶功能
+    function toggleTheme() {
+      const htmlEl = document.documentElement;
+      const current = htmlEl.getAttribute('data-theme');
+      const next = current === 'dark' ? 'light' : 'dark';
+      applyTheme(next);
+      localStorage.setItem('report_theme', next);
+    }
+
+    function applyTheme(theme) {
+      document.documentElement.setAttribute('data-theme', theme);
+      const btn = document.getElementById('themeBtn');
+      if (theme === 'light') {
+        btn.textContent = '🌙 切換深色';
+      } else {
+        btn.textContent = '☀️ 切換淺色';
+      }
+    }
+
+    // 載入上次選擇的顏色主題
+    (function initTheme() {
+      const saved = localStorage.getItem('report_theme');
+      if (saved === 'light' || saved === 'dark') {
+        applyTheme(saved);
+      }
+    })();
   </script>
 </body>
 </html>
